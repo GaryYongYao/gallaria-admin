@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const userSchema = new Schema({
-  email: {
+  username: {
     type: String,
+    unique : true,
     required: true
   },
   password: {
@@ -11,6 +12,10 @@ const userSchema = new Schema({
     required: true,
     min: 8,
     max: 32
+  },
+  role: {
+    type: String,
+    default: 'editor'
   }
 })
 

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "baseUrl": "./",
+    "paths": {
+      "modules/*": ["src/modules/*"],
+      "utils/*": ["src/utils/*"],
+      "common/*": ["src/common/*"]
+    }
+  }
+}

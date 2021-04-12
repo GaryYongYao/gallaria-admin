@@ -1,8 +1,9 @@
 const userSchema = `
 type User {
   _id: ID!
-  email: String!
+  username: String!
   token: String!
+  role: String!
 }
 input UserInput {
   email: String!
@@ -12,7 +13,7 @@ input UserInput {
 `
 
 const userQuery = `
-login(email: String!, password: String!): User
+login(username: String!, password: String!): User
 verifyToken(token: String!): User
 `
 

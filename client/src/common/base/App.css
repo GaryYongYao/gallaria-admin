@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+}
+
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+  pointer-events: all;
+}
+
+.MuiMenu-list {
+  background: #fff;
+}
+
+label + .MuiInput-formControl {
+  margin-top: 0 !important;
+}
+
+.modal {
+  display: flex;
+}
+
+.modal-form {
+  width: 600px;
+  margin: auto;
+  background: white;
+  padding: 0 20px;
+  border-radius: 10px;
+}
+
+.input-container {
+  padding: 20px 0;
+}
+
+.time-picker {
+  border-radius: 5px;
+  padding: 5px 0;
+  width: 100%;
+  font-family: initial;
+  font-size: large;
+}
+
+.header2-text:nth-child(2) {
+  color: tomato !important;
+}

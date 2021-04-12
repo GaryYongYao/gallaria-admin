@@ -5,11 +5,12 @@ const User = require('../../../models/user')
 async function createUser(args) {
   try {
     const {
-      email,
+      username,
       password,
-      confirm
+      confirm,
+      role
     } = args.userInput; //retrieve values from arguments
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ username })
     if (existingUser) {
       throw new Error('User already exists!')
     }
@@ -18,7 +19,8 @@ async function createUser(args) {
     }
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = new User({
-      email,
+      username,
+      role,
       password: hashedPassword
     }, (err) => { if (err) throw err })
     user.save()
@@ -33,9 +35,53 @@ async function createUser(args) {
   }
 }
 
+async function editUser(args) {
+  try {
+    const {
+      _id,
+      username,
+      password,
+      confirm,
+      role
+    } = args.userInput; //retrieve values from arguments
+    const existingUser = await User.findOne({ username })
+    if (!existingUser) {
+      throw new Error('User already exists!')
+    }
+    if (password !== confirm) {
+      throw new Error('Passwords are inconsistent!')
+    }
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const updatedUser = {
+      username,
+      password: hashedPassword,
+      role
+    }
+
+    User.findByIdAndUpdate( 
+      { _id },
+      updatedUser,
+      {new: true},
+      (error, user) => {
+
+        if (error){
+          throw err
+        } else {
+          user.save()
+        }
+      }
+    )
+
+    return { info: 'Update Successful!' }
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function login(args) {
   try {
-    const user = await User.findOne({ email: args.email })
+    const user = await User.findOne({ username: args.username })
     if (!user) throw new Error('Account does not exist')
     const passwordIsValid = await bcrypt.compareSync(args.password, user.password)
     if (!passwordIsValid) throw new Error('Password incorrect')
@@ -60,6 +106,7 @@ async function verifyToken(args) {
 
 module.exports = {
   createUser,
+  editUser,
   login,
   verifyToken
 }
