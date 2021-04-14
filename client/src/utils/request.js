@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-function request(data = null) {
+function request(gql = null, params) {
   const url = (process.env.NODE_ENV === 'production') ? '/graphql' : 'http://localhost:5000/graphql'
 
   const promise = new Promise((resolve, reject) => {
@@ -9,7 +9,8 @@ function request(data = null) {
       method: 'post',
       responseType: 'json',
       data: {
-        query: data
+        query: gql,
+        variables: params
       }
     }
 

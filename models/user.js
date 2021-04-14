@@ -16,7 +16,8 @@ const userSchema = new Schema({
   role: {
     type: String,
     default: 'editor'
-  }
+  },
+  createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
 })
 
 module.exports = mongoose.model('User', userSchema)

@@ -1,12 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import { Typography, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { UserContext } from 'utils/sessions'
 
-import { primaryColor } from 'common/colors'
+import { appColor } from 'common/colors'
+import logo from 'common/img/logo.png'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -40,11 +41,11 @@ function LoginScreen() {
   }
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center" className={container} style={{ backgroundColor: primaryColor }}>
+    <Grid container direction="column" alignItems="center" className={container} style={{ backgroundColor: appColor }}>
+      <Box mt={20} mb={6}>
+        <img src={logo} width="300px" />
+      </Box>
       <Box className={loginBox}>
-        <Box mt={2} mb={2}>
-          <Typography variant="h5">Login</Typography>
-        </Box>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="Username"
@@ -65,7 +66,7 @@ function LoginScreen() {
             errorMessages={['This field cannot be empty']}
             fullWidth
           />
-          <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="space-between" mt={3}>
             <Button
               variant="contained"
               type="submit"

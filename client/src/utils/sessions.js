@@ -58,29 +58,31 @@ export const UserContextProvider = ({ children }) => {
 
     request(data)
       .then(res => {
-        const { message, error, user } = res.data
+        const { data, errors } = res.data
+        const { login } = data
+        
         openSnackbar(
-          message || error,
-          error ? 'error' : 'success'
+          !errors ? `Welcome ${login.username}` : errors[0].message,
+          errors ? 'error' : 'success'
         )
-        if (message) {
-          setSessionCookie({ user })
-          setUserContext({ user })
-          history.push({ pathname: '/dashboard' })
+        if (!errors) {
+          setSessionCookie({ login })
+          setUserContext({ login })
+          history.push({ pathname: '/products' })
         }
       })
   }
 
   const userValue = {
     userContext,
-    userRole: (userContext.user || {}).role,
+    userRole: (userContext.login || {}).role,
     login,
     checkLogin: () => {
-      if (userContext.user === undefined) {
+      if (userContext.login === undefined) {
         history.push({ pathname: '/' })
       } else if (history.location.pathname === '/') {
         history.push({ pathname: '/dashboard' })
-      } else if (userContext.user.role !== 'admin') {
+      } else if (userContext.login.role !== 'admin') {
         checkAdminRoute(history.location.pathname)
       }
     },

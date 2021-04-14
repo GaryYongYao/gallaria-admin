@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import {
   AppBar,
@@ -12,16 +12,17 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Toolbar,
-  Typography
+  Toolbar
 } from '@material-ui/core'
 import {
   Menu as MenuIcon
 } from '@material-ui/icons'
-import { useRoutes } from 'modules/utils'
-import { UserContext } from 'modules/utils/sessions'
+import { useRoutes } from 'utils'
+import { UserContext } from 'utils/sessions'
 import { menu } from '../constant'
 import UserDropdownMenu from '../components/UserDropdownMenu'
+
+import logo from 'common/img/logo.png'
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const DashLayout = ({ children }) => {
-  const { menuButton, title, layerOverlay, contentStyle } = useStyles()
+  const { menuButton, layerOverlay, contentStyle } = useStyles()
   const [isOpen, setIsOpen] = useState(false)
   const { history } = useRoutes()
   const { userRole, checkLogin } = useContext(UserContext)
@@ -78,7 +79,7 @@ const DashLayout = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
-            <Grid container item xs={11} alignItems="center">
+            <Grid container item xs={10} alignItems="center">
               <IconButton
                 edge="start"
                 className={menuButton}
@@ -89,12 +90,10 @@ const DashLayout = ({ children }) => {
                 <MenuIcon />
               </IconButton>
               <Hidden only="xs">
-                <Typography variant="h6" className={title}>
-                  Unique Enterprize
-                </Typography>
+                <img src={logo} height="30px" />
               </Hidden>
             </Grid>
-            <Grid container item xs={1} justify="flex-end">
+            <Grid container item xs={2} justify="flex-end">
               <UserDropdownMenu />
             </Grid>
           </Grid>
@@ -108,13 +107,13 @@ const DashLayout = ({ children }) => {
         <Box width="250px">
           <List>
             {menu.map(e => (
-              (!e.admin || (e.admin && userRole === 'Admin'))
+              (!e.admin || (e.admin && userRole === 'admin'))
               && renderListItems(e)
             ))}
           </List>
         </Box>
       </Drawer>
-      <Box bgcolor="#EAEAEA">
+      <Box bgcolor="#FFFFFF">
         <Box className={layerOverlay}>
           <Box className={contentStyle}>
             {children}

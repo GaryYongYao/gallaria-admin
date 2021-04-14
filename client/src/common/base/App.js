@@ -4,6 +4,9 @@ import theme from 'common/theme'
 import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snackbar'
 import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
+import UserRoute from './routes/users'
+import ProductsRoute from './routes/products'
+
 import './App.css'
 
 function App() {
@@ -14,6 +17,8 @@ function App() {
           <BrowserRouter>
             <UserContextProvider>
               <Route exact path="/" component={LoginScreen} />
+              <UserRoute />
+              <ProductsRoute />
             </UserContextProvider>
           </BrowserRouter>
         </div>

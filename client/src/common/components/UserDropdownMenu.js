@@ -10,8 +10,8 @@ import {
   VpnKey as PasswordIcon,
   ExpandMore as ExpandIcon
 } from '@material-ui/icons'
-import { UserContext } from 'modules/utils/sessions'
-import { useRoutes } from 'modules/utils'
+import { UserContext } from 'utils/sessions'
+import { useRoutes } from 'utils'
 
 const StyledMenu = withStyles({
   paper: {
@@ -60,7 +60,7 @@ export default function CustomizedMenus() {
         onClick={handleClick}
       >
         Welcome,&nbsp;
-        {(userContext.user || {}).user}
+        {(userContext.login || {}).username}
         &nbsp;
         <ExpandIcon />
       </Button>

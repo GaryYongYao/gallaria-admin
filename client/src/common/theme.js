@@ -35,6 +35,11 @@ const theme = createMuiTheme({
         fontSize: '1rem',
         fontWeight: 500,
         lineHeight: 1
+      },
+      root: {
+        '&.Mui-disabled': {
+          backgroundColor: '#EFEFEF',
+        }
       }
     },
     MuiFormControlLabel: {
@@ -76,7 +81,6 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        borderRadius: '10px',
         fontSize: '0.875rem',
         fontWeight: 700,
         lineHeight: 1.75,
@@ -275,6 +279,14 @@ const theme = createMuiTheme({
           },
         },
       },
+    },
+
+    MuiSelect: {
+      select: {
+        '&:focus': {
+          backgroundColor: 'transparent'
+        } 
+      }
     },
 
     MuiPopover: {
