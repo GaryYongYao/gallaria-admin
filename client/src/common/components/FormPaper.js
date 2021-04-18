@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Paper
@@ -7,7 +6,8 @@ import { styled } from '@material-ui/styles'
 
 const PaperStyled = styled(Paper)(() => ({
   padding: '35px 25px',
-  backgroundColor: '#FFFFFF'
+  backgroundColor: '#FFFFFF',
+  marginBottom: '40px'
 }))
 
 function FormPaper({ children }) {

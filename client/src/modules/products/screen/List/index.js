@@ -1,29 +1,47 @@
 import { useState, useContext, useEffect } from 'react'
 import DashboardLayout from 'common/layout/dashboardLayout'
-// import { SnackbarContext } from 'common/components/Snackbar'
+import { SnackbarContext } from 'common/components/Snackbar'
 import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
 import FloatingButton from 'common/components/FloatingButton'
 import { useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
-// import request from 'utils/request'
-import { columns, actions } from '../../constant'
+import request from 'utils/request'
+import { columns, actions, queryGetProducts, mutationDeleteProduct } from '../../constant'
 
-function SupplierListScreen() {
+function ProductListScreen() {
   const [chosen, setChosen] = useState({})
-  const [isOpen, setIsOpen] = useState(false)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  // const { openSnackbar } = useContext(SnackbarContext)
+  const { openSnackbar } = useContext(SnackbarContext)
   const { userRole } = useContext(UserContext)
-  const [products, setSuppliers] = useState([])
+  const [products, setProducts] = useState([])
   const { history } = useRoutes()
 
   useEffect(() => {
-    getSuppliers()
+    getProducts()
     // eslint-disable-next-line
   }, [])
 
-  const getSuppliers = () => {
+  const getProducts = () => {
+    request(queryGetProducts)
+      .then(res => {
+        const { getProducts, errors } = res.data.data
+        if (errors) openSnackbar(errors.message, 'error')
+        if (getProducts) setProducts(getProducts)
+      })
+      .catch(err => openSnackbar(err.message, 'error'))
+  }
+
+  const deleteCategory = () => {
+    request(mutationDeleteProduct, { id: chosen._id })
+      .then(res => {
+        const { deleteProduct } = res.data.data
+        openSnackbar(deleteProduct, 'success')
+        getProducts()
+        setChosen({})
+        setIsAlertOpen(false)
+      })
+      .catch(err => openSnackbar(err.message, 'error'))
   }
 
   return (
@@ -35,15 +53,22 @@ function SupplierListScreen() {
           data={products}
           actions={userRole === 'admin'
           && actions(
+            history,
             setChosen,
-            setIsOpen,
             setIsAlertOpen
           )}
         />
       </DashboardLayout>
-      {userRole === 'admin' && <FloatingButton onClick={() => history.push({ pathname: '/supplier-add' })} />}
+      <FloatingButton onClick={() => history.push({ pathname: '/product-add' })} />
+      <AlertConfirm
+        open={isAlertOpen}
+        title={`Delete ${chosen.name}`}
+        text={`Do you want to delete ${chosen.name}?`}
+        confirmClick={deleteCategory}
+        handleModalOpen={setIsAlertOpen}
+      />
     </>
   )
 }
 
-export default SupplierListScreen
+export default ProductListScreen

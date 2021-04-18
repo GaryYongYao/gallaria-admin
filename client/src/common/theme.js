@@ -152,7 +152,7 @@ const theme = createMuiTheme({
         fontWeight: 600,
         lineHeight: 1.6,
         letterSpacing: '0.0075em',
-        color: '#303030',
+        color: '#707070',
       },
       subtitle1: {
         fontSize: '1rem',

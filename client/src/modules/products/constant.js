@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon
@@ -9,37 +8,145 @@ export const columns = [
   {
     title: 'Name',
     field: 'name',
-    filtering: false,
+    headerStyle: { width: '15%' },
+    filtering: true,
     render: ({ name }) => startCase(name)
   },
   {
-    title: 'Contact',
-    headerStyle: { width: '5%' },
-    filtering: false,
-    render: ({ contact }) => contact
+    title: 'Code',
+    headerStyle: { width: '15%' },
+    filtering: true,
+    render: ({ code }) => code
   },
   {
-    title: 'Address',
+    title: 'Price',
+    headerStyle: { width: '5%' },
     filtering: false,
-    render: ({ address }) => address
+    render: ({ price }) => price
+  },
+  {
+    title: 'Variants',
+    headerStyle: { width: '2.5%' },
+    filtering: false,
+    render: ({ variants }) => variants.length
+  },
+  {
+    title: 'Category/Sub-Category',
+    headerStyle: { width: '30%' },
+    filtering: false,
+    render: ({ category, sub }) => `${category}/${sub}`
+  },
+  {
+    title: 'Featured',
+    headerStyle: { width: '2.5%' },
+    filtering: false,
+    render: ({ isFeature }) => isFeature ? 'Yes' : 'No'
+  },
+  {
+    title: 'Draft',
+    headerStyle: { width: '2.5%' },
+    filtering: false,
+    render: ({ isDraft }) => isDraft ? 'Yes' : 'No'
   },
 ]
 
-export const actions = (setChosen, setIsOpen, setIsAlertOpen) => [
-  {
+export const actions = ( history, setChosen, setIsAlertOpen) => [
+  rowData => ({
     icon: () => <EditIcon color="primary" />,
-    tooltip: 'Edit Supplier',
-    onClick: (e, data) => {
-      setChosen(data)
-      setIsOpen(true)
+    tooltip: 'Edit Product',
+    onClick: () => {
+      history.push({ pathname: `/product/${rowData._id}` })
     }
-  },
+  }),
   rowData => ({
     icon: () => <DeleteIcon color="error" />,
-    tooltip: 'Delete Supplier',
+    tooltip: 'Delete Product',
     onClick: () => {
       setIsAlertOpen(true)
       setChosen(rowData)
     }
   })
 ]
+
+// graphql
+export const queryGetProducts = `
+query {
+  getProducts {
+    _id
+    name
+    code
+    price
+    variants
+    category
+    sub
+    isFeature
+    isDraft
+  }
+}
+`
+
+export const queryGetProductById = `
+query getProductById($id: ID!) {
+  getProductById(_id: $id) {
+    _id
+    code
+    name
+    price
+    desc
+    variants
+    category,
+    sub
+    details {
+      title
+      info
+    }
+    tags
+    isFeature
+    forSale
+    file
+    images
+    primaryImage
+    isDraft
+    createdBy
+    updatedBy
+  }
+}
+`
+
+export const queryGetSubCategoriesOption = `
+query getSubCategoriesOption($id: ID!) {
+  getSubCategoriesOption(_id: $id)
+}
+`
+
+export const queryGetCategoriesOption = `
+  query {
+    getCategoriesOption {
+      _id
+      name
+    }
+  }
+`
+
+export const mutationCreateProduct = `
+  mutation createProduct($productInput: ProductInput!) {
+    createProduct(productInput: $productInput) {
+      _id
+      code
+      name
+      createdBy
+    }
+  }
+`
+
+export const mutationEditProduct = `
+  mutation editProduct($productUpdate: ProductUpdate!) {
+    editProduct(productUpdate: $productUpdate)
+  }
+`
+
+export const mutationDeleteProduct = `
+  mutation deleteProduct($id: ID!) {
+    deleteProduct(_id: $id)
+  }
+`

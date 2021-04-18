@@ -13,8 +13,7 @@ export const columns = [
     title: 'Username',
     headerStyle: { width: '20%' },
     field: 'username',
-    filtering: true,
-    render: ({ username }) => username
+    filtering: true
   },
   {
     title: 'Role',

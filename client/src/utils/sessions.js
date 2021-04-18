@@ -81,7 +81,7 @@ export const UserContextProvider = ({ children }) => {
       if (userContext.login === undefined) {
         history.push({ pathname: '/' })
       } else if (history.location.pathname === '/') {
-        history.push({ pathname: '/dashboard' })
+        history.push({ pathname: '/products' })
       } else if (userContext.login.role !== 'admin') {
         checkAdminRoute(history.location.pathname)
       }

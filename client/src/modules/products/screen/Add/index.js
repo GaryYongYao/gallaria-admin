@@ -1,10 +1,15 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import {
   Box,
   Button,
+  Chip,
   CircularProgress,
   Divider,
+  FormGroup,
+  FormControlLabel,
+  Grid,
   IconButton,
+  Switch,
   Typography
 } from '@material-ui/core'
 import {
@@ -13,93 +18,400 @@ import {
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DashboardLayout from 'common/layout/dashboardLayout'
 import request from 'utils/request'
+import APIRequest from 'utils/API'
 import { SnackbarContext } from 'common/components/Snackbar'
+import FileUpload from 'common/components/FileUpload'
 import FormPaper from 'common/components/FormPaper'
 import { useForm, useRoutes } from 'utils'
+import { UserContext } from 'utils/sessions'
+import { CategoriesPicker, DetailsInput, PhotosInput } from '../../components'
+import { queryGetProductById, mutationCreateProduct, mutationEditProduct } from '../../constant'
 
-function SupplierAddScreen() {
-  const { values, setText, emptyState } = useForm({
-    name: '',
-    contact: '',
-    address: ''
-  })
+const INITIAL_STATE = {
+  code: '',
+  name: '',
+  price: 0,
+  desc: '',
+  variants: [],
+  category: '',
+  sub: '',
+  details: [],
+  tags: [],
+  isFeature: false,
+  forSale: false,
+  file: '',
+  images: [],
+  primaryImage: ''
+}
+
+function ProductAddScreen() {
+  const { userContext } = useContext(UserContext)
+  const { login } = userContext
+  const { values, setText, setSwitch, setArray, setAll, emptyState } = useForm(INITIAL_STATE)
   const [posting, setPosting] = useState(false)
+  const [invalidCode, setInvalidCode] = useState(false)
   const { openSnackbar } = useContext(SnackbarContext)
-  const { history } = useRoutes()
+  const { history, params } = useRoutes()
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    request(queryGetProductById, { id: params.id })
+      .then(res => {
+        const { getProductById, errors } = res.data.data
+        if (errors) openSnackbar(errors.message, 'error')
+        if (getProductById) setAll(getProductById)
+      })
+      .catch(err => openSnackbar(err.message, 'error'))
+  }, [])
+  
+  const handleUploadFile = (file) => {
     setPosting(true)
-    request('POST', '/api/supplier', { supplier: values })
+
+    if (file) {
+      const fileFormatName = `${values.code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
+      const formData = new FormData()
+      
+      formData.append('file', file)
+      formData.append('fileName', fileFormatName)
+      formData.append('bucketFolder', 'productDoc')
+
+      APIRequest('POST', '/api/file-upload', formData)
+        .then(res => {
+          if (res.errors) {
+            openSnackbar('Upload failed!', 'error')
+          } else {
+            openSnackbar('Upload Success', 'success')
+            setText({
+              target: {
+                name: 'file',
+                value: res.data.Key
+              }
+            })
+          }
+          setPosting(false)
+        })
+    } else {
+      deleteFile()
+    }
+  }
+
+  const handleDeleteFile = () => {
+    deleteFile()
+  }
+
+  const deleteFile = () => {
+    const formData = new FormData()
+    formData.append('key', values.file)
+    setPosting(true)
+
+    APIRequest('POST', '/api/file-delete', formData)
       .then(res => {
         if (res.errors) {
-          openSnackbar('Error occurs', 'error')
-          setPosting(false)
+          openSnackbar('Deletion failed!', 'error')
         } else {
-          openSnackbar(`Supplier (${res.data.name}) Added`, 'success')
-          emptyState({
-            name: '',
-            contact: '',
-            address: ''
+          openSnackbar('Deletion Success', 'success')
+          setText({
+            target: {
+              name: 'file',
+              value: ''
+            }
           })
-          setPosting(false)
+          document.getElementById('icon-button-file').value = ''
         }
+        setPosting(false)
+      })
+  }
+
+  const handleSubmit = (isDraft) => {
+    setPosting(true)
+    const productInput = {
+      ...values,
+      price: parseFloat(values.price),
+      details: values.details.filter( detail => (detail.title && detail.info)),
+      isDraft,
+      createdBy: login._id,
+      updatedBy: login._id
+    }
+
+    if (params.id) delete productInput.createdBy
+
+    request(
+      params.id ? mutationEditProduct : mutationCreateProduct,
+      params.id ? { productUpdate: productInput } : { productInput }
+    )
+      .then(res => {
+        const { createProduct, editProduct } = res.data.data
+        const msg = (params.id) ? editProduct : `Product - ${createProduct.name} is ${params.id ? 'updated' : 'created'}!`
+
+        openSnackbar(msg, 'success')
+        if (!params.id) {
+          emptyState(INITIAL_STATE)
+          history.push({ pathname: '/products' })
+        }
+        setPosting(false)
+      })
+      .catch(err => {
+        openSnackbar(err.message, 'error')
+        setPosting(false)
       })
   }
 
   return (
     <>
       <DashboardLayout>
-        <Box mb={2}>
-          <IconButton onClick={() => history.push({ pathname: '/supplier' })}>
+        <Box mb={2} display="flex" alignItems="center">
+          <IconButton onClick={() => history.push({ pathname: '/products' })}>
             <BackIcon />
           </IconButton>
+          <Typography variant="h5">
+            {(params.id) ? 'Edit Product' : 'New Product'}
+          </Typography>
         </Box>
         <FormPaper>
-          <Box mb={2}>
-            <Typography variant="h5">New Supplier</Typography>
-          </Box>
-          <ValidatorForm onSubmit={() => handleSubmit()}>
-            <TextValidator
-              name="name"
-              label="Name"
-              variant="outlined"
-              value={values.name}
-              onChange={setText}
-              validators={['required']}
-              errorMessages={['This field cannot be empty']}
-              fullWidth
+          <ValidatorForm
+            onSubmit={() => handleSubmit(false)}
+            onKeyPress={e => (e.which === 13) && e.preventDefault()}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <Box my={2}>
+                  <Typography variant="h6">Information</Typography>
+                </Box>
+                <Grid container justify="center" spacing={4}>
+                  <Grid item xs={6}>
+                    <TextValidator
+                      error={invalidCode}
+                      helperText={invalidCode && "Please enter the product code"}
+                      name="code"
+                      label="Code"
+                      variant="outlined"
+                      value={values.code}
+                      onChange={setText}
+                      validators={['required']}
+                      errorMessages={['This field cannot be empty']}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextValidator
+                      name="price"
+                      label="Price"
+                      variant="outlined"
+                      value={values.price}
+                      type="number"
+                      onChange={setText}
+                      validators={['required']}
+                      errorMessages={['This field cannot be empty']}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <CategoriesPicker
+                  category={values.category}
+                  sub={values.sub}
+                  setText={setText}
+                />
+                <TextValidator
+                  name="name"
+                  label="Name"
+                  variant="outlined"
+                  value={values.name}
+                  onChange={setText}
+                  validators={['required']}
+                  errorMessages={['This field cannot be empty']}
+                  fullWidth
+                />
+                <TextValidator
+                  name="desc"
+                  label="Description"
+                  multiline
+                  rows={5}
+                  value={values.desc}
+                  variant="outlined"
+                  onChange={setText}
+                  validators={['required']}
+                  fullWidth
+                />
+                <Grid container spacing={4}>
+                  <Grid item xs={6}>
+                    <TextValidator
+                      name="variants"
+                      label="Variants"
+                      helperText="Enter to add variant"
+                      onKeyPress={e => {
+                        if (e.which !== 13 || e.target.value === '') return
+                        const newVariant = values.variants
+                        newVariant.push(e.target.value)
+                        setArray(newVariant, e.target.name)
+                        e.target.value = ''
+                      }}
+                      onBlur={e => {
+                        if (e.target.value === '') return
+                        const newVariant = values.variants
+                        newVariant.push(e.target.value)
+                        setArray(newVariant, e.target.name)
+                        e.target.value = ''
+                      }}
+                      variant="outlined"
+                      fullWidth
+                    />
+                    <FileUpload
+                      title="Document"
+                      accept="application/pdf"
+                      disabled={!values.code}
+                      handleDeleteFile={handleDeleteFile}
+                      handleUpload={handleUploadFile}
+                      selectedFile={values.file}
+                      preview={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(values.file)}`}
+                      helperText="Enter the product code before uploading the files"
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box>
+                      {values.variants.map((variant, index) => (
+                        <Chip
+                          key={variant}
+                          label={variant}
+                          onDelete={() => {
+                            const oldVariant = values.variants
+                            const newVariant = oldVariant.filter((old, oldIndex) => oldIndex !== index)
+                            setArray(newVariant, 'variants')
+                          }}
+                          style={{ margin: '2.5px 5px' }}
+                        />
+                      ))}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={1}> 
+                <Divider orientation="vertical" style={{ margin: 'auto' }} />
+              </Grid>
+              <Grid item xs={5}>
+                <Box my={2} display="flex" justifyContent="space-between" >
+                  <Typography variant="h6">Details</Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={posting}
+                    onClick={() => {
+                      const newDetails = values.details
+                      if (newDetails.length > 0) {
+                        if (!(newDetails[newDetails.length - 1].title && newDetails[newDetails.length - 1].info)) return
+                      }
+                      newDetails.push({ title: '', info: '' })
+                      setArray(newDetails, 'details')
+                    }}
+                  >
+                    {posting
+                      ? <CircularProgress size={14} />
+                      : 'Add Details'}
+                  </Button>
+                </Box>
+                <DetailsInput posting={posting} details={values.details} setArray={setArray} />
+              </Grid>
+            </Grid>
+            <Box my={4}>
+              <Divider />
+            </Box>
+            <PhotosInput
+              images={values.images}
+              primaryImage={values.primaryImage}
+              code={values.code}
+              posting={posting}
+              setPosting={setPosting}
+              setText={setText}
+              setArray={setArray}
+              setInvalidCode={setInvalidCode}
             />
-            <TextValidator
-              name="contact"
-              label="Contact"
-              variant="outlined"
-              value={values.contact}
-              onChange={setText}
-              validators={['required']}
-              errorMessages={['This field cannot be empty']}
-              fullWidth
-            />
-            <TextValidator
-              name="address"
-              label="Address"
-              variant="outlined"
-              multiline
-              rows={5}
-              value={values.address}
-              onChange={setText}
-              fullWidth
-            />
-            <Divider />
+            <Box my={4}>
+              <Divider />
+            </Box>
+            <Box my={2}>
+              <Typography variant="h6">Management</Typography>
+            </Box>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextValidator
+                  name="tags"
+                  label="Tags"
+                  helperText="Enter to add tag (Tags are for tagging similar products)"
+                  onKeyPress={e => {
+                    if (e.which !== 13 || e.target.value === '') return
+                    const newTag = values.tags
+                    newTag.push(e.target.value)
+                    setArray(newTag, e.target.name)
+                    e.target.value = ''
+                  }}
+                  onBlur={e => {
+                    if (e.target.value === '') return
+                    const newTag = values.tags
+                    newTag.push(e.target.value)
+                    setArray(newTag, e.target.name)
+                    e.target.value = ''
+                  }}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormGroup
+                  row
+                  style={{
+                    padding: '0 10px',
+                    margin: '8px 0px',
+                    justifyContent: 'flex-end'
+                  }}
+                >
+                  <FormControlLabel
+                    control={<Switch checked={values.isFeature} onChange={setSwitch} name="isFeature" color="primary" />}
+                    label="Feature Product"
+                    labelPlacement="start"
+                  />
+                  <FormControlLabel
+                    control={<Switch checked={values.forSale} onChange={setSwitch} name="forSale" color="primary" />}
+                    label="Allow Purchase"
+                    labelPlacement="start"
+                  />
+                </FormGroup>
+              </Grid>
+            </Grid>
+            <Box>
+              {values.tags.map((tag, index) => (
+                <Chip
+                  label={tag}
+                  onDelete={() => {
+                    const oldTag = values.tags
+                    const newTag = oldTag.filter((old, oldIndex) => oldIndex !== index)
+                    setArray(newTag, 'tags')
+                  }}
+                  style={{ margin: '2.5px 5px' }}
+                />
+              ))}
+            </Box>
+            <Box my={4}>
+              <Divider />
+            </Box>
             <Box width="100%" textAlign="right">
+              <Button
+                variant="contained"
+                onClick={() => handleSubmit(true)}
+                color="primary"
+                disabled={posting || !values.code}
+                style={{ marginRight: '10px' }}
+              >
+                {posting
+                  ? <CircularProgress size={14} />
+                  : 'Save Draft'}
+              </Button>
               <Button
                 variant="contained"
                 type="submit"
                 color="primary"
-                disabled={posting}
+                disabled={posting || !values.code}
               >
                 {posting
                   ? <CircularProgress size={14} />
-                  : 'Save'}
+                  : 'Publish'}
               </Button>
             </Box>
           </ValidatorForm>
@@ -109,4 +421,4 @@ function SupplierAddScreen() {
   )
 }
 
-export default SupplierAddScreen
+export default ProductAddScreen

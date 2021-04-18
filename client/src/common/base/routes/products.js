@@ -6,6 +6,7 @@ function ProductsRoute() {
     <>
       <Route exact path="/products" component={ProductListScreen} />
       <Route exact path="/product-add" component={ProductAddScreen} />
+      <Route exact path="/product/:id" component={ProductAddScreen} />
     </>
   )
 }

@@ -39,7 +39,7 @@ const useForm = initialValue => {
         [name]: value
       })
     },
-    addToArray: (value, name) => {
+    setArray: (value, name) => {
       setValues({
         ...values,
         [name]: value

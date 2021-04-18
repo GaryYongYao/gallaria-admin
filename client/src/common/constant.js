@@ -1,5 +1,6 @@
 import {
-  FormatListBulleted as FormatListBulletedIcon,
+  ViewList as ProductsIcon,
+  List as CategoryIcon,
   People as UserIcon
 } from '@material-ui/icons'
 
@@ -13,8 +14,9 @@ export const options = {
 
 export const menu = [
   { text: 'Functions' },
-  { icon: <FormatListBulletedIcon />, text: 'Products', link: '/products' },
+  { icon: <ProductsIcon />, text: 'Manage Products', link: '/products' },
   { divider: true, text: 'divider3', admin: true },
   { text: 'Management', admin: true },
-  { icon: <UserIcon />, text: 'Users', link: '/users', admin: true }
+  { icon: <CategoryIcon />, text: 'Manage Categories', link: '/categories', admin: true },
+  { icon: <UserIcon />, text: 'Manage Users', link: '/users', admin: true }
 ]

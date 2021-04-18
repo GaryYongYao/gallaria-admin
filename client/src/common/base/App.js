@@ -6,6 +6,7 @@ import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
 import UserRoute from './routes/users'
 import ProductsRoute from './routes/products'
+import CategoriesRoute from './routes/categories'
 
 import './App.css'
 
@@ -19,6 +20,7 @@ function App() {
               <Route exact path="/" component={LoginScreen} />
               <UserRoute />
               <ProductsRoute />
+              <CategoriesRoute />
             </UserContextProvider>
           </BrowserRouter>
         </div>

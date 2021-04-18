@@ -35,6 +35,7 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
   next()
 })
+require('./utils/fileUpload')(app)
 
 if (process.env.NODE_ENV === 'production') {
   // express serve up production asset
@@ -50,6 +51,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.set('useCreateIndex', true)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
