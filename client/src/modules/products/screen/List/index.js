@@ -51,8 +51,7 @@ function ProductListScreen() {
           title="Products"
           columns={columns}
           data={products}
-          actions={userRole === 'admin'
-          && actions(
+          actions={actions(
             history,
             setChosen,
             setIsAlertOpen

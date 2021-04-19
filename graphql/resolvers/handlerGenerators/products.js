@@ -126,16 +126,19 @@ async function deleteProduct(args) {
   try {
     const product = await Products.findOne({ _id: args._id })
     if (!product) throw new Error('Product not found!')
-    await product.images.forEach(async (image) => {
-      try {
-        await deleteFile(image)
-        return
-      }
-      catch(err) {
-        throw err
-      }
-    })
-    await deleteFile(product.file)
+    if (product.images.length > 0) {
+      await product.images.forEach(async (image) => {
+        console.log(image)
+        try {
+          await deleteFile(image)
+          return
+        }
+        catch(err) {
+          throw err
+        }
+      })
+    }
+    if (product.file) await deleteFile(product.file)
     await Products.findByIdAndRemove(args._id)
 
     return 'Delete Successful!'
