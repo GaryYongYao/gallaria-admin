@@ -250,7 +250,7 @@ function ProductAddScreen() {
                     <TextValidator
                       name="variants"
                       label="Variants"
-                      helperText="Enter to add variant"
+                      helperText="Press Enter to add variant"
                       onKeyPress={e => {
                         if (e.which !== 13 || e.target.value === '') return
                         const newVariant = values.variants
@@ -272,6 +272,7 @@ function ProductAddScreen() {
                       title="Document"
                       accept="application/pdf"
                       disabled={!values.code || invalidCode}
+                      posting={posting}
                       handleDeleteFile={handleDeleteFile}
                       handleUpload={handleUploadFile}
                       selectedFile={values.file}
@@ -348,7 +349,7 @@ function ProductAddScreen() {
                 <TextValidator
                   name="tags"
                   label="Tags"
-                  helperText="Enter to add tag (Tags are for tagging similar products)"
+                  helperText="Press Enter to add tag (Tags are for tagging similar products, and multiple tags are allowed)"
                   onKeyPress={e => {
                     if (e.which !== 13 || e.target.value === '') return
                     const newTag = values.tags

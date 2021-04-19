@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   FormControl,
   FormHelperText,
   IconButton,
@@ -16,6 +17,7 @@ import {
 const FileUpload = ({
   title,
   disabled,
+  posting,
   accept,
   handleDeleteFile,
   handleUpload,
@@ -48,8 +50,15 @@ const FileUpload = ({
             <InputAdornment position="end" style={{ marginLeft: 0 }}>
               <label htmlFor="icon-button-file">
                 <IconButton disabled={disabled} color="primary" aria-label="upload Agreement" component="span" style={{ padding: 0 }}>
-                  {accept === 'application/pdf' && <DocIcon />}
-                  {accept === 'image/*' && <PhotoCameraIcon />}
+                  {!posting && (
+                    <>
+                      {accept === 'application/pdf' && <DocIcon />}
+                      {accept === 'image/*' && <PhotoCameraIcon />}
+                    </>
+                  )}
+                  {posting && (
+                    <CircularProgress size={14} />
+                  )}
                 </IconButton>
               </label>
             </InputAdornment>
@@ -68,7 +77,10 @@ const FileUpload = ({
               )}
               <InputAdornment position="end">
                 <IconButton onClick={handleDeleteFile}>
-                  <ClearIcon color="error" />
+                  {posting ? <CircularProgress size={14} />
+                    : <ClearIcon color="error" />
+                  }
+                  
                 </IconButton>
               </InputAdornment>
             </>

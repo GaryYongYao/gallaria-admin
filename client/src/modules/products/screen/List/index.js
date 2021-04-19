@@ -5,7 +5,6 @@ import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
 import FloatingButton from 'common/components/FloatingButton'
 import { useRoutes } from 'utils'
-import { UserContext } from 'utils/sessions'
 import request from 'utils/request'
 import { columns, actions, queryGetProducts, mutationDeleteProduct } from '../../constant'
 
@@ -13,7 +12,6 @@ function ProductListScreen() {
   const [chosen, setChosen] = useState({})
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const { openSnackbar } = useContext(SnackbarContext)
-  const { userRole } = useContext(UserContext)
   const [products, setProducts] = useState([])
   const { history } = useRoutes()
 
