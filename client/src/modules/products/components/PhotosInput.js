@@ -14,7 +14,7 @@ import {
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, primaryImage, code, posting, setPosting, setText, setArray }) {
+function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPosting, setText, setArray }) {
   const { openSnackbar } = useContext(SnackbarContext)
   const [selected, setSelected] = useState(primaryImage ? primaryImage : '')
 
@@ -99,13 +99,13 @@ function PhotoInputs({ images, primaryImage, code, posting, setPosting, setText,
         accept="image/*"
         id="icon-button-photos"
         type="file"
-        disabled={posting || !code && images.length > 9}
+        disabled={posting || !code && images.length > 9 || invalidCode}
         onChange={e => handleUploadImage(e.target.files[0])}
         style={{ display: 'none' }}
       />
       <label htmlFor="icon-button-photos">
         <Box
-          border={`1px solid ${(code && !posting && images.length < 10) ? '#565656' : '#EFEFEF'}`}
+          border={`1px solid ${(code && !posting && images.length < 10 && !invalidCode) ? '#565656' : '#EFEFEF'}`}
           borderRadius="20px"
           bgcolor="#FFFFFF"
           height="120px"
@@ -113,8 +113,8 @@ function PhotoInputs({ images, primaryImage, code, posting, setPosting, setText,
           display="flex"
           justifyContent="center"
           alignItems="center"
-          style={{ cursor: (code && !posting && images.length < 10) ? 'pointer' : 'no-drop' }}
-          color={(code && !posting && images.length < 10) ? '#565656' : '#EFEFEF'}
+          style={{ cursor: (code && !posting && images.length < 10 && !invalidCode) ? 'pointer' : 'no-drop' }}
+          color={(code && !posting && images.length < 10 && !invalidCode) ? '#565656' : '#EFEFEF'}
           mt={3}
         >
           <AddIcon />

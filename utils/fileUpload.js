@@ -1,7 +1,4 @@
 const AWS = require('aws-sdk')
-const fileType = require('file-type')
-const multiparty = require('multiparty')
-const fs = require('fs')
 const keys = require('../keys')
 
 AWS.config.update({
@@ -21,47 +18,72 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise()
 }
 
-// Define POST route
-module.exports = app => {
-  app.post('/api/file-upload', (request, response) => {
-    const form = new multiparty.Form()
-    form.parse(request, async (error, fields, files) => {
-      if (error) {
-        return response.status(500).send(error)
-      }
-      try {
-        const path = files.file[0].path
-        const buffer = fs.readFileSync(path)
-        const type = await fileType.fromBuffer(buffer)
-        const fileName = `${fields.bucketFolder}/${fields.fileName}`
-        const data = await uploadFile(buffer, fileName, type)
-        return response.status(200).send(data)
-      } catch (err) {
-        return response.status(500).send(err)
-      }
-    })
-  })
+const deleteFile = (Key) => {
+  const params = {
+    Bucket: keys.s3Bucket,
+    Key
+  }
+  return s3.deleteObject(params).promise()
+}
 
-  const deleteFile = (Key) => {
-    const params = {
-      Bucket: keys.s3Bucket,
-      Key
+const renameFile = async (oldKey, renameKey) => {
+  let value
+  if (renameKey) {
+    const renameParams = {
+      Bucket: keys.s3Bucket, 
+      CopySource: `${keys.s3Bucket}/${oldKey}`, 
+      Key: renameKey
     }
-    return s3.deleteObject(params).promise()
+    const deleteParams = {
+      Bucket: keys.s3Bucket,
+      Key: oldKey
+    }
+    
+    value = await s3.copyObject(renameParams).promise()
+    .then(async () => {
+      const newKey = await s3.deleteObject(deleteParams).promise()
+      .then(() => renameKey)
+      return newKey
+    })
   }
   
-  app.post('/api/file-delete', (request, response) => {
-    const form = new multiparty.Form()
-    form.parse(request, async (error, fields, files) => {
-      if (error) {
-        return response.status(500).send(error)
+  return value
+}
+
+const renameFiles = async (files, oldCode, newCode) => {
+  let value
+  
+  if (files) {
+    value = await files.map(async (file) => {
+      const renameParams = {
+        ACL: 'public-read',
+        Bucket: keys.s3Bucket,
+        CopySource: `${keys.s3Bucket}/${file}`, 
+        Key: file.replace(oldCode, newCode)
       }
-      try {
-        const data = await deleteFile(fields.key[0])
-        return response.status(200).send(data)
-      } catch (err) {
-        return response.status(500).send(err)
+      const deleteParams = {
+        Bucket: keys.s3Bucket,
+        Key: file
       }
+    
+      const newFileKey = await s3.copyObject(renameParams).promise()
+      .then(async () => {
+        const newKey = await s3.deleteObject(deleteParams).promise()
+        .then(() => file.replace(oldCode, newCode))
+        return newKey
+      })
+
+      return newFileKey
     })
-  })
+  }
+  
+  return Promise.all(value)
+}
+
+// Define POST route
+module.exports = {
+  uploadFile,
+  deleteFile,
+  renameFile,
+  renameFiles
 }

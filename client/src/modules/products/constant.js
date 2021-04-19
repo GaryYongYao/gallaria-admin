@@ -85,6 +85,12 @@ query {
 }
 `
 
+export const queryCheckProductCode = `
+query checkProductCode($id: ID, $code: String!) {
+  checkProductCode(_id: $id, code:$code)
+}
+`
+
 export const queryGetProductById = `
 query getProductById($id: ID!) {
   getProductById(_id: $id) {

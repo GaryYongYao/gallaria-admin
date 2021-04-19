@@ -1,3 +1,4 @@
+const { renameFile, renameFiles, deleteFile } = require('../../../utils/fileUpload')
 const Products = require('../../../models/products')
 
 async function getProducts() {
@@ -7,10 +8,22 @@ async function getProducts() {
 
     return products.map(product => ({
       ...product._doc,
-      category: product.category.name,
+      category: (product.category || {}).name,
       createdBy: product.createdBy.username,
       updatedBy: product.updatedBy.username
     }))
+  }
+  catch(err) {
+    throw err
+  }
+}
+
+async function checkProductCode(args) {
+  const { _id, code } = args
+  try {
+    const product = await Products.findOne({ code })
+    if (!product || product._id === _id) return false
+    return true
   }
   catch(err) {
     throw err
@@ -24,7 +37,7 @@ async function getProductById(args) {
 
     return {
       ...product._doc,
-      category: product.category.id,
+      category: (product.category || {}).id,
       createdBy: product.createdBy.username,
       updatedBy: product.updatedBy.username
     }
@@ -70,15 +83,27 @@ async function createProduct(args) {
 
 async function editProduct(args) {
   try {
-    const { productUpdate } = args; //retrieve values from arguments
-    let existing = await Products.findOne({ _id: productUpdate._id })
+    let productNew = args.productUpdate //retrieve values from arguments
+    let existing = await Products.findOne({ _id: productNew._id })
     if (!existing) {
       throw new Error('Product not exists!')
     }
+    if (existing.code !== productNew.code) {
+      const file = await renameFile(productNew.file, productNew.file.replace(existing.code, productNew.code))
+      const images = await renameFiles(productNew.images, existing.code, productNew.code)
+      const primaryImage = productNew.primaryImage.replace(existing.code, productNew.code)
+      
+      productNew = {
+        ...productNew,
+        images,
+        primaryImage: primaryImage ? primaryImage : '',
+        file: file ? file : ''
+      }
+    }
 
     Products.findByIdAndUpdate( 
-      { _id: productUpdate._id  },
-      { ...productUpdate },
+      { _id: productNew._id  },
+      { ...productNew },
       {new: true},
       (error, product) => {
 
@@ -99,14 +124,19 @@ async function editProduct(args) {
 
 async function deleteProduct(args) {
   try {
-    Products.findByIdAndRemove( 
-      args._id,
-      (error, product) => {
-        if (error){
-          throw error
-        }
+    const product = await Products.findOne({ _id: args._id })
+    if (!product) throw new Error('Product not found!')
+    await product.images.forEach(async (image) => {
+      try {
+        await deleteFile(image)
+        return
       }
-    )
+      catch(err) {
+        throw err
+      }
+    })
+    await deleteFile(product.file)
+    await Products.findByIdAndRemove(args._id)
 
     return 'Delete Successful!'
   }
@@ -117,6 +147,7 @@ async function deleteProduct(args) {
 
 module.exports = {
   getProducts,
+  checkProductCode,
   getProductById,
   getProductByCode,
   createProduct,

@@ -25,7 +25,7 @@ import FormPaper from 'common/components/FormPaper'
 import { useForm, useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
 import { CategoriesPicker, DetailsInput, PhotosInput } from '../../components'
-import { queryGetProductById, mutationCreateProduct, mutationEditProduct } from '../../constant'
+import { queryCheckProductCode, queryGetProductById, mutationCreateProduct, mutationEditProduct } from '../../constant'
 
 const INITIAL_STATE = {
   code: '',
@@ -33,7 +33,7 @@ const INITIAL_STATE = {
   price: 0,
   desc: '',
   variants: [],
-  category: '',
+  category: null,
   sub: '',
   details: [],
   tags: [],
@@ -49,18 +49,20 @@ function ProductAddScreen() {
   const { login } = userContext
   const { values, setText, setSwitch, setArray, setAll, emptyState } = useForm(INITIAL_STATE)
   const [posting, setPosting] = useState(false)
-  const [invalidCode, setInvalidCode] = useState(false)
+  const [invalidCode, setInvalidCode] = useState(null)
   const { openSnackbar } = useContext(SnackbarContext)
   const { history, params } = useRoutes()
 
   useEffect(() => {
-    request(queryGetProductById, { id: params.id })
-      .then(res => {
-        const { getProductById, errors } = res.data.data
-        if (errors) openSnackbar(errors.message, 'error')
-        if (getProductById) setAll(getProductById)
-      })
-      .catch(err => openSnackbar(err.message, 'error'))
+    if (params.id) {
+      request(queryGetProductById, { id: params.id })
+        .then(res => {
+          const { getProductById, errors } = res.data.data
+          if (errors) openSnackbar(errors.message, 'error')
+          if (getProductById) setAll(getProductById)
+        })
+        .catch(err => openSnackbar(err.message, 'error'))
+    }
   }, [])
   
   const handleUploadFile = (file) => {
@@ -118,6 +120,17 @@ function ProductAddScreen() {
           document.getElementById('icon-button-file').value = ''
         }
         setPosting(false)
+      })
+  }
+
+  const checkCodeAvailability = () => {
+    request(queryCheckProductCode, { id: params.id, code: values.code })
+      .then(res => {
+        const { checkProductCode } = res.data.data
+        setInvalidCode(checkProductCode)
+      })
+      .catch(err => {
+        openSnackbar(err.message, 'error')
       })
   }
 
@@ -180,7 +193,8 @@ function ProductAddScreen() {
                   <Grid item xs={6}>
                     <TextValidator
                       error={invalidCode}
-                      helperText={invalidCode && "Please enter the product code"}
+                      helperText={(invalidCode) ? 'Code Existed' : invalidCode !== null ? 'Code Available' : ''}
+                      onBlur={checkCodeAvailability}
                       name="code"
                       label="Code"
                       variant="outlined"
@@ -257,7 +271,7 @@ function ProductAddScreen() {
                     <FileUpload
                       title="Document"
                       accept="application/pdf"
-                      disabled={!values.code}
+                      disabled={!values.code || invalidCode}
                       handleDeleteFile={handleDeleteFile}
                       handleUpload={handleUploadFile}
                       selectedFile={values.file}
@@ -318,10 +332,10 @@ function ProductAddScreen() {
               primaryImage={values.primaryImage}
               code={values.code}
               posting={posting}
+              invalidCode={invalidCode}
               setPosting={setPosting}
               setText={setText}
               setArray={setArray}
-              setInvalidCode={setInvalidCode}
             />
             <Box my={4}>
               <Divider />

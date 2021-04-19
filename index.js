@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
   next()
 })
-require('./utils/fileUpload')(app)
+require('./utils/fileUploadRoute')(app)
 
 if (process.env.NODE_ENV === 'production') {
   // express serve up production asset
