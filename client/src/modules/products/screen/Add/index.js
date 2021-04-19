@@ -5,15 +5,21 @@ import {
   Chip,
   CircularProgress,
   Divider,
-  FormGroup,
+  FormControl,
   FormControlLabel,
+  FormGroup,
   Grid,
   IconButton,
+  InputLabel,
+  InputAdornment,
+  OutlinedInput,
   Switch,
+  Tooltip,
   Typography
 } from '@material-ui/core'
 import {
-  ArrowBackIos as BackIcon
+  ArrowBackIos as BackIcon,
+  Help as InfoIcon
 } from '@material-ui/icons'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DashboardLayout from 'common/layout/dashboardLayout'
@@ -247,27 +253,35 @@ function ProductAddScreen() {
                 />
                 <Grid container spacing={4}>
                   <Grid item xs={6}>
-                    <TextValidator
-                      name="variants"
-                      label="Variants"
-                      helperText="Press Enter to add variant"
-                      onKeyPress={e => {
-                        if (e.which !== 13 || e.target.value === '') return
-                        const newVariant = values.variants
-                        newVariant.push(e.target.value)
-                        setArray(newVariant, e.target.name)
-                        e.target.value = ''
-                      }}
-                      onBlur={e => {
-                        if (e.target.value === '') return
-                        const newVariant = values.variants
-                        newVariant.push(e.target.value)
-                        setArray(newVariant, e.target.name)
-                        e.target.value = ''
-                      }}
-                      variant="outlined"
-                      fullWidth
-                    />
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel>Variants</InputLabel>
+                      <OutlinedInput
+                        name="variants"
+                        labelWidth={60}
+                        onKeyPress={e => {
+                          if (e.which !== 13 || e.target.value === '') return
+                          const newVariant = values.variants
+                          newVariant.push(e.target.value)
+                          setArray(newVariant, e.target.name)
+                          e.target.value = ''
+                        }}
+                        onBlur={e => {
+                          if (e.target.value === '') return
+                          const newVariant = values.variants
+                          newVariant.push(e.target.value)
+                          setArray(newVariant, e.target.name)
+                          e.target.value = ''
+                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <Tooltip title="Press Enter to add variant" aria-label="add">
+                              <InfoIcon color="primary" />
+                            </Tooltip>
+                          </InputAdornment>
+                        }
+                        fullWidth
+                      />
+                    </FormControl>
                     <FileUpload
                       title="Document"
                       accept="application/pdf"
@@ -346,27 +360,35 @@ function ProductAddScreen() {
             </Box>
             <Grid container spacing={3}>
               <Grid item xs={6}>
-                <TextValidator
-                  name="tags"
-                  label="Tags"
-                  helperText="Press Enter to add tag (Tags are for tagging similar products, and multiple tags are allowed)"
-                  onKeyPress={e => {
-                    if (e.which !== 13 || e.target.value === '') return
-                    const newTag = values.tags
-                    newTag.push(e.target.value)
-                    setArray(newTag, e.target.name)
-                    e.target.value = ''
-                  }}
-                  onBlur={e => {
-                    if (e.target.value === '') return
-                    const newTag = values.tags
-                    newTag.push(e.target.value)
-                    setArray(newTag, e.target.name)
-                    e.target.value = ''
-                  }}
-                  variant="outlined"
-                  fullWidth
-                />
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel>Tags</InputLabel>
+                  <OutlinedInput
+                    name="tags"
+                    labelWidth={60}
+                    onKeyPress={e => {
+                      if (e.which !== 13 || e.target.value === '') return
+                      const newTag = values.tags
+                      newTag.push(e.target.value)
+                      setArray(newTag, e.target.name)
+                      e.target.value = ''
+                    }}
+                    onBlur={e => {
+                      if (e.target.value === '') return
+                      const newTag = values.tags
+                      newTag.push(e.target.value)
+                      setArray(newTag, e.target.name)
+                      e.target.value = ''
+                    }}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <Tooltip title="Press Enter to add tag (Tags are for tagging similar products, and multiple tags are allowed)" aria-label="add">
+                          <InfoIcon color="primary" />
+                        </Tooltip>
+                      </InputAdornment>
+                    }
+                    fullWidth
+                  />
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <FormGroup
