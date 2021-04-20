@@ -53,7 +53,7 @@ async function getProductByCode(args) {
     if (!product) throw new Error('Category not found')
 
     return {
-      ...product,
+      ...product._doc,
       category: product.category.name,
     }
   }
