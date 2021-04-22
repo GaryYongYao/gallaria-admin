@@ -14,4 +14,8 @@ function twoDigit(num) {
   return (num < 10) ? `0${num}` : num
 }
 
+export const mediaBaseURL = (window.location.hostname === 'gallaria-admin-prod.herokuapp.com')
+  ? 'https://gallaria-prod-storage.s3-ap-southeast-2.amazonaws.com/'
+  : 'https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/'
+
 export * from './customHooks'

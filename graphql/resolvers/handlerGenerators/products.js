@@ -69,6 +69,7 @@ async function createProduct(args) {
     if (existing) {
       throw new Error('Product already exists!')
     }
+
     const product = new Products({
       ...args.productInput
     }, (err) => { if (err) throw err })
@@ -92,12 +93,14 @@ async function editProduct(args) {
       const file = await renameFile(productNew.file, productNew.file.replace(existing.code, productNew.code))
       const images = await renameFiles(productNew.images, existing.code, productNew.code)
       const primaryImage = productNew.primaryImage.replace(existing.code, productNew.code)
+      const features = await renameFiles(productNew.features, existing.code, productNew.code)
       
       productNew = {
         ...productNew,
         images,
         primaryImage: primaryImage ? primaryImage : '',
-        file: file ? file : ''
+        file: file ? file : '',
+        features
       }
     }
 
@@ -128,9 +131,19 @@ async function deleteProduct(args) {
     if (!product) throw new Error('Product not found!')
     if (product.images.length > 0) {
       await product.images.forEach(async (image) => {
-        console.log(image)
         try {
           await deleteFile(image)
+          return
+        }
+        catch(err) {
+          throw err
+        }
+      })
+    }
+    if (product.features.length > 0) {
+      await product.features.forEach(async (feature) => {
+        try {
+          await deleteFile(feature)
           return
         }
         catch(err) {

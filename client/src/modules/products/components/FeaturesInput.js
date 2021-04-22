@@ -1,8 +1,6 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   Grid,
   IconButton,
   Typography
@@ -15,41 +13,16 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPosting, setText, setArray }) {
+function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray }) {
   const { openSnackbar } = useContext(SnackbarContext)
-  const [selected, setSelected] = useState(primaryImage ? primaryImage : '')
-
-  useEffect(() => {
-    if(!primaryImage || (!(images.includes(primaryImage)) && images.length > 0)) {
-      setText({
-        target: {
-          name: 'primaryImage',
-          value: images[0]
-        }
-      })
-    } else if (images.length < 1 && primaryImage) {
-      setText({
-        target: {
-          name: 'primaryImage',
-          value: ''
-        }
-      })
-    }
-  }, [JSON.stringify(images)])
-
-  useEffect(() => {
-    if(!selected) {
-      setSelected(primaryImage)
-    }
-  }, [primaryImage])
 
   const handleUploadImage = (file) => {
-    /* const newImages = images
+    const newImages = images
     newImages.push(file)
-    setArray(newImages, 'images') */
+    setArray(newImages, 'images')
 
 
-    setPosting(true)
+    /* setPosting(true)
 
     if (file) {
       const fileFormatName = `${code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
@@ -74,7 +47,7 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
           }
           setPosting(false)
         })
-    }
+    } */
   }
 
   const deleteFile = (key, i) => {
@@ -196,27 +169,6 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
             </Box>
             <AddPhotoButton />
           </Grid>
-          {selected && (
-            <Grid item xs={4}>
-              <img width="100%" src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}`} />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={primaryImage === selected}
-                    onChange={() => {
-                      setText({
-                        target: {
-                          name: 'primaryImage',
-                          value: selected
-                        }
-                      })
-                    }}
-                  />
-                }
-                label="Make Cover Photo"
-              />
-            </Grid>
-          )}
         </Grid>
       )}
     </Box>

@@ -23,6 +23,7 @@ const productsSchema = new Schema({
   file: String,
   images: [String],
   primaryImage: String,
+  features: [String],
   isDraft: Boolean,
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId , ref: 'User' }
