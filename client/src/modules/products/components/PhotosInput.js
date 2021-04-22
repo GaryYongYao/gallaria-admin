@@ -105,7 +105,7 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
         accept="image/*"
         id="icon-button-photos"
         type="file"
-        disabled={posting || !code && images.length > 9 || invalidCode}
+        disabled={posting || !code || images.length > 9 || invalidCode}
         onChange={e => handleUploadImage(e.target.files[0])}
         style={{ display: 'none' }}
       />

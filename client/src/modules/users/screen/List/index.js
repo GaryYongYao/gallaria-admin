@@ -3,8 +3,6 @@ import DashboardLayout from 'common/layout/dashboardLayout'
 import { SnackbarContext } from 'common/components/Snackbar'
 import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
-import FloatingButton from 'common/components/FloatingButton'
-import { useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
 import request from 'utils/request'
 import { EditDrawer } from '../../components'
@@ -18,7 +16,6 @@ function UserListScreen() {
   const { userContext } = useContext(UserContext)
   const { login } = userContext
   const [users, setUsers] = useState([])
-  const { history } = useRoutes()
 
   useEffect(() => {
     getUsers()
@@ -99,12 +96,12 @@ function UserListScreen() {
       <DashboardLayout>
         <CustomTable
           title="Users"
+          link="/users-add"
           columns={columns}
           data={users}
           actions={actions(setChosen, setIsOpen, setIsAlertOpen, login._id)}
         />
       </DashboardLayout>
-      <FloatingButton onClick={() => history.push({ pathname: '/users-add' })} />
       <EditDrawer
         chosen={chosen}
         isOpen={isOpen}

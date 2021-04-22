@@ -13,16 +13,16 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray }) {
+function FeaturesInput({ features, code, invalidCode, posting, setPosting, setArray }) {
   const { openSnackbar } = useContext(SnackbarContext)
 
   const handleUploadImage = (file) => {
-    const newImages = images
+    /* const newImages = features
     newImages.push(file)
-    setArray(newImages, 'images')
+    setArray(newImages, 'features') */
 
 
-    /* setPosting(true)
+    setPosting(true)
 
     if (file) {
       const fileFormatName = `${code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
@@ -30,24 +30,21 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
       
       formData.append('file', file)
       formData.append('fileName', fileFormatName)
-      formData.append('bucketFolder', 'productImg')
+      formData.append('bucketFolder', 'productFeature')
 
       APIRequest('POST', '/api/file-upload', formData)
         .then(res => {
           if (res.errors) {
             openSnackbar('Upload failed!', 'error')
           } else {
-            if (images < 1) {
-              setSelected(res.data.Key)
-            }
             openSnackbar('Upload Success', 'success')
-            const newImages = images
-            newImages.push(res.data.Key)
-            setArray(newImages, 'images')
+            const newFeatures = features
+            newFeatures.push(res.data.Key)
+            setArray(newFeatures, 'features')
           }
           setPosting(false)
         })
-    } */
+    }
   }
 
   const deleteFile = (key, i) => {
@@ -61,10 +58,9 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
           openSnackbar('Deletion failed!', 'error')
         } else {
           openSnackbar('Deletion Success', 'success')
-          const newImages = images
-          newImages.splice(i, 1)
-          if(selected === key && images.length > 1) setSelected(newImages[0])
-          setArray(newImages, 'images')
+          const newFeatures = features
+          newFeatures.splice(i, 1)
+          setArray(newFeatures, 'features')
           document.getElementById('icon-button-file').value = ''
         }
         setPosting(false)
@@ -76,15 +72,15 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
     <>
       <input
         accept="image/*"
-        id="icon-button-photos"
+        id="icon-button-feature"
         type="file"
-        disabled={posting || !code && images.length > 9 || invalidCode}
+        disabled={posting || !code || features.length > 9 || invalidCode}
         onChange={e => handleUploadImage(e.target.files[0])}
         style={{ display: 'none' }}
       />
-      <label htmlFor="icon-button-photos">
+      <label htmlFor="icon-button-feature">
         <Box
-          border={`1px solid ${(code && !posting && images.length < 10 && !invalidCode) ? '#565656' : '#EFEFEF'}`}
+          border={`1px solid ${(code && !posting && features.length < 8 && !invalidCode) ? '#565656' : '#EFEFEF'}`}
           borderRadius="20px"
           bgcolor="#FFFFFF"
           height="120px"
@@ -92,8 +88,8 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
           display="flex"
           justifyContent="center"
           alignItems="center"
-          style={{ cursor: (code && !posting && images.length < 10 && !invalidCode) ? 'pointer' : 'no-drop' }}
-          color={(code && !posting && images.length < 10 && !invalidCode) ? '#565656' : '#EFEFEF'}
+          style={{ cursor: (code && !posting && features.length < 8 && !invalidCode) ? 'pointer' : 'no-drop' }}
+          color={(code && !posting && features.length < 8 && !invalidCode) ? '#565656' : '#EFEFEF'}
           mt={3}
         >
           <AddIcon />
@@ -104,11 +100,11 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
 
   return (
     <Box>
-      <Typography variant="h6">
-        Photos
-        <Typography variant="caption"> (Maximum 10 photos)</Typography>
+      <Typography variant="h6" style={{ marginBottom: '10px' }}>
+        Features
+        <Typography variant="caption"> (Maximum 8 photos)</Typography>
       </Typography>
-      {images.length < 1 && (
+      {features.length < 1 && (
         <Box
           style={{
             textAlign: 'center',
@@ -123,51 +119,65 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
           <AddPhotoButton />
         </Box>
       )}
-      {images.length > 0 && (
+      {features.length > 0 && (
         <Grid container spacing={2}>
-          <Grid
-            item
-            xs={8}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Box mt={2} width="100%" display="flex" flexWrap="wrap">
-              {images.map((image, i) => (
-                <div
-                  key={image}
-                  onClick={() => setSelected(image)}
+          {features.map((feature, i) => (
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '10px'
+              }}
+            >
+              <div
+                key={feature}
+                style={{
+                  position: 'relative',
+                  height: '300px',
+                  width: '100%',
+                  backgroundPosition: 'center',
+                  backgroundImage: (typeof feature !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(feature)})` : `url(${URL.createObjectURL(feature)})`,
+                  cursor: 'pointer'
+                }}
+              >
+                <IconButton
+                  onClick={() => deleteFile(feature, i)}
+                  aria-label={`Delete`}
                   style={{
-                    border: selected === image ? '1px solid #000' : 0,
-                    position: 'relative',
-                    height: '200px',
-                    width: '180px',
-                    margin: '7.5px',
-                    backgroundPosition: 'center',
-                    backgroundImage: (typeof image !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(image)})` : `url(${URL.createObjectURL(image)})`,
-                    cursor: 'pointer'
+                    padding: 0,
+                    position: 'absolute',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)'
                   }}
                 >
-                  <IconButton
-                    onClick={() => deleteFile(image, i)}
-                    aria-label={`Delete`}
-                    style={{
-                      padding: 0,
-                      position: 'absolute',
-                      bottom: 0,
-                      left: '50%',
-                      transform: 'translateX(-50%)'
-                    }}
-                  >
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </div>
-              ))}
-            </Box>
-            <AddPhotoButton />
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </div>
+            </Grid>
+          ))}
+          <Grid
+            item
+            xs={6}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                height: '300px',
+                width: '100%',
+                cursor: 'pointer'
+              }}
+            >
+              <AddPhotoButton />
+            </div>
           </Grid>
         </Grid>
       )}
@@ -175,4 +185,4 @@ function PhotoInputs({ images, code, invalidCode, posting, setPosting, setArray 
   )
 }
 
-export default PhotoInputs
+export default FeaturesInput

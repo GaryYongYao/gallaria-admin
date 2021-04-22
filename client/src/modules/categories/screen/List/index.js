@@ -3,8 +3,6 @@ import DashboardLayout from 'common/layout/dashboardLayout'
 import { SnackbarContext } from 'common/components/Snackbar'
 import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
-import FloatingButton from 'common/components/FloatingButton'
-import { useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
 import request from 'utils/request'
 import { EditDrawer } from '../../components'
@@ -21,7 +19,6 @@ function CategoryListScreen() {
   const { userContext } = useContext(UserContext)
   const { login } = userContext
   const [categories, setCategories] = useState([])
-  const { history } = useRoutes()
 
   useEffect(() => {
     getCategories()
@@ -121,12 +118,12 @@ function CategoryListScreen() {
       <DashboardLayout>
         <CustomTable
           title="Categories"
+          link="/categories-add"
           columns={columns}
           data={categories}
           actions={actions(setChosen, setIsOpen, setIsAlertOpen, login._id)}
         />
       </DashboardLayout>
-      <FloatingButton onClick={() => history.push({ pathname: '/categories-add' })} />
       <EditDrawer
         chosen={chosen}
         isOpen={isOpen}

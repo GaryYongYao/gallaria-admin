@@ -28,9 +28,9 @@ import APIRequest from 'utils/API'
 import { SnackbarContext } from 'common/components/Snackbar'
 import FileUpload from 'common/components/FileUpload'
 import FormPaper from 'common/components/FormPaper'
-import { useForm, useRoutes } from 'utils'
+import { mediaBaseURL, useForm, useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
-import { CategoriesPicker, DetailsInput, PhotosInput } from '../../components'
+import { CategoriesPicker, DetailsInput, FeaturesInput, PhotosInput } from '../../components'
 import { queryCheckProductCode, queryGetProductById, mutationCreateProduct, mutationEditProduct } from '../../constant'
 
 const INITIAL_STATE = {
@@ -39,7 +39,7 @@ const INITIAL_STATE = {
   price: 0,
   desc: '',
   variants: [],
-  category: null,
+  category: '',
   sub: '',
   details: [],
   tags: [],
@@ -47,7 +47,8 @@ const INITIAL_STATE = {
   forSale: false,
   file: '',
   images: [],
-  primaryImage: ''
+  primaryImage: '',
+  features: []
 }
 
 function ProductAddScreen() {
@@ -97,8 +98,6 @@ function ProductAddScreen() {
           }
           setPosting(false)
         })
-    } else {
-      deleteFile()
     }
   }
 
@@ -290,7 +289,7 @@ function ProductAddScreen() {
                       handleDeleteFile={handleDeleteFile}
                       handleUpload={handleUploadFile}
                       selectedFile={values.file}
-                      preview={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(values.file)}`}
+                      preview={(typeof image !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(values.file)})` : `url(${URL.createObjectURL(values.file)})`}
                       helperText="Enter the product code before uploading the files"
                     />
                   </Grid>
@@ -345,6 +344,18 @@ function ProductAddScreen() {
             <PhotosInput
               images={values.images}
               primaryImage={values.primaryImage}
+              code={values.code}
+              posting={posting}
+              invalidCode={invalidCode}
+              setPosting={setPosting}
+              setText={setText}
+              setArray={setArray}
+            />
+            <Box my={4}>
+              <Divider />
+            </Box>
+            <FeaturesInput
+              features={values.features}
               code={values.code}
               posting={posting}
               invalidCode={invalidCode}

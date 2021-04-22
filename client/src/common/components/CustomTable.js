@@ -1,9 +1,10 @@
-import React from 'react'
 import MaterialTable from 'material-table'
+import TablleAddTitle from './TableTitle'
 import { options } from '../constant'
 
 function CustomTable({
   title,
+  link,
   columns,
   data,
   actions,
@@ -11,7 +12,7 @@ function CustomTable({
 }) {
   return (
     <MaterialTable
-      title={title}
+      title={<TablleAddTitle title={title} link={link}/>}
       columns={columns}
       data={data}
       options={options}

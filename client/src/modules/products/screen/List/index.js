@@ -3,7 +3,6 @@ import DashboardLayout from 'common/layout/dashboardLayout'
 import { SnackbarContext } from 'common/components/Snackbar'
 import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
-import FloatingButton from 'common/components/FloatingButton'
 import { useRoutes } from 'utils'
 import request from 'utils/request'
 import { columns, actions, queryGetProducts, mutationDeleteProduct } from '../../constant'
@@ -47,6 +46,7 @@ function ProductListScreen() {
       <DashboardLayout>
         <CustomTable
           title="Products"
+          link="/product-add"
           columns={columns}
           data={products}
           actions={actions(
@@ -56,7 +56,6 @@ function ProductListScreen() {
           )}
         />
       </DashboardLayout>
-      <FloatingButton onClick={() => history.push({ pathname: '/product-add' })} />
       <AlertConfirm
         open={isAlertOpen}
         title={`Delete ${chosen.name}`}

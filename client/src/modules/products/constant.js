@@ -112,6 +112,7 @@ query getProductById($id: ID!) {
     file
     images
     primaryImage
+    features
     isDraft
     createdBy
     updatedBy

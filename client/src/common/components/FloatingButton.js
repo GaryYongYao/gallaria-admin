@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid'
 import { styled } from '@material-ui/styles'
