@@ -26,7 +26,8 @@ const productsSchema = new Schema({
   features: [String],
   isDraft: Boolean,
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
-  updatedBy: { type: Schema.Types.ObjectId , ref: 'User' }
+  updatedBy: { type: Schema.Types.ObjectId , ref: 'User' },
+  createdDate : { type: Date, default: Date.now }
 })
 
 module.exports = mongoose.model('Products', productsSchema)

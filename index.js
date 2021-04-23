@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session')
 const bodyParser = require('body-parser')
 const cors  = require('cors')
 const { graphqlHTTP } = require('express-graphql')
+const { graphqlUploadExpress } = require('graphql-upload')
 const graphQLSchema = require('./graphql/schema')
 const graphQLResolvers = require('./graphql/resolvers')
 const keys = require('./keys')
@@ -17,8 +18,12 @@ app.use(
 )
 app.use(
   "/graphql",
+  graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
   graphqlHTTP ({
     schema: graphQLSchema,
+    typeDefs: /* GraphQL */ `
+      scalar Upload
+    `,
     rootValue: graphQLResolvers
   })
 )

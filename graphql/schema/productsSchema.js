@@ -72,14 +72,15 @@ input ProductUpdate {
 
 const productsQuery = `
 getProducts: [Product]
-checkProductCode(_id: ID code: String!): Boolean
+checkProductCode(_id: ID, code: String!): Boolean
 getProductById(_id: ID!): Product
 getProductByCode(code: String!): Product
+getRecommendedProducts(code: String!): [Product]
 `
 
 const productsMutation = `
 createProduct(productInput: ProductInput!): Product
-editProduct(productUpdate: ProductUpdate!): String
+editProduct(productUpdate: ProductUpdate!): Product
 deleteProduct(_id: ID!): String
 `
 

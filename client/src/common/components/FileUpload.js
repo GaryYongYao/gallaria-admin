@@ -32,7 +32,6 @@ const FileUpload = ({
       type="file"
       disabled={disabled}
       onChange={e => {
-        console.log('lol')
         handleUpload(e.target.files[0])
       }}
       style={{ display: 'none' }}

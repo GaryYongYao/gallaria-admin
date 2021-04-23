@@ -148,7 +148,30 @@ export const mutationCreateProduct = `
 
 export const mutationEditProduct = `
   mutation editProduct($productUpdate: ProductUpdate!) {
-    editProduct(productUpdate: $productUpdate)
+    editProduct(productUpdate: $productUpdate) {
+      _id
+      code
+      name
+      price
+      desc
+      variants
+      category,
+      sub
+      details {
+        title
+        info
+      }
+      tags
+      isFeature
+      forSale
+      file
+      images
+      primaryImage
+      features
+      isDraft
+      createdBy
+      updatedBy
+    }
   }
 `
 

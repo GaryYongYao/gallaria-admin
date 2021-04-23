@@ -18,6 +18,23 @@ async function getProducts() {
   }
 }
 
+async function getRecommendedProducts(args) {
+  try {
+    const product = await Products.findOne({ code: args.code })
+    if (!product) throw new Error('Product not found')
+    const products = await Products
+    .find({ category: product.category, code: { $ne: args.code } })
+    .sort({ createdDate: -1 })
+    .limit(4)
+    if (!products) throw new Error('Products not found')
+
+    return products
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function checkProductCode(args) {
   const { _id, code } = args
   try {
@@ -50,7 +67,7 @@ async function getProductById(args) {
 async function getProductByCode(args) {
   try {
     const product = await Products.findOne({ code: args.code }).populate(['category'])
-    if (!product) throw new Error('Category not found')
+    if (!product) throw new Error('Product not found')
 
     return {
       ...product._doc,
@@ -64,7 +81,7 @@ async function getProductByCode(args) {
 
 async function createProduct(args) {
   try {
-    const { code } = args.productInput; //retrieve values from arguments
+    const { code, fileFile } = args.productInput; //retrieve values from arguments
     const existing = await Products.findOne({ code })
     if (existing) {
       throw new Error('Product already exists!')
@@ -104,21 +121,18 @@ async function editProduct(args) {
       }
     }
 
-    Products.findByIdAndUpdate( 
+    const product = await Products.findByIdAndUpdate( 
       { _id: productNew._id  },
       { ...productNew },
-      {new: true},
-      (error, product) => {
-
-        if (error){
-          throw error
-        } else {
-          product.save()
-        }
-      }
-    )
+      {new: true}
+    ).populate(['category', 'createdBy', 'updatedBy'])
     
-    return 'Update Successful!'
+    return {
+      ...product._doc,
+      category: (product.category || {}).id,
+      createdBy: product.createdBy.username,
+      updatedBy: product.updatedBy.username
+    }
   }
   catch(err) {
     throw err
@@ -163,6 +177,7 @@ async function deleteProduct(args) {
 
 module.exports = {
   getProducts,
+  getRecommendedProducts,
   checkProductCode,
   getProductById,
   getProductByCode,

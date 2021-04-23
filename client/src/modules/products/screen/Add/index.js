@@ -46,6 +46,7 @@ const INITIAL_STATE = {
   isFeature: false,
   forSale: false,
   file: '',
+  fileFile: {},
   images: [],
   primaryImage: '',
   features: []
@@ -77,11 +78,11 @@ function ProductAddScreen() {
 
     if (file) {
       const fileFormatName = `${values.code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
-      const formData = new FormData()
+      const document = new FormData()
       
-      formData.append('file', file)
-      formData.append('fileName', fileFormatName)
-      formData.append('bucketFolder', 'productDoc')
+      document.append('file', file)
+      document.append('fileName', fileFormatName)
+      document.append('bucketFolder', 'productDoc')
 
       APIRequest('POST', '/api/file-upload', formData)
         .then(res => {
@@ -158,13 +159,14 @@ function ProductAddScreen() {
     )
       .then(res => {
         const { createProduct, editProduct } = res.data.data
-        const msg = (params.id) ? editProduct : `Product - ${createProduct.name} is ${params.id ? 'updated' : 'created'}!`
+        const msg = (params.id) ? `Product - ${editProduct.name} is updated` : `Product - ${createProduct.name} is created`
 
         openSnackbar(msg, 'success')
         if (!params.id) {
           emptyState(INITIAL_STATE)
           history.push({ pathname: '/products' })
         }
+        if (params.id) setAll(editProduct)
         setPosting(false)
       })
       .catch(err => {
