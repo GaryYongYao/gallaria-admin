@@ -22,11 +22,17 @@ async function getRecommendedProducts(args) {
   try {
     const product = await Products.findOne({ code: args.code })
     if (!product) throw new Error('Product not found')
-    const products = await Products
+    let products = await Products
     .find({ category: product.category, code: { $ne: args.code } })
     .sort({ createdDate: -1 })
     .limit(4)
-    if (!products) throw new Error('Products not found')
+    if (!products) {
+      products = await Products
+      .find({ isFeature: true, code: { $ne: args.code } })
+      .sort({ createdDate: -1 })
+      .limit(4)
+      if (!products) throw new Error('Products not found')
+    }
 
     return products
   }
