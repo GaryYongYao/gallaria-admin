@@ -76,6 +76,7 @@ checkProductCode(_id: ID, code: String!): Boolean
 getProductById(_id: ID!): Product
 getProductByCode(code: String!): Product
 getRecommendedProducts(code: String!): [Product]
+getFeatureProducts: [Product]
 `
 
 const productsMutation = `

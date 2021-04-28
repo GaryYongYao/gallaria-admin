@@ -43,6 +43,21 @@ async function getRecommendedProducts(args) {
   }
 }
 
+async function getFeatureProducts() {
+  try {
+    let products = await Products
+    .find({ isFeature: true })
+    .sort({ createdDate: -1 })
+    .limit(11)
+    if (!products) throw new Error('Products not found')
+
+    return products
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function checkProductCode(args) {
   const { _id, code } = args
   try {
@@ -135,6 +150,7 @@ async function editProduct(args) {
       { ...productNew },
       {new: true}
     ).populate(['category', 'createdBy', 'updatedBy'])
+    await axios.post(keys.buildHook)
     
     return {
       ...product._doc,
@@ -176,6 +192,7 @@ async function deleteProduct(args) {
     }
     if (product.file) await deleteFile(product.file)
     await Products.findByIdAndRemove(args._id)
+    await axios.post(keys.buildHook)
 
     return 'Delete Successful!'
   }
@@ -186,6 +203,7 @@ async function deleteProduct(args) {
 
 module.exports = {
   getProducts,
+  getFeatureProducts,
   getRecommendedProducts,
   checkProductCode,
   getProductById,
