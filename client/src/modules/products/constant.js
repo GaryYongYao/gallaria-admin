@@ -6,17 +6,17 @@ import { startCase } from 'lodash'
 
 export const columns = [
   {
+    title: 'Code',
+    headerStyle: { width: '15%' },
+    filtering: true,
+    render: ({ code }) => code
+  },
+  {
     title: 'Name',
     field: 'name',
     headerStyle: { width: '15%' },
     filtering: true,
     render: ({ name }) => startCase(name)
-  },
-  {
-    title: 'Code',
-    headerStyle: { width: '15%' },
-    filtering: true,
-    render: ({ code }) => code
   },
   {
     title: 'Price',
@@ -34,7 +34,7 @@ export const columns = [
     title: 'Category/Sub-Category',
     headerStyle: { width: '30%' },
     filtering: false,
-    render: ({ category, sub }) => `${category}/${sub}`
+    render: ({ category, sub }) => `${category? category : 'Not Chosen' }${sub ? `/${sub}` : ''}`
   },
   {
     title: 'Featured',

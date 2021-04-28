@@ -46,7 +46,6 @@ const INITIAL_STATE = {
   isFeature: false,
   forSale: false,
   file: '',
-  fileFile: {},
   images: [],
   primaryImage: '',
   features: []
@@ -144,6 +143,7 @@ function ProductAddScreen() {
     setPosting(true)
     const productInput = {
       ...values,
+      category: values.category || null,
       price: parseFloat(values.price),
       details: values.details.filter( detail => (detail.title && detail.info)),
       isDraft,
@@ -158,6 +158,7 @@ function ProductAddScreen() {
       params.id ? { productUpdate: productInput } : { productInput }
     )
       .then(res => {
+        if (res.data.errors) throw new Error(res.data.errors[0].message)
         const { createProduct, editProduct } = res.data.data
         const msg = (params.id) ? `Product - ${editProduct.name} is updated` : `Product - ${createProduct.name} is created`
 

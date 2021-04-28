@@ -5,5 +5,6 @@ module.exports = {
   tokenSecret: process.env.TOKEN_SECRET,
   s3Bucket: process.env.S3_BUCKET,
   awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
-  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY
+  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
+  buildHook: process.env.BUILD_HOOK
 };

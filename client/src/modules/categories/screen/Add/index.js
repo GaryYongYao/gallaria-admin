@@ -43,6 +43,7 @@ function UserAddScreen() {
       }
     })
       .then(res => {
+        if (res.data.errors) throw new Error(res.data.errors[0].message)
         const { createCategory } = res.data.data
         openSnackbar(
           `Category - ${createCategory.name} is created!`,

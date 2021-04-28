@@ -59,7 +59,7 @@ function ProductListScreen() {
       <AlertConfirm
         open={isAlertOpen}
         title={`Delete ${chosen.name}`}
-        text={`Do you want to delete ${chosen.name}?`}
+        text={`Do you want to delete ${chosen.code}?`}
         confirmClick={deleteCategory}
         handleModalOpen={setIsAlertOpen}
       />

@@ -1,5 +1,7 @@
+const axios = require('axios')
 const { renameFile, renameFiles, deleteFile } = require('../../../utils/fileUpload')
 const Products = require('../../../models/products')
+const keys = require('../../../keys')
 
 async function getProducts() {
   try {
@@ -87,7 +89,7 @@ async function getProductByCode(args) {
 
 async function createProduct(args) {
   try {
-    const { code, fileFile } = args.productInput; //retrieve values from arguments
+    const { code } = args.productInput; //retrieve values from arguments
     const existing = await Products.findOne({ code })
     if (existing) {
       throw new Error('Product already exists!')
@@ -97,6 +99,7 @@ async function createProduct(args) {
       ...args.productInput
     }, (err) => { if (err) throw err })
     product.save()
+    await axios.post(keys.buildHook)
     
     return product
   }
