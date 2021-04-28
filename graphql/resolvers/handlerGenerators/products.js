@@ -28,7 +28,7 @@ async function getRecommendedProducts(args) {
     .find({ category: product.category, code: { $ne: args.code } })
     .sort({ createdDate: -1 })
     .limit(4)
-    if (!products) {
+    if (products.length < 0) {
       products = await Products
       .find({ isFeature: true, code: { $ne: args.code } })
       .sort({ createdDate: -1 })
