@@ -1,4 +1,4 @@
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from 'common/theme'
 import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snackbar'
@@ -16,12 +16,14 @@ function App() {
       <SnackbarContextProvider>
         <div className="container">
           <BrowserRouter>
-            <UserContextProvider>
-              <Route exact path="/" component={LoginScreen} />
-              <UserRoute />
-              <ProductsRoute />
-              <CategoriesRoute />
-            </UserContextProvider>
+            <Switch>
+              <UserContextProvider>
+                <Route exact path="/" component={LoginScreen} />
+                <UserRoute />
+                <ProductsRoute />
+                <CategoriesRoute />
+              </UserContextProvider>
+            </Switch>
           </BrowserRouter>
         </div>
         <CustomSnackbar />
