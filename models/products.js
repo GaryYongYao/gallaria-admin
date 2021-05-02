@@ -13,6 +13,7 @@ const productsSchema = new Schema({
   variants: [String],
   category: { type: Schema.Types.ObjectId , ref: 'ProductCategories' },
   sub: String,
+  series: String,
   details: [{
     title: String,
     info: String
@@ -20,9 +21,10 @@ const productsSchema = new Schema({
   tags: [String],
   isFeature: Boolean,
   forSale: Boolean,
-  file: String,
+  file: [String],
   images: [String],
   primaryImage: String,
+  featureImage: String,
   features: [String],
   isDraft: Boolean,
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },

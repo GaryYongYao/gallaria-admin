@@ -8,6 +8,10 @@ const productCategoriesSchema = new Schema({
     required: true
   },
   sub: [String],
+  series: [{
+    sub: String,
+    name: String
+  }],
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId , ref: 'User' }
 })

@@ -28,7 +28,7 @@ async function getRecommendedProducts(args) {
     .find({ category: product.category, code: { $ne: args.code } })
     .sort({ createdDate: -1 })
     .limit(4)
-    if (products.length < 0) {
+    if (products.length < 1) {
       products = await Products
       .find({ isFeature: true, code: { $ne: args.code } })
       .sort({ createdDate: -1 })
@@ -131,7 +131,7 @@ async function editProduct(args) {
       throw new Error('Product not exists!')
     }
     if (existing.code !== productNew.code) {
-      const file = await renameFile(productNew.file, productNew.file.replace(existing.code, productNew.code))
+      const file = await renameFiles(productNew.file, existing.code, productNew.code)
       const images = await renameFiles(productNew.images, existing.code, productNew.code)
       const primaryImage = productNew.primaryImage.replace(existing.code, productNew.code)
       const features = await renameFiles(productNew.features, existing.code, productNew.code)

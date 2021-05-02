@@ -13,9 +13,15 @@ export const columns = [
   },
   {
     title: 'Sub-Categories Count',
-    headerStyle: { width: '20%' },
+    headerStyle: { width: '10%' },
     filtering: false,
     render: ({ sub }) => sub.length
+  },
+  {
+    title: 'Series Count',
+    headerStyle: { width: '10%' },
+    filtering: false,
+    render: ({ series }) => (series || []).length
   },
   {
     title: 'Created by',
@@ -36,7 +42,6 @@ export const actions = (setChosen, setIsOpen, setIsAlertOpen, id) => [
     icon: () => <EditIcon color="primary" />,
     tooltip: 'Edit Categories',
     onClick: (e, data) => {
-      console.log(data)
       setChosen(data)
       setIsOpen(true)
     }
@@ -58,6 +63,10 @@ export const queryGetCategories = `
       _id
       name
       sub
+      series {
+        sub
+        name
+      }
       createdBy
       updatedBy
     }

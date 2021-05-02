@@ -105,7 +105,6 @@ async function changePassword(args) {
     const updatedUser = {
       password: hashedPassword
     }
-    console.log()
 
     User.findByIdAndUpdate( 
       { _id },

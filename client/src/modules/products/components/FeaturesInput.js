@@ -61,7 +61,7 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
           const newFeatures = features
           newFeatures.splice(i, 1)
           setArray(newFeatures, 'features')
-          document.getElementById('icon-button-file').value = ''
+          document.getElementById('icon-button-feature').value = ''
         }
         setPosting(false)
       })
@@ -140,6 +140,8 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
                   height: '300px',
                   width: '100%',
                   backgroundPosition: 'center',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat', 
                   backgroundImage: (typeof feature !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(feature)})` : `url(${URL.createObjectURL(feature)})`,
                   cursor: 'pointer'
                 }}

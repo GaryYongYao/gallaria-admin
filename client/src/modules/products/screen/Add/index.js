@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  Hidden,
   IconButton,
   InputLabel,
   InputAdornment,
@@ -24,13 +25,11 @@ import {
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DashboardLayout from 'common/layout/dashboardLayout'
 import request from 'utils/request'
-import APIRequest from 'utils/API'
 import { SnackbarContext } from 'common/components/Snackbar'
-import FileUpload from 'common/components/FileUpload'
 import FormPaper from 'common/components/FormPaper'
-import { mediaBaseURL, useForm, useRoutes } from 'utils'
+import { useForm, useRoutes, useBreakpointUpCheck, unique } from 'utils'
 import { UserContext } from 'utils/sessions'
-import { CategoriesPicker, DetailsInput, FeaturesInput, PhotosInput } from '../../components'
+import { CategoriesPicker, DetailsInput, FeaturesInput, PhotosInput, FilesInput } from '../../components'
 import { queryCheckProductCode, queryGetProductById, mutationCreateProduct, mutationEditProduct } from '../../constant'
 
 const INITIAL_STATE = {
@@ -41,13 +40,15 @@ const INITIAL_STATE = {
   variants: [],
   category: '',
   sub: '',
+  series: '',
   details: [],
   tags: [],
   isFeature: false,
   forSale: false,
-  file: '',
+  file: [],
   images: [],
   primaryImage: '',
+  featureImage: '',
   features: []
 }
 
@@ -66,67 +67,16 @@ function ProductAddScreen() {
         .then(res => {
           const { getProductById, errors } = res.data.data
           if (errors) openSnackbar(errors.message, 'error')
-          if (getProductById) setAll(getProductById)
+          if (getProductById) {
+            setAll({
+              ...getProductById,
+              images: (getProductById.images || []).filter(unique)
+            })
+          }
         })
         .catch(err => openSnackbar(err.message, 'error'))
     }
   }, [])
-  
-  const handleUploadFile = (file) => {
-    setPosting(true)
-
-    if (file) {
-      const fileFormatName = `${values.code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
-      const document = new FormData()
-      
-      document.append('file', file)
-      document.append('fileName', fileFormatName)
-      document.append('bucketFolder', 'productDoc')
-
-      APIRequest('POST', '/api/file-upload', formData)
-        .then(res => {
-          if (res.errors) {
-            openSnackbar('Upload failed!', 'error')
-          } else {
-            openSnackbar('Upload Success', 'success')
-            setText({
-              target: {
-                name: 'file',
-                value: res.data.Key
-              }
-            })
-          }
-          setPosting(false)
-        })
-    }
-  }
-
-  const handleDeleteFile = () => {
-    deleteFile()
-  }
-
-  const deleteFile = () => {
-    const formData = new FormData()
-    formData.append('key', values.file)
-    setPosting(true)
-
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          setText({
-            target: {
-              name: 'file',
-              value: ''
-            }
-          })
-          document.getElementById('icon-button-file').value = ''
-        }
-        setPosting(false)
-      })
-  }
 
   const checkCodeAvailability = () => {
     request(queryCheckProductCode, { id: params.id, code: values.code })
@@ -141,8 +91,13 @@ function ProductAddScreen() {
 
   const handleSubmit = (isDraft) => {
     setPosting(true)
+    
+    const images = (values.images || []).filter(unique)
+    images.sort((x, y) => x === values.primaryImage ? -1 : y === values.primaryImage ? 1 : 0 )
+
     const productInput = {
       ...values,
+      images,
       category: values.category || null,
       price: parseFloat(values.price),
       details: values.details.filter( detail => (detail.title && detail.info)),
@@ -193,12 +148,12 @@ function ProductAddScreen() {
             onKeyPress={e => (e.which === 13) && e.preventDefault()}
           >
             <Grid container spacing={3}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Box my={2}>
                   <Typography variant="h6">Information</Typography>
                 </Box>
-                <Grid container justify="center" spacing={4}>
-                  <Grid item xs={6}>
+                <Grid container justify="center" spacing={useBreakpointUpCheck('md') ? 4 : 0}>
+                  <Grid item xs={12} md={6}>
                     <TextValidator
                       error={invalidCode}
                       helperText={(invalidCode) ? 'Code Existed' : invalidCode !== null ? 'Code Available' : ''}
@@ -213,7 +168,7 @@ function ProductAddScreen() {
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} md={6}>
                     <TextValidator
                       name="price"
                       label="Price"
@@ -227,11 +182,6 @@ function ProductAddScreen() {
                     />
                   </Grid>
                 </Grid>
-                <CategoriesPicker
-                  category={values.category}
-                  sub={values.sub}
-                  setText={setText}
-                />
                 <TextValidator
                   name="name"
                   label="Name"
@@ -241,6 +191,12 @@ function ProductAddScreen() {
                   validators={['required']}
                   errorMessages={['This field cannot be empty']}
                   fullWidth
+                />
+                <CategoriesPicker
+                  category={values.category}
+                  sub={values.sub}
+                  series={values.series}
+                  setText={setText}
                 />
                 <TextValidator
                   name="desc"
@@ -253,8 +209,8 @@ function ProductAddScreen() {
                   validators={['required']}
                   fullWidth
                 />
-                <Grid container spacing={4}>
-                  <Grid item xs={6}>
+                <Grid container spacing={useBreakpointUpCheck('md') ? 4 : 0}>
+                  <Grid item xs={12} md={5}>
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Variants</InputLabel>
                       <OutlinedInput
@@ -284,19 +240,6 @@ function ProductAddScreen() {
                         fullWidth
                       />
                     </FormControl>
-                    <FileUpload
-                      title="Document"
-                      accept="application/pdf"
-                      disabled={!values.code || invalidCode}
-                      posting={posting}
-                      handleDeleteFile={handleDeleteFile}
-                      handleUpload={handleUploadFile}
-                      selectedFile={values.file}
-                      preview={(typeof image !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(values.file)})` : `url(${URL.createObjectURL(values.file)})`}
-                      helperText="Enter the product code before uploading the files"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
                     <Box>
                       {values.variants.map((variant, index) => (
                         <Chip
@@ -312,12 +255,28 @@ function ProductAddScreen() {
                       ))}
                     </Box>
                   </Grid>
+                  <Grid item xs={12} md={1}>
+                    <Divider orientation="vertical" style={{ margin: 'auto' }} />
+                  </Grid>
+                  <FilesInput
+                    code={values.code}
+                    files={values.file}
+                    disabled={!values.code || invalidCode}
+                    posting={posting}
+                    setArray={setArray}
+                    setPosting={setPosting}
+                  />
                 </Grid>
               </Grid>
-              <Grid item xs={1}> 
+              <Grid item md={1}> 
                 <Divider orientation="vertical" style={{ margin: 'auto' }} />
               </Grid>
-              <Grid item xs={5}>
+              <Hidden mdUp>
+                <Grid item xs={12}> 
+                  <Divider orientation="horizontal" style={{ margin: 'auto' }} />
+                </Grid>
+              </Hidden>
+              <Grid item xs={12} md={5}>
                 <Box my={2} display="flex" justifyContent="space-between" >
                   <Typography variant="h6">Details</Typography>
                   <Button
@@ -347,6 +306,8 @@ function ProductAddScreen() {
             <PhotosInput
               images={values.images}
               primaryImage={values.primaryImage}
+              featureImage={values.featureImage}
+              isFeature={values.isFeature}
               code={values.code}
               posting={posting}
               invalidCode={invalidCode}
@@ -373,7 +334,7 @@ function ProductAddScreen() {
               <Typography variant="h6">Management</Typography>
             </Box>
             <Grid container spacing={3}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel>Tags</InputLabel>
                   <OutlinedInput
@@ -404,7 +365,7 @@ function ProductAddScreen() {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <FormGroup
                   row
                   style={{
@@ -448,7 +409,7 @@ function ProductAddScreen() {
                 onClick={() => handleSubmit(true)}
                 color="primary"
                 disabled={posting || !values.code}
-                style={{ marginRight: '10px' }}
+                style={{ marginBottom: '10px' }}
               >
                 {posting
                   ? <CircularProgress size={14} />
@@ -459,6 +420,7 @@ function ProductAddScreen() {
                 type="submit"
                 color="primary"
                 disabled={posting || !values.code}
+                style={{ marginLeft: '10px', marginBottom: '10px' }}
               >
                 {posting
                   ? <CircularProgress size={14} />

@@ -8,13 +8,15 @@ type Product {
   variants: [String]
   category: ID
   sub: String
+  series: String
   details: [ProductDetail]
   tags: [String]
   isFeature: Boolean
   forSale: Boolean
-  file: String
+  file: [String]
   images: [String]
   primaryImage: String
+  featureImage: String
   features: [String]
   isDraft: Boolean
   createdBy: ID
@@ -36,13 +38,15 @@ input ProductInput {
   variants: [String]
   category: ID
   sub: String
+  series: String
   details: [ProductDetailInput]
   tags: [String]
   isFeature: Boolean
   forSale: Boolean
-  file: String
+  file: [String]
   images: [String]
   primaryImage: String
+  featureImage: String
   features: [String]
   isDraft: Boolean
   createdBy: ID!
@@ -57,13 +61,15 @@ input ProductUpdate {
   variants: [String]
   category: ID
   sub: String
+  series: String
   details: [ProductDetailInput]
   tags: [String]
   isFeature: Boolean
   forSale: Boolean
-  file: String
+  file: [String]
   images: [String]
   primaryImage: String
+  featureImage: String
   features: [String]
   isDraft: Boolean
   updatedBy: ID!

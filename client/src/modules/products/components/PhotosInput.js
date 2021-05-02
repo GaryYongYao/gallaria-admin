@@ -15,7 +15,7 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPosting, setText, setArray }) {
+function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, invalidCode, posting, setPosting, setText, setArray }) {
   const { openSnackbar } = useContext(SnackbarContext)
   const [selected, setSelected] = useState(primaryImage ? primaryImage : '')
 
@@ -52,7 +52,7 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
     setPosting(true)
 
     if (file) {
-      const fileFormatName = `${code}-${file.name.split('.')[0]}`.replace(/ /g, '-')
+      const fileFormatName = `${code}-${file.name.split('.')[0]}`.replace(/ /g, '-').replace(/[\(\)']/g, '')
       const formData = new FormData()
       
       formData.append('file', file)
@@ -92,7 +92,7 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
           newImages.splice(i, 1)
           if(selected === key && images.length > 1) setSelected(newImages[0])
           setArray(newImages, 'images')
-          document.getElementById('icon-button-file').value = ''
+          document.getElementById('icon-button-photos').value = ''
         }
         setPosting(false)
       })
@@ -102,7 +102,7 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
   const AddPhotoButton = () => (
     <>
       <input
-        accept="image/*"
+        accept="image/*,video/mp4"
         id="icon-button-photos"
         type="file"
         disabled={posting || !code || images.length > 9 || invalidCode}
@@ -132,8 +132,8 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
   return (
     <Box>
       <Typography variant="h6">
-        Photos
-        <Typography variant="caption"> (Maximum 10 photos)</Typography>
+        Media
+        <Typography variant="caption"> (Maximum 10 media, photos or MP4)</Typography>
       </Typography>
       {images.length < 1 && (
         <Box
@@ -174,7 +174,9 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
                     width: '180px',
                     margin: '7.5px',
                     backgroundPosition: 'center',
-                    backgroundImage: (typeof image !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(image)})` : `url(${URL.createObjectURL(image)})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat', 
+                    backgroundImage: !image.includes('mp4') ? `url(${mediaBaseURL}${encodeURIComponent(image)})` : 'url(/video.png)',
                     cursor: 'pointer'
                   }}
                 >
@@ -198,11 +200,20 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
           </Grid>
           {selected && (
             <Grid item xs={4}>
-              <img width="100%" src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}`} />
+              {selected.includes('mp4') && (
+                <video autoPlay loop muted showControl preload="metadata" style={{ width: '100%' }}>
+                  <source src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}#t=0.5`} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+              {!selected.includes('mp4') && (
+                <img width="100%" src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}`} />
+              )}
               <FormControlLabel
                 control={
                   <Checkbox
                     checked={primaryImage === selected}
+                    disabled={selected.includes('mp4')}
                     onChange={() => {
                       setText({
                         target: {
@@ -214,6 +225,23 @@ function PhotoInputs({ images, primaryImage, code, invalidCode, posting, setPost
                   />
                 }
                 label="Make Cover Photo"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={featureImage === selected}
+                    disabled={!isFeature}
+                    onChange={() => {
+                      setText({
+                        target: {
+                          name: 'featureImage',
+                          value: selected
+                        }
+                      })
+                    }}
+                  />
+                }
+                label="Make Feature Photo"
               />
             </Grid>
           )}

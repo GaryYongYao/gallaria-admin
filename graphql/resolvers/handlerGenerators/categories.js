@@ -1,6 +1,3 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const keys = require('../../../keys')
 const ProductCategories = require('../../../models/product-categories')
 
 async function getCategories() {
@@ -12,6 +9,7 @@ async function getCategories() {
       _id: category._id,
       name: category.name,
       sub: category.sub,
+      series: category.series,
       createdBy: category.createdBy.username,
       updatedBy: category.updatedBy.username
     }))
@@ -41,7 +39,15 @@ async function getSubCategoriesOption(args) {
     const category = await ProductCategories.findOne({ _id: args._id })
     if (!category) throw new Error('Category not found')
 
-    return category.sub.map(option => option)
+    const returnData = await category.sub.map(option => ({
+      sub: option,
+      series: () => {
+        const seriesData = category.series.filter(series => series.sub === option)
+        return seriesData.map(data => data.name)
+      }
+    }))
+
+    return returnData
   }
   catch(err) {
     throw err
@@ -53,6 +59,7 @@ async function createCategory(args) {
     const {
       name,
       sub,
+      series,
       createdBy,
       updatedBy
     } = args.categoryInput; //retrieve values from arguments
@@ -63,6 +70,7 @@ async function createCategory(args) {
     const category = new ProductCategories({
       name,
       sub,
+      series,
       createdBy,
       updatedBy
     }, (err) => { if (err) throw err })
@@ -81,6 +89,7 @@ async function editCategory(args) {
       _id,
       name,
       sub,
+      series,
       updatedBy
     } = args.categoryUpdate; //retrieve values from arguments
     let existing = await ProductCategories.findOne({ _id })
@@ -88,12 +97,13 @@ async function editCategory(args) {
       throw new Error('Category not exists!')
     }
     existing = await ProductCategories.findOne({ name })
-    if (existing) {
+    if (existing._id === _id) {
       throw new Error('Category already exists!')
     }
     const updatedCategory = {
       name: name === "" ? existing.name : name,
       sub,
+      series,
       updatedBy
     }
 

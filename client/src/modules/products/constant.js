@@ -112,6 +112,7 @@ query getProductById($id: ID!) {
     file
     images
     primaryImage
+    featureImage
     features
     isDraft
     createdBy
@@ -122,7 +123,10 @@ query getProductById($id: ID!) {
 
 export const queryGetSubCategoriesOption = `
 query getSubCategoriesOption($id: ID!) {
-  getSubCategoriesOption(_id: $id)
+  getSubCategoriesOption(_id: $id) {
+    sub
+    series
+  }
 }
 `
 
@@ -167,6 +171,7 @@ export const mutationEditProduct = `
       file
       images
       primaryImage
+      featureImage
       features
       isDraft
       createdBy

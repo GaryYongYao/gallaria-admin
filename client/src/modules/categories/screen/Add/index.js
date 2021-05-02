@@ -4,11 +4,19 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Divider,
+  FormControl,
+  Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Typography
 } from '@material-ui/core'
 import {
-  ArrowBackIos as BackIcon
+  ArrowBackIos as BackIcon,
+  AddCircle as AddIcon,
+  HighlightOff as CloseIcon
 } from '@material-ui/icons'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DashboardLayout from 'common/layout/dashboardLayout'
@@ -22,22 +30,26 @@ import { mutationCreateCategory } from '../../constant'
 function UserAddScreen() {
   const { userContext } = useContext(UserContext)
   const { login } = userContext
-  const { values, setText, setArray } = useForm({
+  const { values, setText, setArray, setAll } = useForm({
     name: '',
-    sub: []
+    sub: [],
+    series: []
   })
   const [posting, setPosting] = useState(false)
+  const [subCat, setSubCat] = useState('')
+  const [seriesName, setSeriesName] = useState('')
   const { openSnackbar } = useContext(SnackbarContext)
   const { history } = useRoutes()
 
   const handleSubmit = () => {
     setPosting(true)
-    const { name, sub } = values
+    const { name, sub, series } = values
 
     request(mutationCreateCategory, {
       categoryInput: {
         name,
         sub,
+        series,
         createdBy: login._id,
         updatedBy: login._id
       }
@@ -56,6 +68,18 @@ function UserAddScreen() {
         openSnackbar(err.message, 'error')
         setPosting(false)
       })
+  }
+
+  const addSeries = () => {
+    if (subCat === '' || seriesName === '') return
+    const newSeries = values.series
+    newSeries.push({
+      sub: subCat,
+      name: seriesName
+    })
+    setArray(newSeries, 'series')
+    setSubCat('')
+    setSeriesName('')
   }
 
   return (
@@ -84,22 +108,27 @@ function UserAddScreen() {
               errorMessages={['This field cannot be empty']}
               fullWidth
             />
+            <Box> 
+              <Divider orientation="horizontal" style={{ margin: 'auto' }} />
+            </Box>
             <TextValidator
               name="sub"
               label="Sub-Categories"
               helperText="Enter to add sub-category"
               onKeyPress={e => {
-                if (e.which !== 13 || e.target.value === '') return
+                const { value, name } = e.target
+                if (e.which !== 13 || value === ''|| values.sub.includes(value)) return
                 const newSubs = values.sub
-                newSubs.push(e.target.value)
-                setArray(newSubs, e.target.name)
+                newSubs.push(value)
+                setArray(newSubs, name)
                 e.target.value = ''
               }}
               onBlur={e => {
-                if (e.target.value === '') return
+                const { value, name } = e.target
+                if (value === '' || values.sub.includes(value)) return
                 const newSubs = values.sub
-                newSubs.push(e.target.value)
-                setArray(newSubs, e.target.name)
+                newSubs.push(value)
+                setArray(newSubs, name)
                 e.target.value = ''
               }}
               variant="outlined"
@@ -113,11 +142,111 @@ function UserAddScreen() {
                   onDelete={() => {
                     const oldSubs = values.sub
                     const newSubs = oldSubs.filter((old, oldIndex) => oldIndex !== index)
-                    setArray(newSubs, 'sub')
+                    const oldSeries = values.series
+                    const newSeries = oldSeries.filter((old) => old.sub !== item)
+                    setAll({
+                      name: values.name,
+                      sub: newSubs,
+                      series: newSeries
+                    })
                   }}
                   style={{ margin: '2.5px 5px' }}
                 />
               ))}
+            </Box>
+            {values.sub.length > 0 && (
+              <>
+                <Box my={3}> 
+                  <Divider orientation="horizontal" />
+                </Box>
+                <Box mb={3}> 
+                  <Typography variant="h6">Sub-Category Series</Typography>
+                </Box>
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Grid item xs={12} md={3}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel id="category-options">Sub-Category</InputLabel>
+                      <Select
+                        labelId="category-options"
+                        value={subCat}
+                        onChange={e => setSubCat(e.target.value)}
+                        label="Sub-Category"
+                      >
+                        {values.sub.map(s => (
+                          <MenuItem key={s} value={s}>{s}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={11} md={8}>
+                    <TextValidator
+                      label="Series Name"
+                      disabled={!subCat}
+                      onKeyPress={e => {
+                        if (e.which !== 13 || e.target.value === '') return
+                        addSeries()
+                      }}
+                      value={seriesName}
+                      onChange={e => setSeriesName(e.target.value)}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButton
+                      disabled={!seriesName && !subCat}
+                      color="primary"
+                      aria-label="Remove Series"
+                      onClick={() => {
+                        setSubCat('')
+                        setSeriesName('')
+                      }}
+                      component="span"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <IconButton
+                      disabled={!seriesName && !subCat}
+                      color="primary"
+                      aria-label="Add Series"
+                      component="span"
+                      onClick={addSeries}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {values.series.map((item, index) => (
+                      <Chip
+                        key={item.name}
+                        label={
+                          <div
+                            onClick={() => {
+                              if (subCat !== '' || seriesName !== '') return
+                              setSubCat(item.sub)
+                              setSeriesName(item.name)
+                              const oldSeries = values.series
+                              const newSeries = oldSeries.filter((old, oldIndex) => oldIndex !== index)
+                              setArray(newSeries, 'series')
+                            }}
+                          >
+                            {item.sub}: {item.name}
+                          </div>
+                        }
+                        onDelete={() => {
+                          const oldSeries = values.series
+                          const newSeries = oldSeries.filter((old, oldIndex) => oldIndex !== index)
+                          setArray(newSeries, 'series')
+                        }}
+                        style={{ margin: '2.5px 5px', cursor: 'pointer' }}
+                      />
+                    ))}
+                  </Grid>
+                </Grid>
+              </>
+            )}
+            <Box my={3}> 
+              <Divider orientation="horizontal" />
             </Box>
             <Box width="100%" textAlign="right">
               <Button

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useParams, useLocation, useHistory } from 'react-router'
 import qs from 'qs'
+// breakpoint
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 function useRoutes() {
   const params = useParams()
@@ -56,7 +59,21 @@ const useForm = initialValue => {
   }
 }
 
+const useBreakpointUpCheck = (breakpoint) => {
+  const theme = useTheme()
+  
+  return useMediaQuery(theme.breakpoints.up(breakpoint))
+}
+
+const useBreakpointDownCheck = (breakpoint) => {
+  const theme = useTheme()
+  
+  return useMediaQuery(theme.breakpoints.down(breakpoint))
+}
+
 export {
   useForm,
-  useRoutes
+  useRoutes,
+  useBreakpointDownCheck,
+  useBreakpointUpCheck
 }

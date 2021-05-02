@@ -10,8 +10,10 @@ import { columns, actions, queryGetCategories, mutationEditCategory, mutationDel
 
 function CategoryListScreen() {
   const [chosen, setChosen] = useState({
+    _id: '',
     name: '',
-    sub: []
+    sub: [],
+    series: []
   })
   const [isOpen, setIsOpen] = useState(false)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
@@ -42,13 +44,14 @@ function CategoryListScreen() {
   }
 
   const editCategory = () => {
-    const { _id, name, sub } = chosen
+    const { _id, name, sub, series } = chosen
 
     request(mutationEditCategory, {
       categoryUpdate: {
         _id,
         name,
         sub,
+        series,
         updatedBy: login._id
       }
     })
@@ -58,7 +61,8 @@ function CategoryListScreen() {
         getCategories()
         setChosen({
           name: '',
-          sub: []
+          sub: [],
+          series:[]
         })
         setIsOpen(false)
       })
@@ -82,6 +86,12 @@ function CategoryListScreen() {
     setChosen({
       ...chosen,
       [name]: value
+    })
+  }
+  
+  const setAll = (value) => {
+    setChosen({
+      ...value
     })
   }
 
@@ -131,6 +141,7 @@ function CategoryListScreen() {
         closeEdit={closeEdit}
         setValue={setValue}
         setArray={setArray}
+        setAll={setAll}
       />
       <AlertConfirm
         open={isAlertOpen}
