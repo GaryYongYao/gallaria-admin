@@ -21,6 +21,7 @@ type Product {
   isDraft: Boolean
   createdBy: ID
   updatedBy: ID
+  createdDate: String
 }
 type ProductDetail {
   title: String
