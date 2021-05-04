@@ -202,12 +202,12 @@ function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, inva
             <Grid item xs={4}>
               {selected.includes('mp4') && (
                 <video autoPlay loop muted showControl preload="metadata" style={{ width: '100%' }}>
-                  <source src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}#t=0.5`} type="video/mp4" />
+                  <source src={`${mediaBaseURL}${encodeURIComponent(selected)}#t=0.5`} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
               {!selected.includes('mp4') && (
-                <img width="100%" src={`https://gallaria-dev-storage.s3-ap-southeast-2.amazonaws.com/${encodeURIComponent(selected)}`} />
+                <img width="100%" src={`${mediaBaseURL}${encodeURIComponent(selected)}`} />
               )}
               <FormControlLabel
                 control={
