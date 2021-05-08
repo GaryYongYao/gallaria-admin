@@ -4,9 +4,10 @@ import theme from 'common/theme'
 import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snackbar'
 import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
-import UserRoute from './routes/users'
-import ProductsRoute from './routes/products'
 import CategoriesRoute from './routes/categories'
+import LeadsRoute from './routes/leads'
+import ProductsRoute from './routes/products'
+import UserRoute from './routes/users'
 
 import './App.css'
 
@@ -22,6 +23,7 @@ function App() {
                 <UserRoute />
                 <ProductsRoute />
                 <CategoriesRoute />
+                <LeadsRoute />
               </UserContextProvider>
             </Switch>
           </BrowserRouter>

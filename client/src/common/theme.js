@@ -237,6 +237,12 @@ const theme = createMuiTheme({
       }
     },
 
+    MuiDialog: {
+      paper: {
+        backgroundColor: '#FAFAFA'
+      }
+    },
+
     MuiTableCell: {
       head: {
         paddingTop: 5,
@@ -246,6 +252,17 @@ const theme = createMuiTheme({
       },
       root: {
         borderBottom: 0
+      }
+    },
+
+    MuiTab: {
+      root: {
+        paddingLeft: 0
+      },
+      wrapper: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        textAlign: 'left'
       }
     },
 

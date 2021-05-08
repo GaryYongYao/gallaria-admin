@@ -1,9 +1,10 @@
 import MaterialTable from '@material-table/core'
-import TablleAddTitle from './TableTitle'
+import TableAddTitle from './TableTitle'
 import { options } from '../constant'
 
 function CustomTable({
   title,
+  CustomTitle,
   link,
   columns,
   data,
@@ -12,7 +13,7 @@ function CustomTable({
 }) {
   return (
     <MaterialTable
-      title={<TablleAddTitle title={title} link={link}/>}
+      title={CustomTitle ? <CustomTitle /> : <TableAddTitle title={title} link={link}/>}
       columns={columns}
       data={data}
       options={options}

@@ -102,6 +102,7 @@ query getProductById($id: ID!) {
     variants
     category,
     sub
+    series
     details {
       title
       info
@@ -159,8 +160,9 @@ export const mutationEditProduct = `
       price
       desc
       variants
-      category,
+      category
       sub
+      series
       details {
         title
         info

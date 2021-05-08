@@ -32,6 +32,22 @@ function CategoriesPicker({ category, sub, series, setText }) {
           setCategoryOption(getCategoriesOption)
         }
       })
+
+    if (category) {
+      request(queryGetSubCategoriesOption, { id: category })
+        .then(res => {
+          const { getSubCategoriesOption, errors } = res.data.data
+          if (errors) {
+            openSnackbar(
+              errors.message,
+              'error'
+            )
+          }
+          if (getSubCategoriesOption) {
+            setSubCategoryOption(getSubCategoriesOption)
+          }
+        })
+    }
   }, [])
 
   useEffect(() => {
@@ -47,6 +63,11 @@ function CategoriesPicker({ category, sub, series, setText }) {
         }
         if (getSubCategoriesOption) {
           setSubCategoryOption(getSubCategoriesOption)
+          if (sub) {
+            const options = getSubCategoriesOption.filter(option => option.sub === sub)
+            if (options.length < 1) return
+            setSeriesOption(options[0].series)
+          }
         }
       })
   }, [category])
@@ -56,7 +77,6 @@ function CategoriesPicker({ category, sub, series, setText }) {
     const options = subcategoryOption.filter(option => option.sub === sub)
     if (options.length < 1) return
     setSeriesOption(options[0].series)
-    console.log(options[0].series)
   }, [sub])
 
   return (

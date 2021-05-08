@@ -1,21 +1,25 @@
 const { buildSchema } = require('graphql')
-const { userSchema, userQuery, userMutation } = require('./userSchema')
-const { categoriesSchema, categoriesQuery, categoriesMutation } = require('./categoriesSchema')
 const { productsSchema, productsQuery, productsMutation } = require('./productsSchema')
+const { leadSchema, leadQuery, leadMutation } = require('./leadSchema')
+const { categoriesSchema, categoriesQuery, categoriesMutation } = require('./categoriesSchema')
+const { userSchema, userQuery, userMutation } = require('./userSchema')
 
 module.exports = buildSchema(`
-${userSchema}
-${productsSchema}
 ${categoriesSchema}
+${leadSchema}
+${productsSchema}
+${userSchema}
 type RootQuery {
-  ${userQuery}
-  ${productsQuery}
   ${categoriesQuery}
+  ${leadQuery}
+  ${productsQuery}
+  ${userQuery}
 }
 type RootMutation {
-  ${userMutation}
-  ${productsMutation}
   ${categoriesMutation}
+  ${leadMutation}
+  ${productsMutation}
+  ${userMutation}
 }
 schema {
   query: RootQuery

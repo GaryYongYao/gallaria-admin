@@ -151,7 +151,7 @@ async function login(args) {
     if (!user) throw new Error('Account does not exist')
     const passwordIsValid = await bcrypt.compareSync(args.password, user.password)
     if (!passwordIsValid) throw new Error('Password incorrect')
-    const token = jwt.sign({ id: user._id }, keys.tokenSecret)
+    const token = jwt.sign({ id: user._id }, keys.tokenSecret, { expiresIn: '14d'})
     return { token, password: null, ...user._doc }
   }
   catch (err) {
