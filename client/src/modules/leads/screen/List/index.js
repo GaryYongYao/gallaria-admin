@@ -158,7 +158,7 @@ function UserListScreen() {
       <AlertConfirm
         open={isAlertOpen}
         title={`Delete message`}
-        text={`Do you want to delete thie message?`}
+        text={`Do you want to delete this message?`}
         confirmClick={deleteLead}
         handleModalOpen={setIsAlertOpen}
       />
