@@ -78,6 +78,7 @@ input ProductUpdate {
 `
 
 const productsQuery = `
+getAllProducts: [Product]
 getProducts: [Product]
 checkProductCode(_id: ID, code: String!): Boolean
 getProductById(_id: ID!): Product

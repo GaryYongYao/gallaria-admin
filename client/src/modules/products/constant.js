@@ -69,9 +69,9 @@ export const actions = ( history, setChosen, setIsAlertOpen) => [
 ]
 
 // graphql
-export const queryGetProducts = `
+export const queryGetAllProducts = `
 query {
-  getProducts {
+  getAllProducts {
     _id
     name
     code

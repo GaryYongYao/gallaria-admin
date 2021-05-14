@@ -3,9 +3,26 @@ const { renameFile, renameFiles, deleteFile } = require('../../../utils/fileUplo
 const Products = require('../../../models/products')
 const keys = require('../../../keys')
 
-async function getProducts() {
+async function getAllProducts() {
   try {
     const products = await Products.find().populate(['category', 'createdBy', 'updatedBy'])
+    if (!products) throw new Error('No products found')
+
+    return products.map(product => ({
+      ...product._doc,
+      category: (product.category || {}).name,
+      createdBy: product.createdBy.username,
+      updatedBy: product.updatedBy.username
+    }))
+  }
+  catch(err) {
+    throw err
+  }
+}
+
+async function getProducts() {
+  try {
+    const products = await Products.find({ isDraft: false }).populate(['category', 'createdBy', 'updatedBy'])
     if (!products) throw new Error('No products found')
 
     return products.map(product => ({
@@ -202,6 +219,7 @@ async function deleteProduct(args) {
 }
 
 module.exports = {
+  getAllProducts,
   getProducts,
   getFeatureProducts,
   getRecommendedProducts,

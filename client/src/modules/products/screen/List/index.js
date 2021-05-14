@@ -5,7 +5,7 @@ import CustomTable from 'common/components/CustomTable'
 import AlertConfirm from 'common/components/AlertConfirm'
 import { useRoutes } from 'utils'
 import request from 'utils/request'
-import { columns, actions, queryGetProducts, mutationDeleteProduct } from '../../constant'
+import { columns, actions, queryGetAllProducts, mutationDeleteProduct } from '../../constant'
 
 function ProductListScreen() {
   const [chosen, setChosen] = useState({})
@@ -15,16 +15,16 @@ function ProductListScreen() {
   const { history } = useRoutes()
 
   useEffect(() => {
-    getProducts()
+    getAllProducts()
     // eslint-disable-next-line
   }, [])
 
-  const getProducts = () => {
-    request(queryGetProducts)
+  const getAllProducts = () => {
+    request(queryGetAllProducts)
       .then(res => {
-        const { getProducts, errors } = res.data.data
+        const { getAllProducts, errors } = res.data.data
         if (errors) openSnackbar(errors.message, 'error')
-        if (getProducts) setProducts(getProducts)
+        if (getAllProducts) setProducts(getAllProducts)
       })
       .catch(err => openSnackbar(err.message, 'error'))
   }
@@ -34,7 +34,7 @@ function ProductListScreen() {
       .then(res => {
         const { deleteProduct } = res.data.data
         openSnackbar(deleteProduct, 'success')
-        getProducts()
+        getAllProducts()
         setChosen({})
         setIsAlertOpen(false)
       })
