@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "draft-convert": "^2.1.11",
+    "google-map-react": "^2.1.9",
     "history": "^5.0.0",
     "http-proxy-middleware": "^1.1.1",
     "js-cookie": "^2.2.1",

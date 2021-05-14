@@ -3,7 +3,6 @@ const ProductCategories = require('../../../models/product-categories')
 async function getCategories() {
   try {
     const categories = await ProductCategories.find().populate(['createdBy', 'updatedBy'])
-    if (!categories) throw new Error('No categories found')
 
     return categories.map(category => ({
       _id: category._id,
@@ -22,7 +21,6 @@ async function getCategories() {
 async function getCategoriesOption() {
   try {
     const categories = await ProductCategories.find()
-    if (!categories) throw new Error('No Categories found')
 
     return categories.map(category => ({
       _id: category._id,
@@ -37,7 +35,6 @@ async function getCategoriesOption() {
 async function getSubCategoriesOption(args) {
   try {
     const category = await ProductCategories.findOne({ _id: args._id })
-    if (!category) throw new Error('Category not found')
 
     const returnData = await category.sub.map(option => ({
       sub: option,

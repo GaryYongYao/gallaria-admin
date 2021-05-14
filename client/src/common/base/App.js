@@ -6,6 +6,7 @@ import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
 import CategoriesRoute from './routes/categories'
 import LeadsRoute from './routes/leads'
+import ShowroomsRoute from './routes/locations'
 import ProductsRoute from './routes/products'
 import UserRoute from './routes/users'
 
@@ -24,6 +25,7 @@ function App() {
                 <ProductsRoute />
                 <CategoriesRoute />
                 <LeadsRoute />
+                <ShowroomsRoute />
               </UserContextProvider>
             </Switch>
           </BrowserRouter>

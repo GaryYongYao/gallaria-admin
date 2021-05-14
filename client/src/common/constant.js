@@ -2,7 +2,8 @@ import {
   ViewList as ProductsIcon,
   ContactMail as LeadsIcon,
   List as CategoryIcon,
-  People as UserIcon
+  People as UserIcon,
+  Storefront as ShowroomIcon
 } from '@material-ui/icons'
 
 export const options = {
@@ -16,6 +17,7 @@ export const options = {
 export const menu = [
   { text: 'Content Management' },
   { icon: <ProductsIcon />, text: 'Manage Products', link: '/products' },
+  { icon: <ShowroomIcon />, text: 'Manage Showrooms', link: '/showrooms' },
   { divider: true, text: 'divider1' },
   { text: 'Customer Management' },
   { icon: <LeadsIcon />, text: 'Manage Leads', link: '/leads' },

@@ -6,7 +6,6 @@ const keys = require('../../../keys')
 async function getAllProducts() {
   try {
     const products = await Products.find().populate(['category', 'createdBy', 'updatedBy'])
-    if (!products) throw new Error('No products found')
 
     return products.map(product => ({
       ...product._doc,
@@ -23,7 +22,6 @@ async function getAllProducts() {
 async function getProducts() {
   try {
     const products = await Products.find({ isDraft: false }).populate(['category', 'createdBy', 'updatedBy'])
-    if (!products) throw new Error('No products found')
 
     return products.map(product => ({
       ...product._doc,

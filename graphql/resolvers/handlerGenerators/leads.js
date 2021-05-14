@@ -4,7 +4,6 @@ async function getLeads() {
   try {
 
     const leads = await Leads.find().sort({ createdDate: -1 })
-    if (!leads) throw new Error('No leads found')
 
     return leads.map(lead => ({
       ...lead._doc,
