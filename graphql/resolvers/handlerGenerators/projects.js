@@ -45,7 +45,11 @@ async function getProjects() {
 
 async function getLatestProjects() {
   try {
-    const projects = await Projects.find({ _id: { $ne: args._id }, isDraft: false }).populate(['products', 'createdBy', 'updatedBy'])
+    const projects = await Projects
+      .find({ _id: { $ne: args._id }, isDraft: false })
+      .populate(['products', 'createdBy', 'updatedBy'])
+      .sort({ createdDate: -1 })
+      .limit(2)
 
     return projects.map(project => ({
       ...project._doc,
