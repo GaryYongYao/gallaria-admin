@@ -324,7 +324,7 @@ function ProductAddScreen() {
                     <Grid key={product} item xs={6}>
                       <Grid container spacing={0} alignItems="center">
                         <Grid item xs={11}>
-                          {find(productOption, ['_id', product]).name}
+                          {find(productOption, ['_id', product])?.name}
                         </Grid>
                         <Grid item xs={1}>
                           <IconButton
