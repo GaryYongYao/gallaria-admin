@@ -43,7 +43,7 @@ async function getProjects() {
   }
 }
 
-async function getLatestProjects() {
+async function getLatestProjects(args) {
   try {
     const projects = await Projects
       .find({ _id: { $ne: args._id }, isDraft: false })

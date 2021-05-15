@@ -55,7 +55,7 @@ input ProjectInput {
 const projectQuery = `
 getAllProjects: [Project]
 getProjects: [Project]
-getLatestProjects(_id: ID!): [Project]
+getLatestProjects(_id: ID): [Project]
 getProjectById(_id: ID!): Project
 getAdminProjectById(_id: ID!): ProjectFeedback
 `
