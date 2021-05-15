@@ -8,6 +8,7 @@ import CategoriesRoute from './routes/categories'
 import LeadsRoute from './routes/leads'
 import ShowroomsRoute from './routes/locations'
 import ProductsRoute from './routes/products'
+import ProjectsRoute from './routes/project'
 import UserRoute from './routes/users'
 
 import './App.css'
@@ -23,6 +24,7 @@ function App() {
                 <Route exact path="/" component={LoginScreen} />
                 <UserRoute />
                 <ProductsRoute />
+                <ProjectsRoute />
                 <CategoriesRoute />
                 <LeadsRoute />
                 <ShowroomsRoute />

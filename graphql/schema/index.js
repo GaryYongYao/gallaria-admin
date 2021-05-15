@@ -1,8 +1,9 @@
 const { buildSchema } = require('graphql')
-const { productsSchema, productsQuery, productsMutation } = require('./productsSchema')
+const { categoriesSchema, categoriesQuery, categoriesMutation } = require('./categoriesSchema')
 const { leadSchema, leadQuery, leadMutation } = require('./leadSchema')
 const { locationSchema, locationQuery, locationMutation } = require('./locationSchema')
-const { categoriesSchema, categoriesQuery, categoriesMutation } = require('./categoriesSchema')
+const { productsSchema, productsQuery, productsMutation } = require('./productsSchema')
+const { projectSchema, projectQuery, projectMutation } = require('./projectsSchema')
 const { userSchema, userQuery, userMutation } = require('./userSchema')
 
 module.exports = buildSchema(`
@@ -10,12 +11,14 @@ ${categoriesSchema}
 ${leadSchema}
 ${locationSchema}
 ${productsSchema}
+${projectSchema}
 ${userSchema}
 type RootQuery {
   ${categoriesQuery}
   ${leadQuery}
   ${locationQuery}
   ${productsQuery}
+  ${projectQuery}
   ${userQuery}
 }
 type RootMutation {
@@ -23,6 +26,7 @@ type RootMutation {
   ${leadMutation}
   ${locationMutation}
   ${productsMutation}
+  ${projectMutation}
   ${userMutation}
 }
 schema {

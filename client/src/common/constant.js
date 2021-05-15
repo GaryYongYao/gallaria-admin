@@ -1,5 +1,6 @@
 import {
   ViewList as ProductsIcon,
+  Description as ProjectIcon,
   ContactMail as LeadsIcon,
   List as CategoryIcon,
   People as UserIcon,
@@ -17,6 +18,7 @@ export const options = {
 export const menu = [
   { text: 'Content Management' },
   { icon: <ProductsIcon />, text: 'Manage Products', link: '/products' },
+  { icon: <ProjectIcon />, text: 'Manage Projects', link: '/projects' },
   { icon: <ShowroomIcon />, text: 'Manage Showrooms', link: '/showrooms' },
   { divider: true, text: 'divider1' },
   { text: 'Customer Management' },

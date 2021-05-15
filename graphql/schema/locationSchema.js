@@ -8,7 +8,7 @@ type Location {
   position: [Float]
 }
 input LocationInput {
-  name: String!,
+  name: String!
   address: String!
   phone: String!
   website: String

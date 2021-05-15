@@ -9,7 +9,8 @@ export const columns = [
     title: 'Code',
     headerStyle: { width: '15%' },
     filtering: true,
-    render: ({ code }) => code
+    field: 'code',
+    searchable: true
   },
   {
     title: 'Name',

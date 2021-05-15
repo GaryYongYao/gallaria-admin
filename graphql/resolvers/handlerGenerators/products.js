@@ -40,12 +40,12 @@ async function getRecommendedProducts(args) {
     const product = await Products.findOne({ code: args.code })
     if (!product) throw new Error('Product not found')
     let products = await Products
-    .find({ category: product.category, code: { $ne: args.code } })
+    .find({ category: product.category, code: { $ne: args.code }, isDraft: false })
     .sort({ createdDate: -1 })
     .limit(4)
     if (products.length < 1) {
       products = await Products
-      .find({ isFeature: true, code: { $ne: args.code } })
+      .find({ isFeature: true, code: { $ne: args.code }, isDraft: false })
       .sort({ createdDate: -1 })
       .limit(4)
       if (!products) throw new Error('Products not found')
@@ -205,7 +205,17 @@ async function deleteProduct(args) {
         }
       })
     }
-    if (product.file) await deleteFile(product.file)
+    if (product.file.length > 0) {
+      await product.file.forEach(async (f) => {
+        try {
+          await deleteFile(f)
+          return
+        }
+        catch(err) {
+          throw err
+        }
+      })
+    }
     await Products.findByIdAndRemove(args._id)
     await axios.post(keys.buildHook)
 
