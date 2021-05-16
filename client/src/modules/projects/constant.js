@@ -84,7 +84,7 @@ query {
 }
 `
 
-export const queryGetProjectById= `
+export const queryGetProjectById = `
 query getAdminProjectById($id: ID!) {
   getAdminProjectById(_id: $id) {
     _id
@@ -132,9 +132,7 @@ export const mutationEditProject = `
       products
       isDraft
       justCreated
-      createdBy
       updatedBy
-      createdDate
     }
   }
 `
