@@ -5,6 +5,7 @@ import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snack
 import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
 import CategoriesRoute from './routes/categories'
+import EnquiriesRoute from './routes/enquiry'
 import LeadsRoute from './routes/leads'
 import ShowroomsRoute from './routes/locations'
 import ProductsRoute from './routes/products'
@@ -26,6 +27,7 @@ function App() {
                 <ProductsRoute />
                 <ProjectsRoute />
                 <CategoriesRoute />
+                <EnquiriesRoute />
                 <LeadsRoute />
                 <ShowroomsRoute />
               </UserContextProvider>

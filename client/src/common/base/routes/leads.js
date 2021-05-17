@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom'
 import { LeadListScreen } from 'modules/leads'
 
-function CategoriesRoute() {
+function LeadsRoute() {
   return (
     <>
       <Route exact path="/leads" component={LeadListScreen} />
@@ -9,4 +9,4 @@ function CategoriesRoute() {
   )
 }
 
-export default CategoriesRoute
+export default LeadsRoute

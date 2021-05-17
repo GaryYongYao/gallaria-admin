@@ -4,7 +4,8 @@ import {
   ContactMail as LeadsIcon,
   List as CategoryIcon,
   People as UserIcon,
-  Storefront as ShowroomIcon
+  Storefront as ShowroomIcon,
+  InsertComment as EnquiryIcon
 } from '@material-ui/icons'
 
 export const options = {
@@ -23,6 +24,7 @@ export const menu = [
   { divider: true, text: 'divider1' },
   { text: 'Customer Management' },
   { icon: <LeadsIcon />, text: 'Manage Leads', link: '/leads' },
+  { icon: <EnquiryIcon />, text: 'Manage Enquiry', link: '/enquiries' },
   { divider: true, text: 'divider2', admin: true },
   { text: 'Settings Management', admin: true },
   { icon: <CategoryIcon />, text: 'Manage Categories', link: '/categories', admin: true },

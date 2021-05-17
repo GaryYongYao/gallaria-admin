@@ -29,8 +29,8 @@ export const UserContextProvider = ({ children }) => {
 
   const checkAdminRoute = path => {
     const adminRoutes = [
-      { path: '/users', goto: '/dashboard' },
-      { path: '/supplier-add', goto: '/supplier' }
+      { path: '/users', goto: '/products' },
+      { path: '/categories', goto: '/products' }
     ]
 
     adminRoutes.forEach(route => {
@@ -73,18 +73,45 @@ export const UserContextProvider = ({ children }) => {
       })
   }
 
+  const verifyTokenPath = () => {
+    const session = getSessionCookie()
+    return `
+      query{
+        verifyToken(token: "${session.login.token}") {
+          _id
+          username
+          token
+          role
+        }
+      }
+    `
+  }
+
   const userValue = {
     userContext,
     userRole: (userContext.login || {}).role,
     login,
     checkLogin: () => {
-      if (userContext.login === undefined) {
-        history.push({ pathname: '/' })
-      } else if (history.location.pathname === '/') {
-        history.push({ pathname: '/products' })
-      } else if (userContext.login.role !== 'admin') {
-        checkAdminRoute(history.location.pathname)
-      }
+      request(verifyTokenPath())
+        .then(res => {
+          const { data, errors } = res.data
+          const { verifyToken } = data
+          if (!errors) {
+            setSessionCookie({ login: verifyToken })
+            setUserContext({ login: verifyToken })
+
+            if (verifyToken === undefined) {
+              history.push({ pathname: '/' })
+            } else if (verifyToken === '/') {
+              history.push({ pathname: '/products' })
+            } else if (verifyToken.role !== 'admin') {
+              checkAdminRoute(history.location.pathname)
+            }
+          } else {
+            openSnackbar('Session Expired', 'error')
+            history.push({ pathname: '/' })
+          }
+        })
     },
     logout: () => {
       setUserContext({})

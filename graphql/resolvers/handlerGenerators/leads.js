@@ -49,12 +49,12 @@ async function readMessage(args) {
       { _id },
       { read },
       {new: true},
-      (error, user) => {
+      (error, lead) => {
 
         if (error){
           throw error
         } else {
-          user.save()
+          lead.save()
         }
       }
     )
@@ -74,12 +74,12 @@ async function replied(args) {
       { _id },
       { replied },
       {new: true},
-      (error, user) => {
+      (error, lead) => {
 
         if (error){
           throw error
         } else {
-          user.save()
+          lead.save()
         }
       }
     )
