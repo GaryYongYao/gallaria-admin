@@ -77,7 +77,7 @@ export const UserContextProvider = ({ children }) => {
     const session = getSessionCookie()
     return `
       query{
-        verifyToken(token: "${session.login.token}") {
+        verifyToken(token: "${session?.login?.token}") {
           _id
           username
           token
