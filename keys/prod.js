@@ -6,5 +6,7 @@ module.exports = {
   s3Bucket: process.env.S3_BUCKET,
   awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
   awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
-  buildHook: process.env.BUILD_HOOK
+  buildHook: process.env.BUILD_HOOK,
+  gravityUser: process.env.GRAVITY_USER,
+  gravityPassword: process.env.GRAVITY_PASSWORD
 };
