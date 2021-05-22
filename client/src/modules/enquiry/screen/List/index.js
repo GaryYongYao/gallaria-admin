@@ -13,45 +13,45 @@ function EnquiryListScreen() {
   const [isOpen, setIsOpen] = useState(false)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const { openSnackbar } = useContext(SnackbarContext)
-  const [users, setUsers] = useState([])
+  const [enquiries, setEnquiries] = useState([])
   const [display, setDisplay] = useState([])
   const [list, setList] = useState(0)
 
   useEffect(() => {
-    getLeads()
+    getEnquiries()
     // eslint-disable-next-line
   }, [])
 
-  const getLeads = () => {
+  const getEnquiries = () => {
     request(queryGetEnquiries)
       .then(res => {
-        const { getLeads, errors } = res.data.data
+        const { getEnquiries, errors } = res.data.data
         if (errors) {
           openSnackbar(
             errors.message,
             'error'
           )
         }
-        if (getLeads) {
-          setUsers(getLeads)
+        if (getEnquiries) {
+          setEnquiries(getEnquiries)
         }
       })
   }
 
   useEffect(() => {
     setDisplayList()
-  }, [users])
+  }, [enquiries])
 
   const setDisplayList = () => {
     let newDisplay = []
     if (list === 0) {
-      newDisplay = users.filter(u => !u.read)
+      newDisplay = enquiries.filter(u => !u.read)
     }
     if (list === 1) {
-      newDisplay = users.filter(u => (u.read && !u.replied))
+      newDisplay = enquiries.filter(u => (u.read && !u.replied))
     }
     if (list === 2) {
-      newDisplay = users.filter(u => (u.read && u.replied))
+      newDisplay = enquiries.filter(u => (u.read && u.replied))
     }
     setDisplay(newDisplay)
   }
@@ -64,9 +64,9 @@ function EnquiryListScreen() {
     if (chosen.read) return
     request(mutationReadMessage, {id: chosen._id, read: true})
       .then(res => {
-        const { readMessage } = res.data.data
-        openSnackbar(readMessage, 'success')
-        getLeads()
+        const { readEnquiry } = res.data.data
+        openSnackbar(readEnquiry, 'success')
+        getEnquiries()
         setChosen({})
         setIsOpen(false)
       })
@@ -86,9 +86,9 @@ function EnquiryListScreen() {
     })
     request(mutationReplied, {id: chosen._id, replied: checked})
       .then(res => {
-        const { replied } = res.data.data
-        openSnackbar(replied, 'success')
-        getLeads()
+        const { repliedEnquiry } = res.data.data
+        openSnackbar(repliedEnquiry, 'success')
+        getEnquiries()
         setChosen({})
         setIsOpen(false)
       })
@@ -100,12 +100,12 @@ function EnquiryListScreen() {
       })
   }
 
-  const deleteLead = () => {
+  const deleteEnquiry = () => {
     request(mutationDeleteEnquiry, { id: chosen._id })
       .then(res => {
-        const { deleteLead } = res.data.data
-        openSnackbar(deleteLead, 'success')
-        getLeads()
+        const { deleteEnquiry } = res.data.data
+        openSnackbar(deleteEnquiry, 'success')
+        getEnquiries()
         setChosen({})
         setIsAlertOpen(false)
       })
@@ -159,7 +159,7 @@ function EnquiryListScreen() {
         open={isAlertOpen}
         title={`Delete message`}
         text={`Do you want to delete this message?`}
-        confirmClick={deleteLead}
+        confirmClick={deleteEnquiry}
         handleModalOpen={setIsAlertOpen}
       />
     </>

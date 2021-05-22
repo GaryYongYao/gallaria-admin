@@ -9,8 +9,8 @@ async function getEnquiries() {
       ...enquiry._doc,
       products: enquiry.products.map(product => ({
         info: {
-          name: product?.info?.name,
-          price: product?.info?.price
+          name: (product.info || {}).name,
+          price: (product.info || {}).price
         },
         variant: product.variant,
         quantity: product.quantity

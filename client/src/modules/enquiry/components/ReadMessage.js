@@ -6,7 +6,8 @@ import {
   DialogContentText,
   DialogActions,
   Divider,
-  FormControlLabel
+  FormControlLabel,
+  Grid
 } from '@material-ui/core'
 import moment from 'moment'
 
@@ -17,16 +18,27 @@ const ReadMessage = ({ chosen, isOpen, read, closeEdit, setReplied }) => (
     aria-labelledby="alert-dialog-title"
     aria-describedby="alert-dialog-description"
   >
-    <DialogContent style={{ minWidth: '400px' }}>
+    <DialogContent style={{ minWidth: '500px' }}>
       <DialogContentText>
-        <b>From {chosen.name}</b>
-      </DialogContentText>
-      <DialogContentText>
-        <b>Company name: </b>{chosen.company}
+        {moment(chosen.createdDate).format('DD/MM/YYYY (ddd) hh:mm A')}
       </DialogContentText>
       <Divider />
       <DialogContentText>
-        {moment(chosen.createdDate).format('DD/MM/YYYY (ddd) hh:mm A')}
+        <Grid container spacing={0}>
+          <Grid item xs={6}>
+            <b>From {chosen.name}</b>
+          </Grid>
+          <Grid item xs={6}>
+            <b style={{ textTransform: 'capitalize' }}>Profile: {chosen.profile}</b>
+          </Grid>
+          <Grid item xs={6}>
+            <b>Company name: </b>{chosen.company}
+          </Grid>
+        </Grid>
+      </DialogContentText>
+      <Divider />
+      <DialogContentText>
+        <b>Subject: </b>{chosen.subject}
       </DialogContentText>
       <Divider />
       <DialogContentText>
@@ -38,6 +50,38 @@ const ReadMessage = ({ chosen, isOpen, read, closeEdit, setReplied }) => (
       <Divider />
       <DialogContentText>
         {chosen.message}
+      </DialogContentText>
+      <Divider />
+      <DialogContentText>
+        <Grid container spacing={1} style={{ marginBottom: '15px' }}>
+          <Grid xs={1} />
+          <Grid xs={6}>
+            <b>PRODUCT</b>
+          </Grid>
+          <Grid xs={3}>
+            <b>UNIT PRICE</b>
+          </Grid>
+          <Grid xs={2} style={{ textAlign: 'right' }}>
+            <b>QUANTITY</b>
+          </Grid>
+        </Grid>
+        <div>
+          {chosen.products?.map((product, i) => (
+            <Grid container spacing={1} style={{ marginBottom: '15px' }}>
+              <Grid xs={1}>{i + 1}</Grid>
+              <Grid xs={6}>
+                <div>
+                  <b>{product.info.name}</b>
+                </div>
+                <div>
+                  {product.variant}
+                </div>
+              </Grid>
+              <Grid xs={3}>AUD ${product.info.price}</Grid>
+              <Grid xs={2} style={{ textAlign: 'right' }}>{product.quantity}</Grid>
+            </Grid>
+          ))}
+        </div>
       </DialogContentText>
       <Divider />
     </DialogContent>
