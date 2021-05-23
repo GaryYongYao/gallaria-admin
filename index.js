@@ -37,7 +37,7 @@ app.use(
   })
 );
 
-app.post('/checkout', async (req, res) => {
+app.post('/api/checkout', async (req, res) => {
   const { line_items, email } = req.body
   const session = await stripe.checkout.sessions.create({
     billing_address_collection: 'auto',
