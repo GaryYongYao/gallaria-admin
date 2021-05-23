@@ -34,24 +34,6 @@ async function submitContact(args) {
       message
     }, (err, ) => { if (err) throw err })
 
-    APIRequest('POST', '/entries', {
-      form_id: '3',
-      is_starred: '0',
-      is_read: '0',
-      source_url: 'https://www.gallaria.com.au/',
-      status: 'active',
-      '1': name,
-      '2': email,
-      '3': phone,
-      '4': company,
-      '5': message
-    })
-      .then(({ data }) => {
-        APIRequest('POST', `/entries/${data.id}/notifications`)
-          .catch(err => { throw err })
-      })
-      .catch(err => { throw err })
-
     lead.save()
     return 'Thank you for your enquiry, we will talk to you shortly.'
   }

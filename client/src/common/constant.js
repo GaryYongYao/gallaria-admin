@@ -5,7 +5,8 @@ import {
   List as CategoryIcon,
   People as UserIcon,
   Storefront as ShowroomIcon,
-  InsertComment as EnquiryIcon
+  InsertComment as EnquiryIcon,
+  ShoppingCart as OrdersIcon
 } from '@material-ui/icons'
 
 export const options = {
@@ -25,6 +26,7 @@ export const menu = [
   { text: 'Customer Management' },
   { icon: <LeadsIcon />, text: 'Manage Leads', link: '/leads' },
   { icon: <EnquiryIcon />, text: 'Manage Enquiry', link: '/enquiries' },
+  { icon: <OrdersIcon />, text: 'Manage Orders (Stripe)', link: 'https://dashboard.stripe.com/payments?status%5B%5D=successful', target: '_blank' },
   { divider: true, text: 'divider2', admin: true },
   { text: 'Settings Management', admin: true },
   { icon: <CategoryIcon />, text: 'Manage Categories', link: '/categories', admin: true },

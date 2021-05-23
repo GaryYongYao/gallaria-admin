@@ -60,7 +60,10 @@ const DashLayout = ({ children }) => {
         <ListItem
           button
           key={e.text}
-          onClick={() => history.push({ pathname: e.link })}
+          onClick={() => {
+            if (!e.target) history.push({ pathname: e.link })
+            else window.open( e.link, '_blank')
+          }}
         >
           <ListItemIcon>{e.icon}</ListItemIcon>
           <ListItemText primary={e.text} />
@@ -104,7 +107,7 @@ const DashLayout = ({ children }) => {
         open={isOpen}
         onClose={() => setIsOpen(false)}
       >
-        <Box width="250px">
+        <Box width="300px">
           <List>
             {menu.map(e => (
               (!e.admin || (e.admin && userRole === 'admin'))

@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { renameFile, renameFiles, deleteFile } = require('../../../utils/fileUpload')
+const { renameFiles, deleteFile } = require('../../../utils/fileUpload')
 const Products = require('../../../models/products')
 const keys = require('../../../keys')
 

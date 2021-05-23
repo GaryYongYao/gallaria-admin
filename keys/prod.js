@@ -8,5 +8,10 @@ module.exports = {
   awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
   buildHook: process.env.BUILD_HOOK,
   gravityUser: process.env.GRAVITY_USER,
-  gravityPassword: process.env.GRAVITY_PASSWORD
+  gravityPassword: process.env.GRAVITY_PASSWORD,
+  stripePublic: process.env.STRIPE_PUBLIC,
+  stripeSecret: process.env.STRIPE_SECRET,
+  mediaBaseURL: process.env.MEDIA_BASE_URL,
+  successLink: process.env.SUCCESS_LINK,
+  cancelLink: process.env.CANCEL_LINK
 };
