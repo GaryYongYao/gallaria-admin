@@ -1,23 +1,8 @@
 const Feature = require('../../../models/feature')
-const Products = require('../../../models/products')
 
 async function getFeaturedAdmin() {
   try {
     const feature = await Feature.find().populate(['product']).limit(11)
-    
-    let products = await Products
-    .find({ isFeature: true })
-    .sort({ createdDate: -1 })
-    .limit(11)
-
-    await products.forEach(product => {
-      console.log(product._id)
-      const feature = new Feature({
-        product: product._id
-      }, (err, ) => { if (err) throw err })
-  
-      feature.save()
-    })
 
     return feature
   }
