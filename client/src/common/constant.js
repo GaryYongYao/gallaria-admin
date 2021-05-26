@@ -1,4 +1,5 @@
 import {
+  Dashboard as DashboardIcon,
   ViewList as ProductsIcon,
   Description as ProjectIcon,
   ContactMail as LeadsIcon,
@@ -18,16 +19,19 @@ export const options = {
 }
 
 export const menu = [
+  { text: 'Dashboard' },
+  { icon: <DashboardIcon />, text: 'Homepaga & Featured', link: '/dashboard' },
+  { divider: true, text: 'divider1' },
   { text: 'Content Management' },
   { icon: <ProductsIcon />, text: 'Manage Products', link: '/products' },
   { icon: <ProjectIcon />, text: 'Manage Projects', link: '/projects' },
   { icon: <ShowroomIcon />, text: 'Manage Showrooms', link: '/showrooms' },
-  { divider: true, text: 'divider1' },
+  { divider: true, text: 'divider2' },
   { text: 'Customer Management' },
   { icon: <LeadsIcon />, text: 'Manage Leads', link: '/leads' },
   { icon: <EnquiryIcon />, text: 'Manage Enquiry', link: '/enquiries' },
   { icon: <OrdersIcon />, text: 'Manage Orders (Stripe)', link: 'https://dashboard.stripe.com/payments?status%5B%5D=successful', target: '_blank' },
-  { divider: true, text: 'divider2', admin: true },
+  { divider: true, text: 'divider3', admin: true },
   { text: 'Settings Management', admin: true },
   { icon: <CategoryIcon />, text: 'Manage Categories', link: '/categories', admin: true },
   { icon: <UserIcon />, text: 'Manage Users', link: '/users', admin: true }

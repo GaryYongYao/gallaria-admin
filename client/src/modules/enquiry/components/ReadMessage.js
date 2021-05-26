@@ -54,14 +54,14 @@ const ReadMessage = ({ chosen, isOpen, read, closeEdit, setReplied }) => (
       <Divider />
       <DialogContentText>
         <Grid container spacing={1} style={{ marginBottom: '15px' }}>
-          <Grid xs={1} />
-          <Grid xs={6}>
+          <Grid item xs={1} />
+          <Grid item xs={6}>
             <b>PRODUCT</b>
           </Grid>
-          <Grid xs={3}>
+          <Grid item xs={3}>
             <b>UNIT PRICE</b>
           </Grid>
-          <Grid xs={2} style={{ textAlign: 'right' }}>
+          <Grid item xs={2} style={{ textAlign: 'right' }}>
             <b>QUANTITY</b>
           </Grid>
         </Grid>

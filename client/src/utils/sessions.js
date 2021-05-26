@@ -29,8 +29,8 @@ export const UserContextProvider = ({ children }) => {
 
   const checkAdminRoute = path => {
     const adminRoutes = [
-      { path: '/users', goto: '/products' },
-      { path: '/categories', goto: '/products' }
+      { path: '/users', goto: '/dashboard' },
+      { path: '/categories', goto: '/dashboard' }
     ]
 
     adminRoutes.forEach(route => {
@@ -68,7 +68,7 @@ export const UserContextProvider = ({ children }) => {
         if (!errors) {
           setSessionCookie({ login })
           setUserContext({ login })
-          history.push({ pathname: '/products' })
+          history.push({ pathname: '/dashboard' })
         }
       })
   }
@@ -103,7 +103,7 @@ export const UserContextProvider = ({ children }) => {
             if (verifyToken === undefined) {
               history.push({ pathname: '/' })
             } else if (verifyToken === '/') {
-              history.push({ pathname: '/products' })
+              history.push({ pathname: '/dashboard' })
             } else if (verifyToken.role !== 'admin') {
               checkAdminRoute(history.location.pathname)
             }

@@ -4,6 +4,7 @@ import theme from 'common/theme'
 import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snackbar'
 import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
+import Dashboard from 'modules/dashboard'
 import CategoriesRoute from './routes/categories'
 import EnquiriesRoute from './routes/enquiry'
 import LeadsRoute from './routes/leads'
@@ -23,6 +24,7 @@ function App() {
             <Switch>
               <UserContextProvider>
                 <Route exact path="/" component={LoginScreen} />
+                <Route exact path="/dashboard" component={Dashboard} />
                 <UserRoute />
                 <ProductsRoute />
                 <ProjectsRoute />

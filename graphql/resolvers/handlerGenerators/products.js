@@ -48,7 +48,6 @@ async function getRecommendedProducts(args) {
       .find({ isFeature: true, code: { $ne: args.code }, isDraft: false })
       .sort({ createdDate: -1 })
       .limit(4)
-      if (!products) throw new Error('Products not found')
     }
 
     return products
@@ -64,7 +63,6 @@ async function getFeatureProducts() {
     .find({ isFeature: true })
     .sort({ createdDate: -1 })
     .limit(11)
-    if (!products) throw new Error('Products not found')
 
     return products
   }
