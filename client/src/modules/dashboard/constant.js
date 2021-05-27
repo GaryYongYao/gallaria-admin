@@ -49,14 +49,37 @@ export const queryGetLeads = `
   }
 `
 
+export const queryGetProducts = `
+query {
+  getProducts {
+    _id
+    code
+    name
+  }
+}
+`
+
 export const queryGetFeatured = `
   query {
     getFeaturedAdmin {
       _id
       product {
+        _id
         code
         name
       }
     }
+  }
+`
+
+export const mutationAddFeature = `
+  mutation addFeature( $id:ID! ) {
+    addFeature( _id: $id )
+  }
+`
+
+export const mutationDeleteFeature = `
+  mutation deleteFeature( $id:ID! ) {
+    deleteFeature( _id: $id )
   }
 `

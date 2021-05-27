@@ -375,11 +375,6 @@ function ProductAddScreen() {
                   }}
                 >
                   <FormControlLabel
-                    control={<Switch checked={values.isFeature} onChange={setSwitch} name="isFeature" color="primary" />}
-                    label="Feature Product"
-                    labelPlacement="start"
-                  />
-                  <FormControlLabel
                     control={<Switch checked={values.forSale} onChange={setSwitch} name="forSale" color="primary" />}
                     label="Allow Purchase"
                     labelPlacement="start"

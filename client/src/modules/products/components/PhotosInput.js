@@ -15,7 +15,7 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, invalidCode, posting, setPosting, setText, setArray }) {
+function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, posting, setPosting, setText, setArray }) {
   const { openSnackbar } = useContext(SnackbarContext)
   const [selected, setSelected] = useState(primaryImage ? primaryImage : '')
 
@@ -31,6 +31,22 @@ function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, inva
       setText({
         target: {
           name: 'primaryImage',
+          value: ''
+        }
+      })
+    }
+
+    if(!featureImage || (!(images.includes(featureImage)) && images.length > 0)) {
+      setText({
+        target: {
+          name: 'featureImage',
+          value: images[0]
+        }
+      })
+    } else if (images.length < 1 && featureImage) {
+      setText({
+        target: {
+          name: 'featureImage',
           value: ''
         }
       })
@@ -212,6 +228,7 @@ function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, inva
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="primary"
                     checked={primaryImage === selected}
                     disabled={selected.includes('mp4')}
                     onChange={() => {
@@ -229,8 +246,8 @@ function PhotoInputs({ images, primaryImage, featureImage, isFeature, code, inva
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="primary"
                     checked={featureImage === selected}
-                    disabled={!isFeature}
                     onChange={() => {
                       setText({
                         target: {
