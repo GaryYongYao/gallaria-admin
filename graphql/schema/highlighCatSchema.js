@@ -1,24 +1,16 @@
 const highlighCatSchema = `
 type CatHighlight {
+  _id: ID
   title: String
   subtitle: String
-  cat: [CatHighlightItem]
-}
-
-type CatHighlightItem {
-  photo: String
-  id: Category
+  cat: [String]
 }
 
 input CatHighlightInput {
+  _id: ID
   title: String
   subtitle: String
-  cat: [CatHighlightItemInput]
-}
-
-input CatHighlightItemInput {
-  photo: String
-  id: String
+  cat: [String]
 }
 `
 

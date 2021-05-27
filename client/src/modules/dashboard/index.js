@@ -13,15 +13,17 @@ function UserListScreen() {
     <>
       <DashboardLayout>
         <StatsSection />
+        <FeaturedSection />
+        <div style={{ marginBottom: '20px' }} />
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <HighlightOne />
-            <HighlightTwo />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FeaturedSection />
+            <HighlightTwo />
           </Grid>
         </Grid>
+        <div style={{ marginBottom: '50px' }} />
       </DashboardLayout>
     </>
   )

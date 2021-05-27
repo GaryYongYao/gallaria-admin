@@ -83,3 +83,20 @@ export const mutationDeleteFeature = `
     deleteFeature( _id: $id )
   }
 `
+
+export const queryGetCatHighlight = `
+  query {
+    getCatHighlight {
+      _id
+      title
+      subtitle
+      cat
+    }
+  }
+`
+
+export const mutationUpdateCatHighlight = `
+  mutation updateCatHighlight($catHighlightInput: CatHighlightInput) {
+    updateCatHighlight( catHighlightInput: $catHighlightInput )
+  }
+`

@@ -52,7 +52,7 @@ const HighlightTwo = () => {
         />
 
         <Box display="flex" pt={2}>
-          <Typography variant="h6">Feature Section One</Typography>
+          <Typography variant="h6">Feature Section Two</Typography>
         </Box>
 
         <Box display="flex" pt={2} mb={2}>
