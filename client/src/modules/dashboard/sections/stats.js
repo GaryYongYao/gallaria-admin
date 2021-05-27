@@ -33,7 +33,6 @@ function StatsSection() {
         if (errors) openSnackbar( errors.message, 'error' )
 
         const filteredEnquiries = getEnquiries.filter(item => !item.read)
-        console.log(filteredEnquiries)
         setEnquiry(filteredEnquiries.length)
       })
   }

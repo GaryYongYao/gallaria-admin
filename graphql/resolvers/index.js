@@ -3,6 +3,7 @@ const authHandlers = require('./handlerGenerators/auth')
 const categoriesHandlers = require('./handlerGenerators/categories')
 const enquiryHandlers = require('./handlerGenerators/enquiry')
 const featureHandlers = require('./handlerGenerators/feature')
+const highlightCatHandlers = require('./handlerGenerators/highlightCat')
 const leadsHandlers = require('./handlerGenerators/leads')
 const locationsHandlers = require('./handlerGenerators/locations')
 const productHandlers = require('./handlerGenerators/products')
@@ -13,6 +14,7 @@ module.exports = {
   ...categoriesHandlers,
   ...enquiryHandlers,
   ...featureHandlers,
+  ...highlightCatHandlers,
   ...leadsHandlers,
   ...locationsHandlers,
   ...productHandlers,

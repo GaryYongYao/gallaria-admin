@@ -51,7 +51,6 @@ function FeatureProducts() {
       })
       return !(index > -1)
     })
-    console.log(filtered)
     setAvailableProduct(filtered)
     // eslint-disable-next-line
   }, [isOpen])
