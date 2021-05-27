@@ -1,4 +1,6 @@
+const axios = require('axios')
 const Feature = require('../../../models/feature')
+const keys = require('../../../keys')
 
 async function getFeaturedAdmin() {
   try {
@@ -52,6 +54,8 @@ async function addFeature(args) {
     }, (err, ) => { if (err) throw err })
 
     feature.save()
+    await axios.post(keys.buildHook)
+
     return 'Product added.'
   }
   catch(err) {
@@ -69,6 +73,7 @@ async function deleteFeature(args) {
         }
       }
     )
+    await axios.post(keys.buildHook)
 
     return 'Product Removed'
   }
