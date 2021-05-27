@@ -13,31 +13,6 @@ async function getCatHighlight() {
   }
 }
 
-async function createCatHighlight() {
-  try {
-    //retrieve values from arguments
-
-    const highlightCat = new HighlightCat({
-      title: 'INTELLIGENT BATHROOMS BY GALLARIA',
-      subtitle: 'Hygiene and comfort evolved',
-      cat: [{
-        id: 'Wall Hung Pan',
-        photo: 'featureCatImg/wall-pan.png'
-      },{
-        id: 'Floor Pan',
-        photo: 'featureCatImg/floor-pan.png'
-      }]
-    }, (err, ) => { if (err) throw err })
-
-    highlightCat.save()
-
-    return 'Product added.'
-  }
-  catch(err) {
-    throw err
-  }
-}
-
 async function updateCatHighlight(args) {
   try {
     const {
@@ -70,6 +45,5 @@ async function updateCatHighlight(args) {
 
 module.exports = {
   getCatHighlight,
-  createCatHighlight,
   updateCatHighlight
 }

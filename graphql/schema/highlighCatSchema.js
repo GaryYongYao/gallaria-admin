@@ -27,7 +27,6 @@ getCatHighlight: [CatHighlight]
 `
 
 const highlighCatMutation = `
-createCatHighlight: String
 updateCatHighlight(catHighlightInput: CatHighlightInput): String
 `
 
