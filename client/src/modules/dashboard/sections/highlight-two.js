@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   IconButton,
   TextField,
@@ -21,6 +22,7 @@ import request from 'utils/request'
 import { queryGetProductHighlight, queryGetProducts, mutationUpdateProductHighlight } from '../constant'
 
 const HighlightTwo = () => {
+  const [posting, setPosting] = useState(false)
   const [id, setId] = useState('')
   const [title, setTitle] = useState('')
   const [subtitle, setSubtitle] = useState('')
@@ -45,6 +47,7 @@ const HighlightTwo = () => {
   }, [])
 
   const getData = () => {
+    setPosting(true)
     request(queryGetProductHighlight)
       .then(res => {
         const { getProductHighlight, errors } = res.data.data
@@ -55,11 +58,13 @@ const HighlightTwo = () => {
         setProdOne(data.products[0]._id)
         setProdTwo(data.products[1]._id)
         setProdThree(data.products[2]._id)
+        setPosting(false)
         if (errors) openSnackbar( errors.message, 'error' )
       })
   }
   
   const updateHighlightProduct = () => {
+    setPosting(true)
     request(mutationUpdateProductHighlight, {
       productHighlightInput: {
         _id: id,
@@ -72,18 +77,21 @@ const HighlightTwo = () => {
         const { updateProductHighlight } = res.data.data
         openSnackbar(updateProductHighlight, 'success')
         getData()
+        setPosting(false)
       })
       .catch(err => {
         openSnackbar(
           err.message,
           'error'
         )
+        setPosting(false)
       })
   }
 
   const handleUploadVideo = (file) => {
 
     if (file) {
+      setPosting(true)
       const fileFormatName = 'feature-video-2'
       const upload = new FormData()
       
@@ -98,12 +106,13 @@ const HighlightTwo = () => {
           } else {
             openSnackbar('Upload Success', 'success')
           }
+          setPosting(false)
         })
     }
   }
 
   return (
-    <Grid container spacing={2} style={{ border: '1px solid #707070', borderRadius: '10px' }}>
+    <Grid container spacing={2} style={{ border: '1px solid #707070', borderRadius: '10px', marginBottom: '30px' }}>
       <Grid item xs={12} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
         <input
           accept="video/mp4"
@@ -120,16 +129,19 @@ const HighlightTwo = () => {
         </Box>
 
         <Box display="flex" pt={2} mb={2}>
-          <Typography variant="body1"><b>Video: </b></Typography>
+          <Typography variant="body1"><b>Video:&nbsp;</b></Typography>
           <a href={`${mediaBaseURL}featureCatVideo/feature-video-2.mp4`} target="_blank">
             Preview featureCatVideo/feature-video-2.mp4
           </a>
-          <label htmlFor="video-button-two" style={{ marginLeft: 'auto' }}>
-            <IconButton color="primary" aria-label="Upload Video" component="span" style={{ padding: 0 }}>
-              <UploadIcon />
-            </IconButton>
-            Upload Video
-          </label>
+          {posting && <CircularProgress size={14} style={{ marginLeft: 'auto' }} />}
+          {!posting && (
+            <label htmlFor="video-button-two" style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+              <IconButton color="primary" aria-label="Upload Video" component="span" style={{ padding: 0 }}>
+                <UploadIcon />
+              </IconButton>
+              Upload Video
+            </label>
+          )}
         </Box>
 
         <Box display="flex" pt={2}>
@@ -203,6 +215,7 @@ const HighlightTwo = () => {
 
         <Box textAlign="right">
           <Button
+            disabled={posting}
             variant="contained"
             color="primary"
             onClick={updateHighlightProduct}

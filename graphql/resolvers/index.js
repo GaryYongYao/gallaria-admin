@@ -5,6 +5,7 @@ const enquiryHandlers = require('./handlerGenerators/enquiry')
 const featureHandlers = require('./handlerGenerators/feature')
 const highlightCatHandlers = require('./handlerGenerators/highlightCat')
 const highlightProductHandlers = require('./handlerGenerators/highlightProduct')
+const landingMediaHandlers = require('./handlerGenerators/landingMedia')
 const leadsHandlers = require('./handlerGenerators/leads')
 const locationsHandlers = require('./handlerGenerators/locations')
 const productHandlers = require('./handlerGenerators/products')
@@ -17,6 +18,7 @@ module.exports = {
   ...featureHandlers,
   ...highlightCatHandlers,
   ...highlightProductHandlers,
+  ...landingMediaHandlers,
   ...leadsHandlers,
   ...locationsHandlers,
   ...productHandlers,

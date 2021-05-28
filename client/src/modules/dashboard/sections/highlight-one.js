@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   IconButton,
   TextField,
@@ -17,6 +18,7 @@ import request from 'utils/request'
 import { queryGetCatHighlight, mutationUpdateCatHighlight } from '../constant'
 
 const HighlightOne = () => {
+  const [posting, setPosting] = useState(false)
   const [id, setId] = useState('')
   const [title, setTitle] = useState('')
   const [subtitle, setSubtitle] = useState('')
@@ -29,6 +31,7 @@ const HighlightOne = () => {
   }, [])
 
   const getData = () => {
+    setPosting(true)
     request(queryGetCatHighlight)
       .then(res => {
         const { getCatHighlight, errors } = res.data.data
@@ -38,11 +41,13 @@ const HighlightOne = () => {
         setSubtitle(data.subtitle)
         setCatOne(data.cat[0])
         setCatTwo(data.cat[1])
+        setPosting(false)
         if (errors) openSnackbar( errors.message, 'error' )
       })
   }
   
   const updateHighlightCat = () => {
+    setPosting(true)
     request(mutationUpdateCatHighlight, {
       catHighlightInput: {
         _id: id,
@@ -55,18 +60,21 @@ const HighlightOne = () => {
         const { updateCatHighlight } = res.data.data
         openSnackbar(updateCatHighlight, 'success')
         getData()
+        setPosting(false)
       })
       .catch(err => {
         openSnackbar(
           err.message,
           'error'
         )
+        setPosting(false)
       })
   }
 
   const handleUploadVideo = (file) => {
 
     if (file) {
+      setPosting(true)
       const fileFormatName = 'feature-video-1'
       const upload = new FormData()
       
@@ -82,12 +90,14 @@ const HighlightOne = () => {
           } else {
             openSnackbar('Upload Success', 'success')
           }
+          setPosting(false)
         })
     }
   }
   
   const handleUploadImage = (file, fileName) => {
     if (file) {
+      setPosting(true)
       const upload = new FormData()
       
       upload.append('file', file)
@@ -102,6 +112,7 @@ const HighlightOne = () => {
           } else {
             openSnackbar('Upload Success', 'success')
           }
+          setPosting(false)
         })
     }
   }
@@ -113,6 +124,7 @@ const HighlightOne = () => {
           accept="video/mp4"
           id="video-button-one"
           type="file"
+          disabled={posting}
           onChange={e => {
             handleUploadVideo(e.target.files[0])
           }}
@@ -123,6 +135,7 @@ const HighlightOne = () => {
           accept="image/png"
           id="cat-photo-one"
           type="file"
+          disabled={posting}
           onChange={e => {
             handleUploadImage(e.target.files[0], 'cat-one')
           }}
@@ -133,6 +146,7 @@ const HighlightOne = () => {
           accept="image/png"
           id="cat-photo-two"
           type="file"
+          disabled={posting}
           onChange={e => {
             handleUploadImage(e.target.files[0], 'cat-two')
           }}
@@ -144,42 +158,51 @@ const HighlightOne = () => {
         </Box>
 
         <Box display="flex" pt={2} mb={2}>
-          <Typography variant="body1"><b>Video: </b></Typography>
+          <Typography variant="body1"><b>Video:&nbsp;</b></Typography>
           <a href={`${mediaBaseURL}featureCatVideo/feature-video-1.mp4`} target="_blank">
             Preview featureCatVideo/feature-video-1.mp4
           </a>
-          <label htmlFor="video-button-one" style={{ marginLeft: 'auto' }}>
-            <IconButton color="primary" aria-label="Upload Video" component="span" style={{ padding: 0 }}>
-              <UploadIcon />
-            </IconButton>
-            Upload Video
-          </label>
+          {posting && <CircularProgress size={14} style={{ marginLeft: 'auto' }} />}
+          {!posting && (
+            <label htmlFor="video-button-one" style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+              <IconButton color="primary" aria-label="Upload Video" component="span" style={{ padding: 0 }}>
+                <UploadIcon />
+              </IconButton>
+              Upload Video
+            </label>
+          )}
         </Box>
 
         <Box display="flex" pt={2} mb={2}>
-          <Typography variant="body1"><b>Category One Photo: </b></Typography>
+          <Typography variant="body1"><b>Category One Photo:&nbsp;</b></Typography>
           <a href={`${mediaBaseURL}featureCatImg/cat-one.png`} target="_blank">
             Preview featureCatImg/cat-one.png
           </a>
-          <label htmlFor="cat-photo-one" style={{ marginLeft: 'auto' }}>
-            <IconButton color="primary" aria-label="Upload Image" component="span" style={{ padding: 0 }}>
-              <UploadIcon />
-            </IconButton>
-            Upload Image for Category One
-          </label>
+          {posting && <CircularProgress size={14} style={{ marginLeft: 'auto' }} />}
+          {!posting && (
+            <label htmlFor="cat-photo-one" style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+              <IconButton color="primary" aria-label="Upload Image" component="span" style={{ padding: 0 }}>
+                <UploadIcon />
+              </IconButton>
+              Upload Image for Category One
+            </label>
+          )}
         </Box>
 
         <Box display="flex" pt={2} mb={2}>
-          <Typography variant="body1"><b>Category Two Photo: </b></Typography>
+          <Typography variant="body1"><b>Category Two Photo:&nbsp;</b></Typography>
           <a href={`${mediaBaseURL}featureCatImg/cat-two.png`} target="_blank">
             Preview featureCatImg/cat-two.png
           </a>
-          <label htmlFor="cat-photo-two" style={{ marginLeft: 'auto' }}>
-            <IconButton color="primary" aria-label="Upload Image" component="span" style={{ padding: 0 }}>
-              <UploadIcon />
-            </IconButton>
-            Upload Image for Category Two
-          </label>
+          {posting && <CircularProgress size={14} style={{ marginLeft: 'auto' }} />}
+          {!posting && (
+            <label htmlFor="cat-photo-two" style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+              <IconButton color="primary" aria-label="Upload Image" component="span" style={{ padding: 0 }}>
+                <UploadIcon />
+              </IconButton>
+              Upload Image for Category Two
+            </label>
+          )}
         </Box>
 
         <Box display="flex" pt={2}>
@@ -224,6 +247,7 @@ const HighlightOne = () => {
         </Box>
         <Box textAlign="right">
           <Button
+            disabled={posting}
             variant="contained"
             color="primary"
             onClick={updateHighlightCat}

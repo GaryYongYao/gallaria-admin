@@ -5,6 +5,7 @@ import DashboardLayout from 'common/layout/dashboardLayout'
 import FeaturedSection from './sections/featuring'
 import StatsSection from './sections/stats'
 import HighlightOne from './sections/highlight-one'
+import LandingBackground from './sections/landing'
 import HighlightTwo from './sections/highlight-two'
 
 function UserListScreen() {
@@ -20,6 +21,7 @@ function UserListScreen() {
             <HighlightOne />
           </Grid>
           <Grid item xs={12} md={6}>
+            <LandingBackground />
             <HighlightTwo />
           </Grid>
         </Grid>

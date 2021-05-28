@@ -119,3 +119,18 @@ export const mutationUpdateProductHighlight = `
     updateProductHighlight( productHighlightInput: $productHighlightInput )
   }
 `
+
+export const queryGetLandingMedia = `
+  query {
+    getLandingMedia {
+      _id
+      media
+    }
+  }
+`
+
+export const mutationUpdateLandingMedia = `
+  mutation updateLandingMedia($landingMediaInput: LandingMediaInput) {
+    updateLandingMedia( landingMediaInput: $landingMediaInput )
+  }
+`
