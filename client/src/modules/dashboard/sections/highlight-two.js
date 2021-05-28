@@ -1,10 +1,15 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   Box,
+  Button,
   Grid,
   IconButton,
   TextField,
-  Typography
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@material-ui/core'
 import {
   Publish as UploadIcon
@@ -12,24 +17,79 @@ import {
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 import { mediaBaseURL } from 'utils'
+import request from 'utils/request'
+import { queryGetProductHighlight, queryGetProducts, mutationUpdateProductHighlight } from '../constant'
 
 const HighlightTwo = () => {
   const [id, setId] = useState('')
   const [title, setTitle] = useState('')
   const [subtitle, setSubtitle] = useState('')
+  const [prodOne, setProdOne] = useState('')
+  const [prodTwo, setProdTwo] = useState('')
+  const [prodThree, setProdThree] = useState('')
+  const [productOption, setProductOption] = useState([])
   const { openSnackbar } = useContext(SnackbarContext)
+
+  useEffect(() => {
+    getData()
+
+    request(queryGetProducts)
+      .then(res => {
+        const { getProducts, errors } = res.data.data
+        if (errors) openSnackbar(errors.message, 'error')
+        if (getProducts) {
+          setProductOption(getProducts)
+        }
+      })
+      .catch(err => openSnackbar(err.message, 'error'))
+  }, [])
+
+  const getData = () => {
+    request(queryGetProductHighlight)
+      .then(res => {
+        const { getProductHighlight, errors } = res.data.data
+        const data = getProductHighlight[0]
+        setId(data._id)
+        setTitle(data.title)
+        setSubtitle(data.subtitle)
+        setProdOne(data.products[0]._id)
+        setProdTwo(data.products[1]._id)
+        setProdThree(data.products[2]._id)
+        if (errors) openSnackbar( errors.message, 'error' )
+      })
+  }
+  
+  const updateHighlightProduct = () => {
+    request(mutationUpdateProductHighlight, {
+      productHighlightInput: {
+        _id: id,
+        title,
+        subtitle,
+        products: [ prodOne, prodTwo, prodThree ]
+      }
+    })
+      .then(res => {
+        const { updateProductHighlight } = res.data.data
+        openSnackbar(updateProductHighlight, 'success')
+        getData()
+      })
+      .catch(err => {
+        openSnackbar(
+          err.message,
+          'error'
+        )
+      })
+  }
 
   const handleUploadVideo = (file) => {
 
     if (file) {
-      setVideo('')
       const fileFormatName = 'feature-video-2'
       const upload = new FormData()
       
       upload.append('file', file)
       upload.append('fileName', fileFormatName)
       upload.append('bucketFolder', 'featureCatVideo')
-
 
       APIRequest('POST', '/api/file-upload', upload)
         .then(res => {
@@ -43,8 +103,8 @@ const HighlightTwo = () => {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
+    <Grid container spacing={2} style={{ border: '1px solid #707070', borderRadius: '10px' }}>
+      <Grid item xs={12} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
         <input
           accept="video/mp4"
           id="video-button-two"
@@ -92,6 +152,65 @@ const HighlightTwo = () => {
             fullWidth
           />
         </Box>
+
+        <Box display="flex" pt={2}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="products-one-options">Product 1</InputLabel>
+            <Select
+              labelId="products-one-options"
+              value={prodOne}
+              onChange={e => setProdOne(e.target.value)}
+              label="Product"
+            >
+              {productOption.map(item => (
+                <MenuItem value={item._id}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box display="flex" pt={2}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="products-two-options">Product 2</InputLabel>
+            <Select
+              labelId="products-two-options"
+              value={prodTwo}
+              onChange={e => setProdTwo(e.target.value)}
+              label="Product"
+            >
+              {productOption.map(item => (
+                <MenuItem value={item._id}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box display="flex" pt={2}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="products-three-options">Product 3</InputLabel>
+            <Select
+              labelId="products-three-options"
+              value={prodThree}
+              onChange={e => setProdThree(e.target.value)}
+              label="Product"
+            >
+              {productOption.map(item => (
+                <MenuItem value={item._id}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box textAlign="right">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={updateHighlightProduct}
+          >
+            SAVE
+          </Button>
+        </Box>
+        
       </Grid>
     </Grid>
   )

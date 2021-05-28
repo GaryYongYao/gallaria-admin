@@ -19,14 +19,14 @@ async function updateProductHighlight(args) {
       _id,
       title,
       subtitle,
-      cat
-    } = args.catHighlightInput; //retrieve values from arguments
+      products
+    } = args.productHighlightInput; //retrieve values from arguments
     
     const updatedHighlight= {
       _id,
       title,
       subtitle,
-      cat
+      products
     }
 
     const highlightProduct = await HighlightProduct.findByIdAndUpdate( 
@@ -36,7 +36,7 @@ async function updateProductHighlight(args) {
     )
     await axios.post(keys.buildHook)
 
-    return 'Updated'
+    return 'Updated Product Highlight.'
   }
   catch(err) {
     throw err

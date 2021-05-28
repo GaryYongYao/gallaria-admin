@@ -107,8 +107,8 @@ const HighlightOne = () => {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
+    <Grid container spacing={2} style={{ border: '1px solid #707070', borderRadius: '10px' }}>
+      <Grid item xs={12} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
         <input
           accept="video/mp4"
           id="video-button-one"

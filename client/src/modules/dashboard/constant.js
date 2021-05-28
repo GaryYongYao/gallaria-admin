@@ -100,3 +100,22 @@ export const mutationUpdateCatHighlight = `
     updateCatHighlight( catHighlightInput: $catHighlightInput )
   }
 `
+
+export const queryGetProductHighlight = `
+  query {
+    getProductHighlight {
+      _id
+      title
+      subtitle
+      products {
+        _id
+      }
+    }
+  }
+`
+
+export const mutationUpdateProductHighlight = `
+  mutation updateProductHighlight($productHighlightInput: ProductHighlightInput) {
+    updateProductHighlight( productHighlightInput: $productHighlightInput )
+  }
+`
