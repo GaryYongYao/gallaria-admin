@@ -3,6 +3,7 @@ import {
   Box,
   Grid,
   IconButton,
+  TextField,
   Typography
 } from '@material-ui/core'
 import {
@@ -13,6 +14,9 @@ import APIRequest from 'utils/API'
 import { mediaBaseURL } from 'utils'
 
 const HighlightTwo = () => {
+  const [id, setId] = useState('')
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
   const { openSnackbar } = useContext(SnackbarContext)
 
   const handleUploadVideo = (file) => {
@@ -68,8 +72,25 @@ const HighlightTwo = () => {
           </label>
         </Box>
 
-        <Box display="flex" pt={2} mb={2}>
-          <Typography variant="body1"><b>Title: </b></Typography>
+        <Box display="flex" pt={2}>
+          <TextField 
+            name="title"
+            label="Title"
+            variant="outlined"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Box display="flex" pt={2}>
+          <TextField 
+            name="subtitle"
+            label="Subtitle"
+            variant="outlined"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+            fullWidth
+          />
         </Box>
       </Grid>
     </Grid>

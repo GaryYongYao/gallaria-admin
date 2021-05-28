@@ -4,7 +4,7 @@ const keys = require('../../../keys')
 
 async function getCatHighlight() {
   try {
-    const feature = await HighlightCat.find().populate(['product']).limit(1)
+    const feature = await HighlightCat.find().limit(1)
 
     return feature
   }

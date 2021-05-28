@@ -15,7 +15,7 @@ function UserListScreen() {
         <StatsSection />
         <FeaturedSection />
         <div style={{ marginBottom: '20px' }} />
-        <Grid container spacing={2}>
+        <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
             <HighlightOne />
           </Grid>

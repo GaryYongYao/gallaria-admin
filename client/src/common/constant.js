@@ -20,7 +20,7 @@ export const options = {
 
 export const menu = [
   { text: 'Dashboard' },
-  { icon: <DashboardIcon />, text: 'Homepaga & Featured', link: '/dashboard' },
+  { icon: <DashboardIcon />, text: 'Homepage & Featured', link: '/dashboard' },
   { divider: true, text: 'divider1' },
   { text: 'Content Management' },
   { icon: <ProductsIcon />, text: 'Manage Products', link: '/products' },

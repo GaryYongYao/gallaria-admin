@@ -3,6 +3,7 @@ const { categoriesSchema, categoriesQuery, categoriesMutation } = require('./cat
 const { enquirySchema, enquiryQuery, enquiryMutation } = require('./enquiriesSchema')
 const { featureSchema, featureQuery, featureMutation } = require('./featureSchema')
 const { highlighCatSchema, highlighCatQuery, highlighCatMutation } = require('./highlighCatSchema')
+const { highlighProductSchema, highlighProductQuery, highlighProductMutation } = require('./highlightProductSchema')
 const { leadSchema, leadQuery, leadMutation } = require('./leadSchema')
 const { locationSchema, locationQuery, locationMutation } = require('./locationSchema')
 const { productsSchema, productsQuery, productsMutation } = require('./productsSchema')
@@ -14,6 +15,7 @@ ${categoriesSchema}
 ${enquirySchema}
 ${featureSchema}
 ${highlighCatSchema}
+${highlighProductSchema}
 ${leadSchema}
 ${locationSchema}
 ${productsSchema}
@@ -24,6 +26,7 @@ type RootQuery {
   ${enquiryQuery}
   ${featureQuery}
   ${highlighCatQuery}
+  ${highlighProductQuery}
   ${leadQuery}
   ${locationQuery}
   ${productsQuery}
@@ -35,6 +38,7 @@ type RootMutation {
   ${enquiryMutation}
   ${featureMutation}
   ${highlighCatMutation}
+  ${highlighProductMutation}
   ${leadMutation}
   ${locationMutation}
   ${productsMutation}
