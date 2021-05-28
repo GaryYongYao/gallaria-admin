@@ -13,25 +13,6 @@ async function getProductHighlight() {
   }
 }
 
-async function createProductHighlight() {
-  try {
-    //retrieve values from arguments
-
-    const highlightProduct = new HighlightProduct({
-      title: 'SMART DESIGN AND TECHNOLOGY HAS NEVER LOOKED BETTER',
-      subtitle: 'Discover the future of comfort plus cleanliness',
-      products: ['60b066e8ed18be00150e49c6', '6094e01c472fc40015f41ba9', '6090b5fed7731c00157f3f71']
-    }, (err, ) => { if (err) throw err })
-
-    highlightProduct.save()
-
-    return 'Product added.'
-  }
-  catch(err) {
-    throw err
-  }
-}
-
 async function updateProductHighlight(args) {
   try {
     const {
@@ -64,6 +45,5 @@ async function updateProductHighlight(args) {
 
 module.exports = {
   getProductHighlight,
-  createProductHighlight,
   updateProductHighlight
 }

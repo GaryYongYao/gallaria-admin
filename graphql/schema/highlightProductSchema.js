@@ -19,7 +19,6 @@ getProductHighlight: [ProductHighlight]
 `
 
 const highlighProductMutation = `
-createProductHighlight: String
 updateProductHighlight(productHighlightInput: ProductHighlightInput): String
 `
 
