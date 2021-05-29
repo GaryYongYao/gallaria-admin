@@ -8,7 +8,7 @@ import HighlightOne from './sections/highlight-one'
 import LandingBackground from './sections/landing'
 import HighlightTwo from './sections/highlight-two'
 
-function UserListScreen() {
+function Dashboard() {
 
   return (
     <>
@@ -31,4 +31,4 @@ function UserListScreen() {
   )
 }
 
-export default UserListScreen
+export default Dashboard

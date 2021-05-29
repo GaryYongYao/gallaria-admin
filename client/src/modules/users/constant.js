@@ -30,18 +30,19 @@ export const columns = [
 ]
 
 export const actions = (setChosen, setIsOpen, setIsAlertOpen, id) => [
-  {
-    icon: () => <EditIcon color="primary" />,
-    tooltip: 'Edit User',
+  rowData => ({
+    icon: () => <EditIcon color={rowData.username === 'dev-admin' ? "info" : "primary" } />,
+    tooltip: rowData.username === 'dev-admin' ? null : 'Edit User',
+    disabled: rowData.username === 'dev-admin',
     onClick: (e, data) => {
       setChosen(data)
       setIsOpen(true)
     }
-  },
+  }),
   rowData => ({
-    icon: () => <DeleteIcon color={id === rowData._id ? "info" : "error"} />,
-    tooltip: id === rowData._id ? null :'Delete User',
-    disabled: id === rowData._id,
+    icon: () => <DeleteIcon color={(rowData.username === 'dev-admin' || id === rowData._id) ? "info" : "error"} />,
+    tooltip: (rowData.username === 'dev-admin' || id === rowData._id) ? null : 'Delete User',
+    disabled: (rowData.username === 'dev-admin' || id === rowData._id),
     onClick: () => {
       setIsAlertOpen(true)
       setChosen(rowData)

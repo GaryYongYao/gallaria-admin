@@ -5,6 +5,7 @@ import { CustomSnackbar, SnackbarContextProvider } from 'common/components/Snack
 import { UserContextProvider } from 'utils/sessions'
 import LoginScreen from 'modules/login'
 import Dashboard from 'modules/dashboard'
+import HelpScreen from 'modules/help'
 import CategoriesRoute from './routes/categories'
 import EnquiriesRoute from './routes/enquiry'
 import LeadsRoute from './routes/leads'
@@ -25,6 +26,7 @@ function App() {
               <UserContextProvider>
                 <Route exact path="/" component={LoginScreen} />
                 <Route exact path="/dashboard" component={Dashboard} />
+                <Route exact path="/help" component={HelpScreen} />
                 <UserRoute />
                 <ProductsRoute />
                 <ProjectsRoute />

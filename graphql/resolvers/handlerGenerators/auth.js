@@ -163,8 +163,7 @@ async function verifyToken(args) {
   try {
     const decoded = jwt.verify(args.token, keys.tokenSecret)
     const user = await User.findOne({ _id: decoded.id })
-    const token = jwt.sign({ id: user._id }, keys.tokenSecret, { expiresIn: '14d'})
-    return { ...user._doc, token, password: null }
+    return { ...user._doc, password: null }
   }
   catch (err) {
     throw err

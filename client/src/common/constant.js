@@ -1,5 +1,6 @@
 import {
   Dashboard as DashboardIcon,
+  Help as HelpIcon,
   ViewList as ProductsIcon,
   Description as ProjectIcon,
   ContactMail as LeadsIcon,
@@ -34,5 +35,8 @@ export const menu = [
   { divider: true, text: 'divider3', admin: true },
   { text: 'Settings Management', admin: true },
   { icon: <CategoryIcon />, text: 'Manage Categories', link: '/categories', admin: true },
-  { icon: <UserIcon />, text: 'Manage Users', link: '/users', admin: true }
+  { icon: <UserIcon />, text: 'Manage Users', link: '/users', admin: true },
+  { divider: true, text: 'divider4' },
+  { text: 'Help' },
+  { icon: <HelpIcon />, text: 'Help & Links', link: '/help' },
 ]

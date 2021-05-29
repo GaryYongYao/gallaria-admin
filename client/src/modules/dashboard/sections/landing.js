@@ -90,7 +90,7 @@ const LandingBackground = () => {
         />
 
         <input
-          accept="image/*,video/mp4"
+          accept="image/*"
           id="background-two-upload"
           type="file"
           onChange={e => {

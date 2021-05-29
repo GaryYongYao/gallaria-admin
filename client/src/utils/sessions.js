@@ -92,13 +92,18 @@ export const UserContextProvider = ({ children }) => {
     userRole: (userContext.login || {}).role,
     login,
     checkLogin: () => {
+      const { login } = userContext
       request(verifyTokenPath())
         .then(res => {
           const { data, errors } = res.data
           const { verifyToken } = data
           if (!errors) {
-            setSessionCookie({ login: verifyToken })
-            setUserContext({ login: verifyToken })
+            const verified = {
+              ...verifyToken,
+              token: (login || {}).token
+            }
+            setSessionCookie({ login: verified })
+            setUserContext({ login: verified })
 
             if (verifyToken === undefined) {
               history.push({ pathname: '/' })
