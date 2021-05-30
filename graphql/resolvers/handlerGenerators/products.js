@@ -143,6 +143,7 @@ async function editProduct(args) {
     if (!existing) {
       throw new Error('Product not exists!')
     }
+    if (productNew.deletedFiles.length > 0) await productNew.deletedFiles.map(file => deleteFile(file))
     if (existing.code !== productNew.code) {
       const file = await renameFiles(productNew.file, existing.code, productNew.code)
       const images = await renameFiles(productNew.images, existing.code, productNew.code)

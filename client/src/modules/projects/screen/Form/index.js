@@ -47,6 +47,7 @@ function ProductAddScreen() {
   const { values, setText, setArray, setAll } = useForm(INITIAL_STATE)
   const [posting, setPosting] = useState(false)
   const [productOption, setProductOption] = useState([])
+  const [deletedFiles, setDeletedFiles] = useState([])
   const [selected, setSelected] = useState('')
   const { openSnackbar } = useContext(SnackbarContext)
   const { history, params } = useRoutes()
@@ -80,7 +81,11 @@ function ProductAddScreen() {
 
   const handleSubmit = (isDraft) => {
     setPosting(true)
-    
+
+    if (!isDraft && (values.photos.length > 0 || values.cover)) {
+      openSnackbar('Upload media to publish', 'error')
+      return
+    }
     const photos = (values.photos || []).filter(unique)
     const products = (values.products || []).filter(unique)
 
@@ -89,6 +94,7 @@ function ProductAddScreen() {
       photos,
       products,
       isDraft,
+      deletedFiles,
       justCreated: false,
       updatedBy: login._id
     }
@@ -152,26 +158,15 @@ function ProductAddScreen() {
   }
 
   const deleteCover = (key) => {
-    setPosting(true)
-    const formData = new FormData()
-    formData.append('key', key)
-
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          setText({
-            target: {
-              name: 'cover',
-              value: ''
-            }
-          })
-          document.getElementById('icon-button-cover').value = ''
-        }
-        setPosting(false)
-      })
+    const newDeleted = deletedFiles
+    newDeleted.push(key)
+    setDeletedFiles(newDeleted)
+    setText({
+      target: {
+        name: 'cover',
+        value: ''
+      }
+    })
   }
 
   const addProduct = () => {
@@ -415,6 +410,8 @@ function ProductAddScreen() {
                   posting={posting}
                   setPosting={setPosting}
                   setArray={setArray}
+                  deletedFiles={deletedFiles}
+                  setDeletedFiles={setDeletedFiles}
                 />
               </Box>
             </Box>

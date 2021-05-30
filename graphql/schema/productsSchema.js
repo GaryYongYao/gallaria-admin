@@ -73,6 +73,7 @@ input ProductUpdate {
   featureImage: String
   features: [String]
   isDraft: Boolean
+  deletedFiles:[String]
   updatedBy: ID!
 }
 `

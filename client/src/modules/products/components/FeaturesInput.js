@@ -13,7 +13,7 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function FeaturesInput({ features, code, invalidCode, posting, setPosting, setArray }) {
+function FeaturesInput({ features, code, invalidCode, posting, setPosting, setArray, deletedFiles, setDeletedFiles }) {
   const { openSnackbar } = useContext(SnackbarContext)
 
   const handleUploadImage = (file) => {
@@ -47,26 +47,17 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
     }
   }
 
-  const deleteFile = (key, i) => {
-    setPosting(true)
-    const formData = new FormData()
-    formData.append('key', key)
+  const deleteFile = (i) => {
+    const newFeatures = features
 
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          const newFeatures = features
-          newFeatures.splice(i, 1)
-          setArray(newFeatures, 'features')
-          document.getElementById('icon-button-feature').value = ''
-        }
-        setPosting(false)
-      })
+    if (!typeof features[i] === 'object') {
+      const newDeleted = deletedFiles
+      newDeleted.push(features[i])
+      setDeletedFiles(newDeleted)
+    }
+    newFeatures.splice(i, 1)
+    setArray(newFeatures, 'features')
   }
-
 
   const AddPhotoButton = () => (
     <>
@@ -147,7 +138,10 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
                 }}
               >
                 <IconButton
-                  onClick={() => deleteFile(feature, i)}
+                  onClick={e => {
+                    e.stopPropagation()
+                    deleteFile(i)
+                  }}
                   aria-label={`Delete`}
                   style={{
                     padding: 0,

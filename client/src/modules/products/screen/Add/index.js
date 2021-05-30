@@ -57,6 +57,7 @@ function ProductAddScreen() {
   const { login } = userContext
   const { values, setText, setSwitch, setArray, setAll, emptyState } = useForm(INITIAL_STATE)
   const [posting, setPosting] = useState(false)
+  const [deletedFiles, setDeletedFiles] = useState([])
   const [invalidCode, setInvalidCode] = useState(null)
   const { openSnackbar } = useContext(SnackbarContext)
   const { history, params } = useRoutes()
@@ -102,11 +103,13 @@ function ProductAddScreen() {
       price: parseFloat(values.price),
       details: values.details.filter( detail => (detail.title && detail.info)),
       isDraft,
+      deletedFiles,
       createdBy: login._id,
       updatedBy: login._id
     }
 
     if (params.id) delete productInput.createdBy
+    else delete productInput.deletedFiles
 
     request(
       params.id ? mutationEditProduct : mutationCreateProduct,
@@ -265,6 +268,8 @@ function ProductAddScreen() {
                     posting={posting}
                     setArray={setArray}
                     setPosting={setPosting}
+                    deletedFiles={deletedFiles}
+                    setDeletedFiles={setDeletedFiles}
                   />
                 </Grid>
               </Grid>
@@ -314,6 +319,8 @@ function ProductAddScreen() {
               setPosting={setPosting}
               setText={setText}
               setArray={setArray}
+              deletedFiles={deletedFiles}
+              setDeletedFiles={setDeletedFiles}
             />
             <Box my={4}>
               <Divider />
@@ -326,6 +333,8 @@ function ProductAddScreen() {
               setPosting={setPosting}
               setText={setText}
               setArray={setArray}
+              deletedFiles={deletedFiles}
+              setDeletedFiles={setDeletedFiles}
             />
             <Box my={4}>
               <Divider />
@@ -414,7 +423,7 @@ function ProductAddScreen() {
                 variant="contained"
                 type="submit"
                 color="primary"
-                disabled={posting || !values.code}
+                disabled={posting || !values.code || values.images.length < 1}
                 style={{ marginLeft: '10px', marginBottom: '10px' }}
               >
                 {posting

@@ -21,7 +21,9 @@ const FileUpload = ({
   disabled,
   posting,
   setArray,
-  setPosting
+  setPosting,
+  deletedFiles,
+  setDeletedFiles
 }) => {
   const { openSnackbar } = useContext(SnackbarContext)
 
@@ -51,24 +53,16 @@ const FileUpload = ({
     }
   }
 
-  const deleteFile = (key, i) => {
-    const formData = new FormData()
-    formData.append('key', key)
-    setPosting(true)
+  const deleteFile = (i) => {
+    const newFiles = files
 
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          const newFiles = files
-          newFiles.splice(i, 1)
-          setArray(newFiles, 'file')
-          document.getElementById('icon-button-file').value = ''
-        }
-        setPosting(false)
-      })
+    if (!typeof files[i] === 'object') {
+      const newDeleted = deletedFiles
+      newDeleted.push(files[i])
+      setDeletedFiles(newDeleted)
+    }
+    newFiles.splice(i, 1)
+    setArray(newFiles, 'file')
   }
 
   return (
@@ -105,7 +99,7 @@ const FileUpload = ({
               <PreviewIcon color="primary" />
             </IconButton>
           </Box>
-          <IconButton onClick={() => deleteFile(f, i)}>
+          <IconButton onClick={() => deleteFile(i)}>
             {posting ? <CircularProgress size={14} />
               : <ClearIcon color="error" />
             }

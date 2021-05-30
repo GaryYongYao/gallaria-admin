@@ -137,6 +137,7 @@ async function editProject(args) {
     if (!existing) {
       throw new Error('Product not exists!')
     }
+    if (projectNew.deletedFiles.length > 0) await projectNew.deletedFiles.map(file => deleteFile(file))
 
     const project = await Projects.findByIdAndUpdate( 
       { _id: projectNew._id  },

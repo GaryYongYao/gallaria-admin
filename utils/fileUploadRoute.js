@@ -23,6 +23,27 @@ module.exports = app => {
       }
     })
   })
+
+  app.post('/api/multi-file-upload', (request, response) => {
+    console.log(request)
+    /* const form = new multiparty.Form()
+    form.parse(request, async (error, fields, files) => {
+      if (error) {
+        return response.status(500).send(error)
+      }
+      try {
+        const path = files.file[0].path
+        const buffer = fs.readFileSync(path)
+        const type = await fileType.fromBuffer(buffer)
+        const fileName = `${fields.bucketFolder}/${fields.fileName}`
+        const data = await uploadFile(buffer, fileName, type)
+        return response.status(200).send(data)
+      } catch (err) {
+        return response.status(500).send(err)
+      }
+    }) */
+    return response.status(200).send('good')
+  })
   
   app.post('/api/file-delete', (request, response) => {
     const form = new multiparty.Form()

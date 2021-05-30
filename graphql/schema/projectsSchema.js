@@ -48,6 +48,7 @@ input ProjectInput {
   products: [ID]
   isDraft: Boolean
   justCreated: Boolean
+  deletedFiles: [String]
   updatedBy: ID
 }
 `

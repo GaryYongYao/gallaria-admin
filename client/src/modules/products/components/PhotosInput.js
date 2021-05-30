@@ -15,7 +15,7 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, posting, setPosting, setText, setArray }) {
+function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, posting, setPosting, setText, setArray, deletedFiles, setDeletedFiles }) {
   const { openSnackbar } = useContext(SnackbarContext)
   const [selected, setSelected] = useState(primaryImage ? primaryImage : '')
 
@@ -64,7 +64,6 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
     newImages.push(file)
     setArray(newImages, 'images') */
 
-
     setPosting(true)
 
     if (file) {
@@ -94,26 +93,19 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
   }
 
   const deleteFile = (key, i) => {
-    setPosting(true)
-    const formData = new FormData()
-    formData.append('key', key)
+    const newImages = images
 
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          const newImages = images
-          newImages.splice(i, 1)
-          if(selected === key && images.length > 1) setSelected(newImages[0])
-          setArray(newImages, 'images')
-          document.getElementById('icon-button-photos').value = ''
-        }
-        setPosting(false)
-      })
+    if (!typeof images[i] === 'object') {
+      const newDeleted = deletedFiles
+      newDeleted.push(images[i])
+      setDeletedFiles(newDeleted)
+    }
+    newImages.splice(i, 1)
+    if(selected === key && images.length > 1) setSelected(newImages[0])
+    setArray(newImages, 'images')
   }
 
+  const determineLocal = (image) => typeof image === 'object' ? URL.createObjectURL(image) : `${mediaBaseURL}${encodeURIComponent(image).replace('(', '%28').replace(')', '%29')}`
 
   const AddPhotoButton = () => (
     <>
@@ -192,12 +184,15 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
                     backgroundPosition: 'center',
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat', 
-                    backgroundImage: !image.includes('mp4') ? `url(${mediaBaseURL}${encodeURIComponent(image)})` : 'url(/video.png)',
+                    backgroundImage: !determineLocal(image).includes('mp4') ? `url(${determineLocal(image)})` : 'url(/video.png)',
                     cursor: 'pointer'
                   }}
                 >
                   <IconButton
-                    onClick={() => deleteFile(image, i)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      deleteFile(image, i)
+                    }}
                     aria-label={`Delete`}
                     style={{
                       padding: 0,
@@ -218,12 +213,12 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
             <Grid item xs={4}>
               {selected.includes('mp4') && (
                 <video autoPlay loop muted showControl preload="metadata" style={{ width: '100%' }}>
-                  <source src={`${mediaBaseURL}${encodeURIComponent(selected)}#t=0.5`} type="video/mp4" />
+                  <source src={determineLocal(selected)} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
               {!selected.includes('mp4') && (
-                <img width="100%" src={`${mediaBaseURL}${encodeURIComponent(selected)}`} />
+                <img width="100%" src={determineLocal(selected)} />
               )}
               <FormControlLabel
                 control={

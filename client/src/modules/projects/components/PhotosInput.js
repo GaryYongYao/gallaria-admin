@@ -42,26 +42,17 @@ function PhotosInput({ photos, id, posting, setPosting, setArray }) {
     }
   }
 
-  const deleteFile = (key, i) => {
-    setPosting(true)
-    const formData = new FormData()
-    formData.append('key', key)
+  const deleteFile = (i) => {
+    const newPhotos = photos
 
-    APIRequest('POST', '/api/file-delete', formData)
-      .then(res => {
-        if (res.errors) {
-          openSnackbar('Deletion failed!', 'error')
-        } else {
-          openSnackbar('Deletion Success', 'success')
-          const newPhotos = photos
-          newPhotos.splice(i, 1)
-          setArray(newPhotos, 'photos')
-          document.getElementById('icon-button-photo').value = ''
-        }
-        setPosting(false)
-      })
+    if (!typeof photos[i] === 'object') {
+      const newDeleted = deletedFiles
+      newDeleted.push(photos[i])
+      setDeletedFiles(newDeleted)
+    }
+    newPhotos.splice(i, 1)
+    setArray(newPhotos, 'photos')
   }
-
 
   const AddPhotoButton = () => (
     <>
@@ -139,7 +130,7 @@ function PhotosInput({ photos, id, posting, setPosting, setArray }) {
                 }}
               >
                 <IconButton
-                  onClick={() => deleteFile(photo, i)}
+                  onClick={() => deleteFile(i)}
                   aria-label={`Delete`}
                   style={{
                     padding: 0,
