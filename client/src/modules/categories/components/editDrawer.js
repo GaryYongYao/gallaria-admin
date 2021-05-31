@@ -30,7 +30,7 @@ const EditDrawer = ({ chosen, isOpen, editCategory, closeEdit, setValue, setArra
     const newSeries = chosen.series
     newSeries.push({
       sub: subCat,
-      name: seriesName
+      name: seriesName.trim()
     })
     setArray(newSeries, 'series')
     setSubCat('')
@@ -69,14 +69,14 @@ const EditDrawer = ({ chosen, isOpen, editCategory, closeEdit, setValue, setArra
               onKeyPress={e => {
                 if (e.which !== 13 || e.target.value === '') return
                 const newSubs = chosen.sub
-                newSubs.push(e.target.value)
+                newSubs.push(e.target.value.trim())
                 setArray(newSubs, e.target.name)
                 e.target.value = ''
               }}
               onBlur={e => {
                 if (e.target.value === '') return
                 const newSubs = chosen.sub
-                newSubs.push(e.target.value)
+                newSubs.push(e.target.value.trim())
                 setArray(newSubs, e.target.name)
                 e.target.value = ''
               }}

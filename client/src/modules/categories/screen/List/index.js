@@ -49,7 +49,7 @@ function CategoryListScreen() {
     request(mutationEditCategory, {
       categoryUpdate: {
         _id,
-        name,
+        name: name.trim(),
         sub,
         series,
         updatedBy: login._id

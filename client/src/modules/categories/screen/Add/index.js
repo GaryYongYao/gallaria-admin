@@ -47,7 +47,7 @@ function UserAddScreen() {
 
     request(mutationCreateCategory, {
       categoryInput: {
-        name,
+        name: name.trim(),
         sub,
         series,
         createdBy: login._id,
@@ -75,7 +75,7 @@ function UserAddScreen() {
     const newSeries = values.series
     newSeries.push({
       sub: subCat,
-      name: seriesName
+      name: seriesName.trim()
     })
     setArray(newSeries, 'series')
     setSubCat('')
@@ -119,7 +119,7 @@ function UserAddScreen() {
                 const { value, name } = e.target
                 if (e.which !== 13 || value === ''|| values.sub.includes(value)) return
                 const newSubs = values.sub
-                newSubs.push(value)
+                newSubs.push(value.trim())
                 setArray(newSubs, name)
                 e.target.value = ''
               }}
