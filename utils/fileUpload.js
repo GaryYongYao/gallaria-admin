@@ -59,7 +59,8 @@ const renameFiles = async (files, oldCode, newCode) => {
         ACL: 'public-read',
         Bucket: keys.s3Bucket,
         CopySource: `${keys.s3Bucket}/${encodeURIComponent(file)}`, 
-        Key: file.replace(oldCode, newCode)
+        Key: file.replace(oldCode, newCode),
+        MetadataDirective: 'REPLACE'
       }
       const deleteParams = {
         Bucket: keys.s3Bucket,
