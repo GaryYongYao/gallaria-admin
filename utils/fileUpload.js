@@ -53,17 +53,17 @@ const renameFile = async (oldKey, renameKey) => {
 const renameFiles = async (files, oldCode, newCode) => {
   let value
   
-  if (files) {
+  if (files.length > 0) {
     value = await files.map(async (file) => {
       const renameParams = {
         ACL: 'public-read',
         Bucket: keys.s3Bucket,
-        CopySource: `${keys.s3Bucket}/${file}`, 
+        CopySource: `${keys.s3Bucket}/${encodeURIComponent(file)}`, 
         Key: file.replace(oldCode, newCode)
       }
       const deleteParams = {
         Bucket: keys.s3Bucket,
-        Key: file
+        Key: encodeURIComponent(file)
       }
     
       const newFileKey = await s3.copyObject(renameParams).promise()
