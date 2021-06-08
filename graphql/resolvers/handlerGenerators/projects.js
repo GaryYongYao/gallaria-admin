@@ -144,7 +144,7 @@ async function editProject(args) {
       { ...projectNew },
       {new: true}
     ).populate(['createdBy', 'updatedBy'])
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
     
     return {
       ...project._doc,
@@ -174,7 +174,7 @@ async function deleteProject(args) {
     }
     if (project.cover) await deleteFile(project.cover)
     await Projects.findByIdAndRemove(args._id)
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Delete Successful!'
   }

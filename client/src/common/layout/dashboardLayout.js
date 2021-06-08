@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import {
   AppBar,
   Box,
+  Button,
   Drawer,
   Divider,
   IconButton,
@@ -19,7 +20,9 @@ import {
 } from '@material-ui/icons'
 import { useRoutes } from 'utils'
 import { UserContext } from 'utils/sessions'
-import { menu } from '../constant'
+import request from 'utils/request'
+import { menu, mutationUpdateWebsite } from '../constant'
+import { SnackbarContext } from '../components/Snackbar'
 import UserDropdownMenu from '../components/UserDropdownMenu'
 
 import logo from 'common/img/logo.png'
@@ -48,6 +51,7 @@ const DashLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { history } = useRoutes()
   const { userRole, checkLogin } = useContext(UserContext)
+  const { openSnackbar } = useContext(SnackbarContext)
 
   useEffect(checkLogin, [])
 
@@ -77,12 +81,23 @@ const DashLayout = ({ children }) => {
     )
   }
 
+  const updateWebsite = () => {
+    request(mutationUpdateWebsite)
+      .then(res => {
+        const { errors } = res.data
+        const { updateWebsite } = res.data.data
+        if (errors) openSnackbar(errors.message, 'error')
+        if (updateWebsite) openSnackbar(updateWebsite, 'success')
+      })
+      .catch(err => openSnackbar(err.message, 'error'))
+  }
+
   return (
     <>
       <AppBar position="static">
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
-            <Grid container item xs={10} alignItems="center">
+            <Grid container item xs={4} alignItems="center">
               <IconButton
                 edge="start"
                 className={menuButton}
@@ -96,7 +111,15 @@ const DashLayout = ({ children }) => {
                 <img src={logo} height="30px" />
               </Hidden>
             </Grid>
-            <Grid container item xs={2} justify="flex-end">
+            <Grid container item xs={8} justify="flex-end">
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginRight: '10px' }}
+                onClick={updateWebsite}
+              >
+                Build & Deploy Website
+              </Button>
               <UserDropdownMenu />
             </Grid>
           </Grid>

@@ -95,6 +95,7 @@ const productsMutation = `
 createProduct(productInput: ProductInput!): Product
 editProduct(productUpdate: ProductUpdate!): Product
 deleteProduct(_id: ID!): String
+updateWebsite: String
 `
 
 module.exports = {

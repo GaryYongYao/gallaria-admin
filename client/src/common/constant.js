@@ -40,3 +40,9 @@ export const menu = [
   { text: 'Help' },
   { icon: <HelpIcon />, text: 'Help & Links', link: '/help' },
 ]
+
+export const mutationUpdateWebsite = `
+  mutation {
+    updateWebsite
+  }
+`

@@ -53,7 +53,7 @@ async function createLocation(args) {
       position
     }, (err) => { if (err) throw err })
     location.save()
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
     
     return { ...location._doc }
   }
@@ -91,7 +91,7 @@ async function editLocation(args) {
       { ...updatedLocation },
       {new: true}
     )
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
     
     return {
       ...location._doc
@@ -112,7 +112,7 @@ async function deleteLocation(args) {
         }
       }
     )
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Delete Successful!'
   }

@@ -127,7 +127,7 @@ async function createProduct(args) {
       ...args.productInput
     }, (err) => { if (err) throw err })
     product.save()
-    !isDraft && await axios.post(keys.buildHook)
+    // !isDraft && await axios.post(keys.buildHook)
     
     return product
   }
@@ -164,7 +164,7 @@ async function editProduct(args) {
       { ...productNew },
       {new: true}
     ).populate(['category', 'createdBy', 'updatedBy'])
-    !productNew.isDraft && await axios.post(keys.buildHook)
+    // !productNew.isDraft && await axios.post(keys.buildHook)
     
     return {
       ...product._doc,
@@ -216,9 +216,21 @@ async function deleteProduct(args) {
       })
     }
     await Products.findByIdAndRemove(args._id)
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Delete Successful!'
+  }
+  catch(err) {
+    throw err
+  }
+}
+
+
+async function updateWebsite() {
+  try {
+    await axios.post(keys.buildHook)
+    
+    return 'Build and Deployment Started for the Website'
   }
   catch(err) {
     throw err
@@ -235,5 +247,6 @@ module.exports = {
   getProductByCode,
   createProduct,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  updateWebsite
 }
