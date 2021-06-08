@@ -21,24 +21,28 @@ export const columns = [
   {
     title: 'Location',
     field: 'location',
+    field: 'location',
     headerStyle: { width: '10%' },
     filtering: false,
     render: ({ location }) => location
   },
   {
     title: 'Type',
+    field: 'type',
     headerStyle: { width: '5%' },
     filtering: false,
     render: ({ type }) => type
   },
   {
     title: 'Date',
+    field: 'date',
     headerStyle: { width: '5%' },
     filtering: false,
     render: ({ date }) => date
   },
   {
     title: 'Draft',
+    field: 'isDraft',
     headerStyle: { width: '2.5%' },
     filtering: false,
     render: ({ isDraft }) => isDraft ? 'Yes' : 'No'
@@ -47,6 +51,7 @@ export const columns = [
     title: 'Created By',
     headerStyle: { width: '2.5%' },
     filtering: false,
+    sorting: false,
     render: ({ createdBy }) => createdBy
   },
 ]

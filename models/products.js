@@ -11,6 +11,7 @@ const productsSchema = new Schema({
   price: Number,
   desc: String,
   variants: [String],
+  altCode: [String],
   category: { type: Schema.Types.ObjectId , ref: 'ProductCategories' },
   sub: String,
   series: String,

@@ -9,6 +9,7 @@ export const columns = [
     title: 'Date',
     headerStyle: { width: '10%' },
     filtering: true,
+    sorting: false,
     render: ({ createdDate }) => moment(createdDate).format('DD/MM/YYYY (ddd) hh:mm A')
   },
   {
@@ -39,6 +40,7 @@ export const columns = [
     title: 'Products',
     headerStyle: { width: '5%' },
     filtering: false,
+    sorting: false,
     render: ({ products }) => products.length
   }
 ]

@@ -21,30 +21,37 @@ export const columns = [
   },
   {
     title: 'Price',
+    field: 'price',
     headerStyle: { width: '5%' },
     filtering: false,
+    sorting: true,
     render: ({ price }) => price
   },
   {
     title: 'Variants',
     headerStyle: { width: '2.5%' },
     filtering: false,
+    sorting: false,
     render: ({ variants }) => variants.length
   },
   {
     title: 'Category/Sub-Category',
+    field: 'category',
     headerStyle: { width: '30%' },
     filtering: false,
+    sorting: true,
     render: ({ category, sub }) => `${category? category : 'Not Chosen' }${sub ? `/${sub}` : ''}`
   },
   {
     title: 'Featured',
+    field: 'isFeature',
     headerStyle: { width: '2.5%' },
     filtering: false,
     render: ({ isFeature }) => isFeature ? 'Yes' : 'No'
   },
   {
     title: 'Draft',
+    field: 'isDraft',
     headerStyle: { width: '2.5%' },
     filtering: false,
     render: ({ isDraft }) => isDraft ? 'Yes' : 'No'
@@ -101,6 +108,7 @@ query getProductById($id: ID!) {
     price
     desc
     variants
+    altCode
     category,
     sub
     series
@@ -161,6 +169,7 @@ export const mutationEditProduct = `
       price
       desc
       variants
+      altCode
       category
       sub
       series

@@ -6,6 +6,7 @@ type Product {
   price: Float
   desc: String
   variants: [String]
+  altCode: [String]
   category: ID
   sub: String
   series: String
@@ -37,6 +38,7 @@ input ProductInput {
   price: Float
   desc: String
   variants: [String]
+  altCode: [String]
   category: ID
   sub: String
   series: String
@@ -60,6 +62,7 @@ input ProductUpdate {
   price: Float
   desc: String
   variants: [String]
+  altCode: [String]
   category: ID
   sub: String
   series: String

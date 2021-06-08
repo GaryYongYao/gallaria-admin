@@ -15,24 +15,28 @@ export const columns = [
     title: 'Sub-Categories Count',
     headerStyle: { width: '10%' },
     filtering: false,
+    sorting: false,
     render: ({ sub }) => sub.length
   },
   {
     title: 'Series Count',
     headerStyle: { width: '10%' },
     filtering: false,
+    sorting: false,
     render: ({ series }) => (series || []).length
   },
   {
     title: 'Created by',
     headerStyle: { width: '20%' },
     filtering: false,
+    sorting: false,
     render: ({ createdBy }) => createdBy
   },
   {
     title: 'Updated by',
     headerStyle: { width: '20%' },
     filtering: false,
+    sorting: false,
     render: ({ updatedBy }) => updatedBy
   }
 ]

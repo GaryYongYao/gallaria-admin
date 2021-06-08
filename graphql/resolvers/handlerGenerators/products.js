@@ -117,7 +117,7 @@ async function getProductByCode(args) {
 
 async function createProduct(args) {
   try {
-    const { code } = args.productInput; //retrieve values from arguments
+    const { code, isDraft } = args.productInput; //retrieve values from arguments
     const existing = await Products.findOne({ code })
     if (existing) {
       throw new Error('Product already exists!')
@@ -127,7 +127,7 @@ async function createProduct(args) {
       ...args.productInput
     }, (err) => { if (err) throw err })
     product.save()
-    await axios.post(keys.buildHook)
+    !isDraft && await axios.post(keys.buildHook)
     
     return product
   }
@@ -164,7 +164,7 @@ async function editProduct(args) {
       { ...productNew },
       {new: true}
     ).populate(['category', 'createdBy', 'updatedBy'])
-    await axios.post(keys.buildHook)
+    !productNew.isDraft && await axios.post(keys.buildHook)
     
     return {
       ...product._doc,

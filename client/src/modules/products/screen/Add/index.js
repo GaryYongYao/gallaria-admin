@@ -38,6 +38,7 @@ const INITIAL_STATE = {
   price: 0,
   desc: '',
   variants: [],
+  altCode: [],
   category: '',
   sub: '',
   series: '',
@@ -71,7 +72,8 @@ function ProductAddScreen() {
           if (getProductById) {
             setAll({
               ...getProductById,
-              images: (getProductById.images || []).filter(unique)
+              images: (getProductById.images || []).filter(unique),
+              altCode: getProductById.altCode || []
             })
           }
         })
@@ -94,7 +96,6 @@ function ProductAddScreen() {
     setPosting(true)
     
     const images = (values.images || []).filter(unique)
-    images.sort((x, y) => x === values.primaryImage ? -1 : y === values.primaryImage ? 1 : 0 )
 
     const productInput = {
       ...values,
@@ -214,6 +215,50 @@ function ProductAddScreen() {
                 />
                 <Grid container spacing={useBreakpointUpCheck('md') ? 4 : 0}>
                   <Grid item xs={12} md={5}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel style={{backgroundColor: 'white'}}>Alternate Codes</InputLabel>
+                      <OutlinedInput
+                        name="altCode"
+                        labelWidth={60}
+                        onKeyPress={e => {
+                          if (e.which !== 13 || e.target.value === '') return
+                          const newAltCodes = values.altCode
+                          newAltCodes.push(e.target.value)
+                          setArray(newAltCodes, e.target.name)
+                          e.target.value = ''
+                        }}
+                        onBlur={e => {
+                          if (e.target.value === '') return
+                          const newAltCodes = values.altCode
+                          newAltCodes.push(e.target.value)
+                          setArray(newAltCodes, e.target.name)
+                          e.target.value = ''
+                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <Tooltip title="Press Enter to add variant" aria-label="add">
+                              <InfoIcon color="primary" />
+                            </Tooltip>
+                          </InputAdornment>
+                        }
+                        fullWidth
+                      />
+                    </FormControl>
+                    <Box>
+                      {values.altCode.map((alt, index) => (
+                        <Chip
+                          key={alt}
+                          label={alt}
+                          onDelete={() => {
+                            const oldAltCode = values.altCode
+                            const newAltCodes = oldAltCode.filter((old, oldIndex) => oldIndex !== index)
+                            setArray(newAltCodes, 'altCode')
+                          }}
+                          style={{ margin: '2.5px 5px' }}
+                        />
+                      ))}
+                    </Box>
+                    <Divider />
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Variants</InputLabel>
                       <OutlinedInput
