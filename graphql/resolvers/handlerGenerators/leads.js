@@ -1,5 +1,6 @@
 const Leads = require('../../../models/leads')
-const APIRequest = require('../../../utils/gravityFormRequest')
+const captchaRequest = require('../../../utils/captchaRequest')
+const GravFormRequest = require('../../../utils/gravityFormRequest')
 
 async function getLeads() {
   try {
@@ -23,8 +24,13 @@ async function submitContact(args) {
       email,
       phone,
       company,
-      message
+      message,
+      token
     } = args.leadInput; //retrieve values from arguments
+    
+    const captchaResponse = await captchaRequest(token)
+    const { data } = captchaResponse
+    if (!data.success) return 'reCaptcha Failed, please send E-mail to INFO@GALLARIA.COM.AU directly for any enquiries.'
 
     const lead = new Leads({
       name,
@@ -32,7 +38,7 @@ async function submitContact(args) {
       phone,
       company,
       message
-    }, (err, ) => { if (err) throw err })
+    }, (err) => { if (err) throw err })
 
     lead.save()
     return 'Thank you for your enquiry, we will talk to you shortly.'

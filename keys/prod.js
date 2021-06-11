@@ -13,5 +13,6 @@ module.exports = {
   stripeSecret: process.env.STRIPE_SECRET,
   mediaBaseURL: process.env.MEDIA_BASE_URL,
   successLink: process.env.SUCCESS_LINK,
-  cancelLink: process.env.CANCEL_LINK
+  cancelLink: process.env.CANCEL_LINK,
+  captchaKey: process.env.CAPTCHA_KEY
 };

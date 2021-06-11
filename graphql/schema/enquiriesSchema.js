@@ -27,6 +27,7 @@ input EnquiryInput {
   subject: String
   message: String
   products: [EnquiryProductInput]
+  token: String
 }
 input EnquiryProductInput {
   info: ID

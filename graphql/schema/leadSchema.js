@@ -16,6 +16,7 @@ input LeadInput {
   phone: String
   company: String
   message: String
+  token: String
 }
 `
 

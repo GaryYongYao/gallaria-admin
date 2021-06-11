@@ -1,4 +1,5 @@
 const Enquiries = require('../../../models/enquiry')
+const captchaRequest = require('../../../utils/captchaRequest')
 
 async function getEnquiries() {
   try {
@@ -33,8 +34,13 @@ async function submitEnquiry(args) {
       profile,
       subject,
       message,
-      products
+      products,
+      token
     } = args.enquiryInput; //retrieve values from arguments
+    
+    const captchaResponse = await captchaRequest(token)
+    const { data } = captchaResponse
+    if (!data.success) return 'reCaptcha Failed, please send E-mail to INFO@GALLARIA.COM.AU directly for any enquiries.'
 
     const enquiry = new Enquiries({
       name,
