@@ -1,5 +1,6 @@
 const Enquiries = require('../../../models/enquiry')
 const captchaRequest = require('../../../utils/captchaRequest')
+const GravFormRequest = require('../../../utils/gravityFormRequest')
 
 async function getEnquiries() {
   try {
@@ -52,8 +53,40 @@ async function submitEnquiry(args) {
       message,
       products
     }, (err) => { if (err) throw err })
+
     enquiry.save()
-    
+
+    await enquiry.populate(['products.info'], (err, { products }) => {
+      if (err) throw err
+
+      GravFormRequest('POST', '/entries', {
+        form_id: '4',
+        is_starred: '0',
+        is_read: '0',
+        source_url: 'https://www.gallaria.com.au/',
+        status: 'active',
+        '1': name,
+        '2': email,
+        '3': phone,
+        '4': company,
+        '5': profile,
+        '6': subject,
+        '7': message,
+        '8': products.map(({ info, quantity, variant }) => ({
+          Code: info.code,
+          Name: info.name,
+          Variant: variant,
+          Price: info.price,
+          Quantity: quantity
+        }))
+      })
+        .then(({ data }) => {
+          GravFormRequest('POST', `/entries/${data.id}/notifications`)
+            .catch(err => { throw err })
+        })
+        .catch(err => { throw err })
+    })
+
     return 'Thank you for your enquiry, we will talk to you shortly.'
   }
   catch(err) {

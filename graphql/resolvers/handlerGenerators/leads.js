@@ -39,6 +39,8 @@ async function submitContact(args) {
       company,
       message
     }, (err) => { if (err) throw err })
+    
+    lead.save()
 
     GravFormRequest('POST', '/entries', {
       form_id: '3',
@@ -58,8 +60,6 @@ async function submitContact(args) {
       })
       .catch(err => { throw err })
 
-
-    lead.save()
     return 'Thank you for your enquiry, we will talk to you shortly.'
   }
   catch(err) {
