@@ -64,7 +64,7 @@ const renameFiles = async (files, oldCode, newCode) => {
       }
       const deleteParams = {
         Bucket: keys.s3Bucket,
-        Key: encodeURIComponent(file)
+        Key: file
       }
     
       const newFileKey = await s3.copyObject(renameParams).promise()
@@ -76,9 +76,9 @@ const renameFiles = async (files, oldCode, newCode) => {
 
       return newFileKey
     })
-  }
   
-  return Promise.all(value)
+    return Promise.all(value)
+  } else return []
 }
 
 // Define POST route

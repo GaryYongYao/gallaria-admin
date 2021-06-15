@@ -43,13 +43,6 @@ export const columns = [
     render: ({ category, sub }) => `${category? category : 'Not Chosen' }${sub ? `/${sub}` : ''}`
   },
   {
-    title: 'Featured',
-    field: 'isFeature',
-    headerStyle: { width: '2.5%' },
-    filtering: false,
-    render: ({ isFeature }) => isFeature ? 'Yes' : 'No'
-  },
-  {
     title: 'Draft',
     field: 'isDraft',
     headerStyle: { width: '2.5%' },
