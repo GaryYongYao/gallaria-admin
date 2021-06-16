@@ -46,17 +46,15 @@ app.post('/api/checkout', async (req, res) => {
       allowed_countries: ['AU'],
     },
     payment_intent_data: {
-      receipt_email: email
+      receipt_email: email,
+      description: 'Phone Number: ' + phone
     },
     customer_email: email,
     payment_method_types: ['card'],
     line_items,
     mode: 'payment',
     success_url: keys.successLink,
-    cancel_url: keys.cancelLink,
-    metadata: {
-      phone
-    }
+    cancel_url: keys.cancelLink
   });
   res.json({ id: session.id });
 })
