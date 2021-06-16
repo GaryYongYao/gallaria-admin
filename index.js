@@ -38,8 +38,9 @@ app.use(
 );
 
 app.post('/api/checkout', async (req, res) => {
-  const { line_items, email } = req.body
+  const { line_items, email, phone } = req.body
   const session = await stripe.checkout.sessions.create({
+    // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
     billing_address_collection: 'auto',
     shipping_address_collection: {
       allowed_countries: ['AU'],
@@ -53,6 +54,9 @@ app.post('/api/checkout', async (req, res) => {
     mode: 'payment',
     success_url: keys.successLink,
     cancel_url: keys.cancelLink,
+    metadata: {
+      phone
+    }
   });
   res.json({ id: session.id });
 })

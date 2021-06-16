@@ -62,7 +62,7 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
   const AddPhotoButton = () => (
     <>
       <input
-        accept="image/*"
+        accept="image/*,video/mp4"
         id="icon-button-feature"
         type="file"
         disabled={posting || !code || features.length > 9 || invalidCode}
@@ -124,36 +124,68 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
                 marginBottom: '10px'
               }}
             >
-              <div
-                key={feature}
-                style={{
-                  position: 'relative',
-                  height: '300px',
-                  width: '100%',
-                  backgroundPosition: 'center',
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat', 
-                  backgroundImage: (typeof feature !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(feature)})` : `url(${URL.createObjectURL(feature)})`,
-                  cursor: 'pointer'
-                }}
-              >
-                <IconButton
-                  onClick={e => {
-                    e.stopPropagation()
-                    deleteFile(i)
-                  }}
-                  aria-label={`Delete`}
+              {feature.includes('mp4') && (
+                <div
+                  key={feature}
                   style={{
-                    padding: 0,
-                    position: 'absolute',
-                    bottom: 0,
-                    left: '50%',
-                    transform: 'translateX(-50%)'
+                    position: 'relative',
+                    width: '100%',
                   }}
                 >
-                  <DeleteIcon color="error" />
-                </IconButton>
-              </div>
+                  <video controls style={{ width: '100%' }}>
+                    <source src={`${mediaBaseURL}${encodeURIComponent(feature)}`} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <IconButton
+                    onClick={e => {
+                      e.stopPropagation()
+                      deleteFile(i)
+                    }}
+                    aria-label={`Delete`}
+                    style={{
+                      padding: 0,
+                      position: 'absolute',
+                      top: '10px',
+                      left: '50%',
+                      transform: 'translateX(-50%)'
+                    }}
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </div>
+              )}
+              {!feature.includes('mp4') && (
+                <div
+                  key={feature}
+                  style={{
+                    position: 'relative',
+                    height: '300px',
+                    width: '100%',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat', 
+                    backgroundImage: (typeof feature !== 'object') ? `url(${mediaBaseURL}${encodeURIComponent(feature)})` : `url(${URL.createObjectURL(feature)})`,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <IconButton
+                    onClick={e => {
+                      e.stopPropagation()
+                      deleteFile(i)
+                    }}
+                    aria-label={`Delete`}
+                    style={{
+                      padding: 0,
+                      position: 'absolute',
+                      top: '10px',
+                      left: '50%',
+                      transform: 'translateX(-50%)'
+                    }}
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </div>
+              )}
             </Grid>
           ))}
           <Grid
@@ -169,7 +201,6 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
                 position: 'relative',
                 height: '300px',
                 width: '100%',
-                cursor: 'pointer'
               }}
             >
               <AddPhotoButton />
