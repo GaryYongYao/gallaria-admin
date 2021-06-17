@@ -3,6 +3,8 @@ type Category {
   _id: ID!
   name: String!
   sub: [String]
+  baseShipping: Float
+  shipping: Float
   series: [Series]
   createdBy: ID
   updatedBy: ID
@@ -21,6 +23,8 @@ type Series {
 }
 input CategoryInput {
   name: String!
+  baseShipping: Float
+  shipping: Float
   sub: [String]
   series: [SeriesInput]
   createdBy: ID!
@@ -29,6 +33,8 @@ input CategoryInput {
 input CategoryUpdate {
   _id: ID!
   name: String!
+  baseShipping: Float
+  shipping: Float
   sub: [String]
   series: [SeriesInput]
   updatedBy: ID!

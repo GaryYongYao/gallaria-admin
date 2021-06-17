@@ -4,6 +4,8 @@ type Product {
   code: String!
   name: String
   price: Float
+  baseShipping: Float
+  shipping: Float
   desc: String
   variants: [String]
   altCode: [String]

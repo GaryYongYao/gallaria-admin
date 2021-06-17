@@ -67,6 +67,8 @@ export const queryGetCategories = `
       _id
       name
       sub
+      baseShipping
+      shipping
       series {
         sub
         name

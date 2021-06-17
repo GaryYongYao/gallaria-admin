@@ -63,6 +63,28 @@ const EditDrawer = ({ chosen, isOpen, editCategory, closeEdit, setValue, setArra
               fullWidth
             />
             <TextValidator
+              name="baseShipping"
+              label="Base Shipping"
+              variant="outlined"
+              value={chosen.baseShipping}
+              type="number"
+              onChange={setValue}
+              validators={['required']}
+              errorMessages={['This field cannot be empty']}
+              fullWidth
+            />
+            <TextValidator
+              name="shipping"
+              label="Shipping"
+              variant="outlined"
+              value={chosen.shipping}
+              type="number"
+              onChange={setValue}
+              validators={['required']}
+              errorMessages={['This field cannot be empty']}
+              fullWidth
+            />
+            <TextValidator
               name="sub"
               label="Sub-Categories"
               helperText="Enter to add sub-category"

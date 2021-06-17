@@ -10,6 +10,8 @@ async function getAllProducts() {
     return products.map(product => ({
       ...product._doc,
       category: (product.category || {}).name,
+      baseShipping: (product.category || {}).baseShipping,
+      shipping: (product.category || {}).shipping,
       createdBy: product.createdBy.username,
       updatedBy: product.updatedBy.username
     }))
@@ -26,6 +28,8 @@ async function getProducts() {
     return products.map(product => ({
       ...product._doc,
       category: (product.category || {}).name,
+      baseShipping: (product.category || {}).baseShipping,
+      shipping: (product.category || {}).shipping,
       createdBy: product.createdBy.username,
       updatedBy: product.updatedBy.username
     }))
@@ -91,6 +95,8 @@ async function getProductById(args) {
     return {
       ...product._doc,
       category: (product.category || {}).id,
+      baseShipping: (product.category || {}).baseShipping,
+      shipping: (product.category || {}).shipping,
       createdBy: product.createdBy.username,
       updatedBy: product.updatedBy.username
     }
@@ -108,6 +114,8 @@ async function getProductByCode(args) {
     return {
       ...product._doc,
       category: product.category.name,
+      baseShipping: (product.category || {}).baseShipping,
+      shipping: (product.category || {}).shipping,
     }
   }
   catch(err) {

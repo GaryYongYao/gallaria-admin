@@ -12,6 +12,8 @@ function CategoryListScreen() {
   const [chosen, setChosen] = useState({
     _id: '',
     name: '',
+    baseShipping: 0,
+    shipping: 0,
     sub: [],
     series: []
   })
@@ -44,12 +46,14 @@ function CategoryListScreen() {
   }
 
   const editCategory = () => {
-    const { _id, name, sub, series } = chosen
+    const { _id, name, baseShipping, shipping, sub, series } = chosen
 
     request(mutationEditCategory, {
       categoryUpdate: {
         _id,
         name: name.trim(),
+        baseShipping: parseFloat(baseShipping),
+        shipping: parseFloat(shipping),
         sub,
         series,
         updatedBy: login._id

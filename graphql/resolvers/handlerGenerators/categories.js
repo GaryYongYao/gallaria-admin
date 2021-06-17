@@ -7,6 +7,8 @@ async function getCategories() {
     return categories.map(category => ({
       _id: category._id,
       name: category.name,
+      baseShipping: category.baseShipping,
+      shipping: category.shipping,
       sub: category.sub,
       series: category.series,
       createdBy: category.createdBy.username,
@@ -55,6 +57,8 @@ async function createCategory(args) {
   try {
     const {
       name,
+      baseShipping,
+      shipping,
       sub,
       series,
       createdBy,
@@ -66,6 +70,8 @@ async function createCategory(args) {
     }
     const category = new ProductCategories({
       name,
+      baseShipping,
+      shipping,
       sub,
       series,
       createdBy,
@@ -85,6 +91,8 @@ async function editCategory(args) {
     const {
       _id,
       name,
+      baseShipping,
+      shipping,
       sub,
       series,
       updatedBy
@@ -99,6 +107,8 @@ async function editCategory(args) {
     }
     const updatedCategory = {
       name: name === "" ? existing.name : name,
+      baseShipping,
+      shipping,
       sub,
       series,
       updatedBy

@@ -23,7 +23,7 @@ import DashboardLayout from 'common/layout/dashboardLayout'
 import request from 'utils/request'
 import { SnackbarContext } from 'common/components/Snackbar'
 import FormPaper from 'common/components/FormPaper'
-import { useForm, useRoutes } from 'utils'
+import { useForm, useRoutes, useBreakpointUpCheck } from 'utils'
 import { UserContext } from 'utils/sessions'
 import { mutationCreateCategory } from '../../constant'
 
@@ -32,6 +32,8 @@ function UserAddScreen() {
   const { login } = userContext
   const { values, setText, setArray, setAll } = useForm({
     name: '',
+    baseShipping: 0,
+    shipping: 0,
     sub: [],
     series: []
   })
@@ -43,11 +45,13 @@ function UserAddScreen() {
 
   const handleSubmit = () => {
     setPosting(true)
-    const { name, sub, series } = values
+    const { name, baseShipping, shipping, sub, series } = values
 
     request(mutationCreateCategory, {
       categoryInput: {
         name: name.trim(),
+        baseShipping: parseFloat(baseShipping),
+        shipping: parseFloat(shipping),
         sub,
         series,
         createdBy: login._id,
@@ -108,6 +112,34 @@ function UserAddScreen() {
               errorMessages={['This field cannot be empty']}
               fullWidth
             />
+            <Grid container justify="center" spacing={useBreakpointUpCheck('md') ? 4 : 0}>
+              <Grid item xs={12} md={6}>
+                <TextValidator
+                  name="baseShipping"
+                  label="Base Shipping"
+                  variant="outlined"
+                  value={values.baseShipping}
+                  type="number"
+                  onChange={setText}
+                  validators={['required']}
+                  errorMessages={['This field cannot be empty']}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextValidator
+                  name="shipping"
+                  label="Shipping"
+                  variant="outlined"
+                  value={values.shipping}
+                  type="number"
+                  onChange={setText}
+                  validators={['required']}
+                  errorMessages={['This field cannot be empty']}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
             <Box> 
               <Divider orientation="horizontal" style={{ margin: 'auto' }} />
             </Box>

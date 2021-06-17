@@ -7,6 +7,8 @@ const productCategoriesSchema = new Schema({
     unique : true,
     required: true
   },
+  baseShipping: Number,
+  shipping: Number,
   sub: [String],
   series: [{
     sub: String,
