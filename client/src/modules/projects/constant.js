@@ -1,3 +1,4 @@
+import Link from '@material-ui/core/Link'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon
@@ -58,11 +59,12 @@ export const columns = [
 
 export const actions = ( history, setChosen, setIsAlertOpen) => [
   rowData => ({
-    icon: () => <EditIcon color="primary" />,
-    tooltip: 'Edit Product',
-    onClick: () => {
-      history.push({ pathname: `/project/${rowData._id}` })
-    }
+    icon: () => (
+      <Link href={`/project/${rowData._id}`}>
+        <EditIcon color="primary" />
+      </Link>
+    ),
+    tooltip: 'Edit Project'
   }),
   rowData => ({
     icon: () => <DeleteIcon color="error" />,
