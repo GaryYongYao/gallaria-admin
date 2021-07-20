@@ -82,7 +82,7 @@ function ProductAddScreen() {
   const handleSubmit = (isDraft) => {
     setPosting(true)
 
-    if (!isDraft && (values.photos.length > 0 || values.cover)) {
+    if (!isDraft && (values.photos.length < 1 || !values.cover)) {
       openSnackbar('Upload media to publish', 'error')
       return
     }
@@ -106,7 +106,7 @@ function ProductAddScreen() {
       .then(res => {
         if (res.data.errors) throw new Error(res.data.errors[0].message)
         const { editProject } = res.data.data
-        const msg = `Product - ${editProject._id} is updated`
+        const msg = `Project - ${editProject._id} is updated`
 
         openSnackbar(msg, 'success')
         setAll(editProject)
