@@ -39,7 +39,7 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
           } else {
             openSnackbar('Upload Success', 'success')
             const newFeatures = features
-            newFeatures.push(res.data.Key)
+            newFeatures.push(res.data.name)
             setArray(newFeatures, 'features')
           }
           setPosting(false)
@@ -50,9 +50,10 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
   const deleteFile = (i) => {
     const newFeatures = features
 
-    if (!typeof features[i] === 'object') {
+    if (typeof features[i] !== 'object') {
       const newDeleted = deletedFiles
       newDeleted.push(features[i])
+      console.log(newDeleted)
       setDeletedFiles(newDeleted)
     }
     newFeatures.splice(i, 1)

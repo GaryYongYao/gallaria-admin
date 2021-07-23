@@ -13,7 +13,7 @@ import { mediaBaseURL } from 'utils'
 import { SnackbarContext } from 'common/components/Snackbar'
 import APIRequest from 'utils/API'
 
-function PhotosInput({ photos, id, posting, setPosting, setArray }) {
+function PhotosInput({ photos, id, posting, setPosting, setArray, deletedFiles, setDeletedFiles }) {
   const { openSnackbar } = useContext(SnackbarContext)
 
   const handleUploadImage = (file) => {
@@ -34,7 +34,7 @@ function PhotosInput({ photos, id, posting, setPosting, setArray }) {
           } else {
             openSnackbar('Upload Success', 'success')
             const newPhotos = photos
-            newPhotos.push(res.data.Key)
+            newPhotos.push(res.data.name)
             setArray(newPhotos, 'photos')
           }
           setPosting(false)
@@ -45,7 +45,7 @@ function PhotosInput({ photos, id, posting, setPosting, setArray }) {
   const deleteFile = (i) => {
     const newPhotos = photos
 
-    if (!typeof photos[i] === 'object') {
+    if (typeof photos[i] !== 'object') {
       const newDeleted = deletedFiles
       newDeleted.push(photos[i])
       setDeletedFiles(newDeleted)

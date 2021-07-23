@@ -128,6 +128,7 @@ function ProductAddScreen() {
         }
         if (params.id) setAll(editProduct)
         setPosting(false)
+        setDeletedFiles([])
       })
       .catch(err => {
         openSnackbar(err.message, 'error')

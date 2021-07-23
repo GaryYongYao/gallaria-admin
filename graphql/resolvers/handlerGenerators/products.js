@@ -156,12 +156,14 @@ async function editProduct(args) {
       const file = await renameFiles(productNew.file, existing.code, productNew.code)
       const images = await renameFiles(productNew.images, existing.code, productNew.code)
       const primaryImage = productNew.primaryImage.replace(existing.code, productNew.code)
+      const featureImage = productNew.featureImage.replace(existing.code, productNew.code)
       const features = await renameFiles(productNew.features, existing.code, productNew.code)
       
       productNew = {
         ...productNew,
         images,
         primaryImage: primaryImage ? primaryImage : '',
+        featureImage: featureImage ? featureImage : '',
         file: file ? file : '',
         features
       }

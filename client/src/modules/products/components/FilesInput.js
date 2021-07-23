@@ -45,7 +45,7 @@ const FileUpload = ({
           } else {
             openSnackbar('Upload Success', 'success')
             const newFiles = files
-            newFiles.push(res.data.Key)
+            newFiles.push(res.data.name)
             setArray(newFiles, 'file')
           }
           setPosting(false)
@@ -56,7 +56,7 @@ const FileUpload = ({
   const deleteFile = (i) => {
     const newFiles = files
 
-    if (!typeof files[i] === 'object') {
+    if (typeof files[i] !== 'object') {
       const newDeleted = deletedFiles
       newDeleted.push(files[i])
       setDeletedFiles(newDeleted)

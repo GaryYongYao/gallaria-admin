@@ -148,7 +148,7 @@ function ProductAddScreen() {
             setText({
               target: {
                 name: 'cover',
-                value: res.data.Key
+                value: res.data.name
               }
             })
           }

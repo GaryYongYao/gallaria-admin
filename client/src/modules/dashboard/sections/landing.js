@@ -56,7 +56,7 @@ const LandingBackground = () => {
             request(mutationUpdateLandingMedia, {
               landingMediaInput: {
                 _id: setting._id,
-                media: res.data.Key
+                media: res.data.name
               }
             })
               .then(res => {

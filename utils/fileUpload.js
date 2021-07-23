@@ -1,53 +1,46 @@
-const AWS = require('aws-sdk')
+const { Storage } = require('@google-cloud/storage')
 const keys = require('../keys')
 
-AWS.config.update({
-  accessKeyId: keys.awsAccessKey,
-  secretAccessKey: keys.awsSecretKey,
+const storage = new Storage({
+  credentials: {
+    type: "service_account",
+    project_id: keys.googleProjectId,
+    private_key_id: keys.googlePrivateKeyId,
+    private_key: keys.googlePrivateKey,
+    client_email: keys.googleClientEmail,
+    client_id: keys.googleClientId,
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${keys.googleClientX509CertUrl}`
+  }
 })
-const s3 = new AWS.S3()
 
-const uploadFile = (buffer, name, type) => {
-  const params = {
-    ACL: 'public-read',
-    Body: buffer,
-    Bucket: keys.s3Bucket,
-    ContentType: type.mime,
-    Key: `${name}.${type.ext}`,
-  }
-  return s3.upload(params).promise()
-}
-
-const deleteFile = (Key) => {
-  const params = {
-    Bucket: keys.s3Bucket,
-    Key
-  }
-  return s3.deleteObject(params).promise()
-}
-
-const renameFile = async (oldKey, renameKey) => {
-  let value
-  if (renameKey) {
-    const renameParams = {
-      Bucket: keys.s3Bucket, 
-      CopySource: `${keys.s3Bucket}/${oldKey}`, 
-      Key: renameKey
-    }
-    const deleteParams = {
-      Bucket: keys.s3Bucket,
-      Key: oldKey
-    }
-    
-    value = await s3.copyObject(renameParams).promise()
-    .then(async () => {
-      const newKey = await s3.deleteObject(deleteParams).promise()
-      .then(() => renameKey)
-      return newKey
-    })
-  }
+const uploadFile = async (pathname, name, type) => {
+  try {
+    const url = await storage
+      .bucket(keys.s3Bucket)
+      .upload(
+        pathname,
+        {
+          destination: `${name}.${type.ext}`
+        }
+      )
   
-  return value
+     return url[0]
+  } catch (err) {
+    return err
+  }
+}
+
+const deleteFile = async (name) => {
+  try {
+    await storage.bucket(keys.s3Bucket).file(name).delete();
+  
+    return 'Success'
+  } catch (err) {
+    return err
+  }
 }
 
 const renameFiles = async (files, oldCode, newCode) => {
@@ -55,26 +48,9 @@ const renameFiles = async (files, oldCode, newCode) => {
   
   if (files.length > 0) {
     value = await files.map(async (file) => {
-      const renameParams = {
-        ACL: 'public-read',
-        Bucket: keys.s3Bucket,
-        CopySource: `${keys.s3Bucket}/${encodeURIComponent(file)}`, 
-        Key: file.replace(oldCode, newCode),
-        MetadataDirective: 'REPLACE'
-      }
-      const deleteParams = {
-        Bucket: keys.s3Bucket,
-        Key: file
-      }
-    
-      const newFileKey = await s3.copyObject(renameParams).promise()
-      .then(async () => {
-        const newKey = await s3.deleteObject(deleteParams).promise()
-        .then(() => file.replace(oldCode, newCode))
-        return newKey
-      })
+      const url = await storage.bucket(keys.s3Bucket).file(file).rename(file.replace(oldCode, newCode));
 
-      return newFileKey
+      return url[0].name
     })
   
     return Promise.all(value)
@@ -85,6 +61,5 @@ const renameFiles = async (files, oldCode, newCode) => {
 module.exports = {
   uploadFile,
   deleteFile,
-  renameFile,
   renameFiles
 }

@@ -4,8 +4,6 @@ module.exports = {
   redirectDomain: process.env.REDIRECT_DOMAIN,
   tokenSecret: process.env.TOKEN_SECRET,
   s3Bucket: process.env.S3_BUCKET,
-  awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
-  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
   buildHook: process.env.BUILD_HOOK,
   gravityUser: process.env.GRAVITY_USER,
   gravityPassword: process.env.GRAVITY_PASSWORD,
@@ -14,5 +12,12 @@ module.exports = {
   mediaBaseURL: process.env.MEDIA_BASE_URL,
   successLink: process.env.SUCCESS_LINK,
   cancelLink: process.env.CANCEL_LINK,
-  captchaKey: process.env.CAPTCHA_KEY
+  captchaKey: process.env.CAPTCHA_KEY,
+  // google cloud stuff
+  googleProjectId: process.env.GOOGLE_PROJECT_ID,
+  googlePrivateKeyId: process.env.GOOGLE_PRIVATE_KEY_ID,
+  googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY,
+  googleClientEmail: process.env.GOOGLE_CLIENT_EMAIL,
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientX509CertUrl: process.env.GOOGLE_CLIENT_CERT_URL
 };
