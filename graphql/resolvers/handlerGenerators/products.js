@@ -184,7 +184,7 @@ async function editProduct(args) {
     }
   }
   catch(err) {
-    throw keys.googlePrivateKey
+    throw err
   }
 }
 
