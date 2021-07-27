@@ -8,6 +8,7 @@ const highlightProductHandlers = require('./handlerGenerators/highlightProduct')
 const landingMediaHandlers = require('./handlerGenerators/landingMedia')
 const leadsHandlers = require('./handlerGenerators/leads')
 const locationsHandlers = require('./handlerGenerators/locations')
+const mediaHandlers = require('./handlerGenerators/media')
 const productHandlers = require('./handlerGenerators/products')
 const projectHandlers = require('./handlerGenerators/projects')
 
@@ -21,6 +22,7 @@ module.exports = {
   ...landingMediaHandlers,
   ...leadsHandlers,
   ...locationsHandlers,
+  ...mediaHandlers,
   ...productHandlers,
   ...projectHandlers,
   Upload: GraphQLUpload

@@ -1,6 +1,6 @@
-const axios = require('axios')
+// const axios = require('axios')
 const LandingMedia = require('../../../models/landingMedia')
-const keys = require('../../../keys')
+// const keys = require('../../../keys')
 
 async function getLandingMedia() {
   try {
@@ -30,7 +30,7 @@ async function updateLandingMedia(args) {
       { ...updatedLandingMedia },
       {new: true}
     )
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Updated Landing Media'
   }

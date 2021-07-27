@@ -1,6 +1,6 @@
-const axios = require('axios')
+// const axios = require('axios')
 const HighlightProduct = require('../../../models/highlightProduct')
-const keys = require('../../../keys')
+// const keys = require('../../../keys')
 
 async function getProductHighlight() {
   try {
@@ -34,7 +34,7 @@ async function updateProductHighlight(args) {
       { ...updatedHighlight },
       {new: true}
     )
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Updated Product Highlight.'
   }

@@ -7,6 +7,7 @@ const { highlighProductSchema, highlighProductQuery, highlighProductMutation } =
 const { landingMediaSchema, landingMediaQuery, landingMediaMutation } = require('./landingMediaSchema')
 const { leadSchema, leadQuery, leadMutation } = require('./leadSchema')
 const { locationSchema, locationQuery, locationMutation } = require('./locationSchema')
+const { mediaQuery } = require('./mediaSchema')
 const { productsSchema, productsQuery, productsMutation } = require('./productsSchema')
 const { projectSchema, projectQuery, projectMutation } = require('./projectsSchema')
 const { userSchema, userQuery, userMutation } = require('./userSchema')
@@ -32,6 +33,7 @@ type RootQuery {
   ${landingMediaQuery}
   ${leadQuery}
   ${locationQuery}
+  ${mediaQuery}
   ${productsQuery}
   ${projectQuery}
   ${userQuery}

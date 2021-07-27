@@ -1,6 +1,6 @@
-const axios = require('axios')
+// const axios = require('axios')
 const HighlightCat = require('../../../models/highlightCat')
-const keys = require('../../../keys')
+// const keys = require('../../../keys')
 
 async function getCatHighlight() {
   try {
@@ -34,7 +34,7 @@ async function updateCatHighlight(args) {
       { ...updatedHighlight },
       {new: true}
     )
-    await axios.post(keys.buildHook)
+    // await axios.post(keys.buildHook)
 
     return 'Updated'
   }
