@@ -50,7 +50,8 @@ const DashLayout = ({ children }) => {
   const { menuButton, layerOverlay, contentStyle } = useStyles()
   const [isOpen, setIsOpen] = useState(false)
   const { history } = useRoutes()
-  const { userRole, checkLogin } = useContext(UserContext)
+  const { userRole, checkLogin, userContext } = useContext(UserContext)
+  const { login } = userContext
   const { openSnackbar } = useContext(SnackbarContext)
 
   useEffect(checkLogin, [])
@@ -112,14 +113,16 @@ const DashLayout = ({ children }) => {
               </Hidden>
             </Grid>
             <Grid container item xs={8} justify="flex-end">
-              <Button
-                variant="contained"
-                color="secondary"
-                style={{ marginRight: '10px' }}
-                onClick={updateWebsite}
-              >
-                Build & Deploy Website
-              </Button>
+              {(login.username === 'dev-admin' || login._id === '60ebc9340cc50b001579a320') && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ marginRight: '10px' }}
+                  onClick={updateWebsite}
+                >
+                  Build & Deploy Website
+                </Button>
+              )}
               <UserDropdownMenu />
             </Grid>
           </Grid>
