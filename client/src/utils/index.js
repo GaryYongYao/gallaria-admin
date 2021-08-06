@@ -17,7 +17,7 @@ function twoDigit(num) {
 export const unique = (value, index, self) => self.indexOf(value) === index
 
 export const mediaBaseURL = (window.location.hostname === 'gallaria-admin-prod.herokuapp.com' || window.location.hostname === 'admin.gallaria.com.au')
-  ? 'https://gallaria-media.s3-ap-southeast-2.amazonaws.com/'
+  ? 'https://storage.googleapis.com/gallaria-media/'
   : 'https://storage.googleapis.com/gallaria-dev-storage/'
 
 export * from './customHooks'
