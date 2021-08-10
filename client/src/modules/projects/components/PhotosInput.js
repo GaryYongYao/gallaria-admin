@@ -35,6 +35,14 @@ function PhotosInput({ photos, id, posting, setPosting, setArray, deletedFiles, 
             openSnackbar('Upload Success', 'success')
             const newPhotos = photos
             newPhotos.push(res.data.name)
+
+            const deletedIndex = deletedFiles.indexOf(res.data.name)
+            if (deletedIndex > -1) {
+              const newDeleted = deletedFiles
+              newDeleted.splice(deletedIndex, 1)
+              setDeletedFiles(newDeleted)
+            } 
+            
             setArray(newPhotos, 'photos')
           }
           setPosting(false)

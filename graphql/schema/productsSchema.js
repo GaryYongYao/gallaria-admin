@@ -22,6 +22,8 @@ type Product {
   featureImage: String
   features: [String]
   isDraft: Boolean
+  link3d: String
+  priceDesc: String
   createdBy: ID
   updatedBy: ID
   createdDate: String
@@ -54,6 +56,8 @@ input ProductInput {
   featureImage: String
   features: [String]
   isDraft: Boolean
+  link3d: String
+  priceDesc: String
   createdBy: ID!
   updatedBy: ID!
 }
@@ -78,6 +82,8 @@ input ProductUpdate {
   featureImage: String
   features: [String]
   isDraft: Boolean
+  link3d: String
+  priceDesc: String
   deletedFiles:[String]
   updatedBy: ID!
 }
@@ -98,6 +104,7 @@ createProduct(productInput: ProductInput!): Product
 editProduct(productUpdate: ProductUpdate!): Product
 deleteProduct(_id: ID!): String
 updateWebsite: String
+updateProductField: String
 `
 
 module.exports = {

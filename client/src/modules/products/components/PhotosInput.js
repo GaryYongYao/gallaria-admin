@@ -85,6 +85,14 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
             openSnackbar('Upload Success', 'success')
             const newImages = images
             newImages.push(res.data.name)
+
+            const deletedIndex = deletedFiles.indexOf(res.data.name)
+            if (deletedIndex > -1) {
+              const newDeleted = deletedFiles
+              newDeleted.splice(deletedIndex, 1)
+              setDeletedFiles(newDeleted)
+            } 
+
             setArray(newImages, 'images')
           }
           setPosting(false)
@@ -94,7 +102,6 @@ function PhotoInputs({ images, primaryImage, featureImage, code, invalidCode, po
 
   const deleteFile = (key, i) => {
     const newImages = images
-    console.log(typeof images[i])
 
     if (typeof images[i] !== 'object') {
       const newDeleted = deletedFiles

@@ -58,7 +58,10 @@ function DetailsInput({ posting, details, setArray }) {
               rows={7}
               variant="outlined"
               value={detail.info}
-              onChange={(e) => handleChange(e, i)}
+              onChange={(e) => {
+                console.log(e)
+                handleChange(e, i)
+              }}
               fullWidth
             />
           </Grid>

@@ -40,6 +40,14 @@ function FeaturesInput({ features, code, invalidCode, posting, setPosting, setAr
             openSnackbar('Upload Success', 'success')
             const newFeatures = features
             newFeatures.push(res.data.name)
+
+            const deletedIndex = deletedFiles.indexOf(res.data.name)
+            if (deletedIndex > -1) {
+              const newDeleted = deletedFiles
+              newDeleted.splice(deletedIndex, 1)
+              setDeletedFiles(newDeleted)
+            } 
+            
             setArray(newFeatures, 'features')
           }
           setPosting(false)

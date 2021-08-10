@@ -19,6 +19,8 @@ const productsSchema = new Schema({
     title: String,
     info: String
   }],
+  link3d: String,
+  priceDesc: String,
   tags: [String],
   isFeature: Boolean,
   forSale: Boolean,

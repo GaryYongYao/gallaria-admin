@@ -247,6 +247,19 @@ async function updateWebsite() {
   }
 }
 
+async function updateProductField() {
+  try {
+    Products.update({}, { link3d: '', priceDesc: '' }, { multi: true }, (err, raw) => {
+      if (err) return handleError(err);
+    })
+    
+    return 'done'
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getAllProducts,
   getProducts,
@@ -258,5 +271,6 @@ module.exports = {
   createProduct,
   editProduct,
   deleteProduct,
-  updateWebsite
+  updateWebsite,
+  updateProductField
 }

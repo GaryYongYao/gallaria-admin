@@ -46,6 +46,14 @@ const FileUpload = ({
             openSnackbar('Upload Success', 'success')
             const newFiles = files
             newFiles.push(res.data.name)
+
+            const deletedIndex = deletedFiles.indexOf(res.data.name)
+            if (deletedIndex > -1) {
+              const newDeleted = deletedFiles
+              newDeleted.splice(deletedIndex, 1)
+              setDeletedFiles(newDeleted)
+            } 
+            
             setArray(newFiles, 'file')
           }
           setPosting(false)
@@ -90,7 +98,7 @@ const FileUpload = ({
         </label>
       </Box>
       {files.map((f, i) => (
-        <Box display="flex" justifyContent="space-between" alignItems="center" py={3}>
+        <Box key={f} display="flex" justifyContent="space-between" alignItems="center" py={3}>
           <Box width="70%">
             <Typography variant="body1">{f}</Typography>
           </Box>

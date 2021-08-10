@@ -50,7 +50,9 @@ const INITIAL_STATE = {
   images: [],
   primaryImage: '',
   featureImage: '',
-  features: []
+  features: [],
+  link3d: '',
+  priceDesc: ''
 }
 
 function ProductAddScreen() {
@@ -150,7 +152,7 @@ function ProductAddScreen() {
         <FormPaper>
           <ValidatorForm
             onSubmit={() => handleSubmit(false)}
-            onKeyPress={e => (e.which === 13) && e.preventDefault()}
+            onKeyPress={e => (e.which === 13 && e.target?.nodeName !== 'TEXTAREA') && e.preventDefault()}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
@@ -188,6 +190,14 @@ function ProductAddScreen() {
                   </Grid>
                 </Grid>
                 <TextValidator
+                  name="priceDesc"
+                  label="Primary Price Description"
+                  value={values.priceDesc}
+                  variant="outlined"
+                  onChange={setText}
+                  fullWidth
+                />
+                <TextValidator
                   name="name"
                   label="Name"
                   variant="outlined"
@@ -212,6 +222,14 @@ function ProductAddScreen() {
                   variant="outlined"
                   onChange={setText}
                   validators={['required']}
+                  fullWidth
+                />
+                <TextValidator
+                  name="link3d"
+                  label="3D Link"
+                  value={values.link3d}
+                  variant="outlined"
+                  onChange={setText}
                   fullWidth
                 />
                 <Grid container spacing={useBreakpointUpCheck('md') ? 4 : 0}>

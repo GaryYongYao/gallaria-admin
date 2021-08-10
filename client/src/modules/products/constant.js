@@ -120,6 +120,8 @@ query getProductById($id: ID!) {
     featureImage
     features
     isDraft
+    link3d
+    priceDesc
     createdBy
     updatedBy
   }
@@ -181,6 +183,8 @@ export const mutationEditProduct = `
       featureImage
       features
       isDraft
+      link3d
+      priceDesc
       createdBy
       updatedBy
     }
