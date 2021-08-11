@@ -174,7 +174,7 @@ async function checkout(args) {
       phone
     } = args.purchaseInput;
 
-    console.log(keys.successLink, keys.cancelLink)
+    console.log("'", process.env.SUCCESS_LINK, "'", " '", process.env.CANCEL_LINK, "'")
 
     const session = await stripe.checkout.sessions.create({
       // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
@@ -190,8 +190,8 @@ async function checkout(args) {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: keys.successLink,
-      cancel_url: keys.cancelLink
+      success_url: `${process.env.SUCCESS_LINK}`,
+      cancel_url: `${process.env.CANCEL_LINK}`
     });
 
     return { id: session.id }
