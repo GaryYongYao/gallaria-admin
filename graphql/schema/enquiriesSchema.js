@@ -34,6 +34,27 @@ input EnquiryProductInput {
   quantity: Int
   variant: String
 }
+input PurchaseInput {
+  email: String
+  phone: String
+  line_items: [LineItem]
+}
+input LineItem {
+  price_data: PriceData
+  quantity: Int
+}
+input PriceData {
+  currency: String
+  unit_amount: Int
+  product_data: ProductData
+}
+input ProductData {
+  images: [String]
+  name: String
+}
+type SessionID {
+  id: String
+}
 `
 
 const enquiryQuery = `
@@ -45,6 +66,7 @@ submitEnquiry(enquiryInput: EnquiryInput!): String
 readEnquiry(_id: ID!, read: Boolean!): String
 repliedEnquiry(_id: ID!, replied: Boolean!): String
 deleteEnquiry(_id: ID!): String
+checkout(purchaseInput: PurchaseInput!): SessionID
 `
 
 module.exports = {

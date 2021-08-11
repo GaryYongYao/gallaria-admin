@@ -1,6 +1,10 @@
 const Enquiries = require('../../../models/enquiry')
 const captchaRequest = require('../../../utils/captchaRequest')
 const GravFormRequest = require('../../../utils/gravityFormRequest')
+const keys = require('../../../keys')
+
+const Stripe = require('stripe')
+const stripe = Stripe(keys.stripeSecret)
 
 async function getEnquiries() {
   try {
@@ -162,10 +166,44 @@ async function deleteEnquiry(args) {
   }
 }
 
+async function checkout(args) {
+  try {
+    const {
+      line_items,
+      email,
+      phone
+    } = args.enquiryInput;
+
+    const session = await stripe.checkout.sessions.create({
+      // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
+      billing_address_collection: 'auto',
+      shipping_address_collection: {
+        allowed_countries: ['AU'],
+      },
+      payment_intent_data: {
+        receipt_email: email,
+        description: 'Phone Number: ' + phone
+      },
+      customer_email: email,
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      success_url: keys.successLink,
+      cancel_url: keys.cancelLink
+    });
+
+    return { id: session.id }
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getEnquiries,
   submitEnquiry,
   readEnquiry,
   repliedEnquiry,
-  deleteEnquiry
+  deleteEnquiry,
+  checkout
 }
