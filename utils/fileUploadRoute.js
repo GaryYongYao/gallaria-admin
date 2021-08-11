@@ -2,7 +2,7 @@ const fileType = require('file-type')
 const multiparty = require('multiparty')
 const fs = require('fs')
 const { uploadFile, deleteFile } = require('./fileUpload')
-const keys = require('./keys')
+const keys = require('../keys')
 
 const Stripe = require('stripe')
 const stripe = Stripe(keys.stripeSecret)
