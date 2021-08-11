@@ -190,8 +190,8 @@ async function checkout(args) {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: `${process.env.SUCCESS_LINK}`,
-      cancel_url: `${process.env.CANCEL_LINK}`
+      success_url: 'https://www.gallaria.com.au/thank-you',
+      cancel_url: 'https://www.gallaria.com.au/cart'
     });
 
     return { id: session.id }
