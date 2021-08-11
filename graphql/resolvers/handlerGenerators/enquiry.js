@@ -172,7 +172,7 @@ async function checkout(args) {
       line_items,
       email,
       phone
-    } = args.enquiryInput;
+    } = args.purchaseInput;
 
     const session = await stripe.checkout.sessions.create({
       // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
