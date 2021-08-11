@@ -45,26 +45,32 @@ app.use(function(req, res, next) {
 })
 
 app.post('/api/checkout', async (req, res) => {
-  const { line_items, email, phone } = req.body
-  const session = await stripe.checkout.sessions.create({
-    // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
-    billing_address_collection: 'auto',
-    shipping_address_collection: {
-      allowed_countries: ['AU'],
-    },
-    payment_intent_data: {
-      receipt_email: email,
-      description: 'Phone Number: ' + phone
-    },
-    customer_email: email,
-    payment_method_types: ['card'],
-    line_items,
-    mode: 'payment',
-    success_url: keys.successLink,
-    cancel_url: keys.cancelLink
-  });
-  res.header("Access-Control-Allow-Origin", "*")
-  res.json({ id: session.id });
+  try {
+    const { line_items, email, phone } = req.body
+
+    const session = await stripe.checkout.sessions.create({
+      // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
+      billing_address_collection: 'auto',
+      shipping_address_collection: {
+        allowed_countries: ['AU'],
+      },
+      payment_intent_data: {
+        receipt_email: email,
+        description: 'Phone Number: ' + phone
+      },
+      customer_email: email,
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      success_url: keys.successLink,
+      cancel_url: keys.cancelLink
+    });
+    res.header("Access-Control-Allow-Origin", "*")
+    res.json({ id: session.id });
+  }
+  catch(err) {
+    res.send(err)
+  }
 })
 
 require('./utils/fileUploadRoute')(app)
