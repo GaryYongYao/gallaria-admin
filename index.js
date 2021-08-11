@@ -16,7 +16,9 @@ const app = express()
 
 app.disable('x-powered-by')
 app.use(
-  cors(),
+  cors({
+    origin: '*'
+  }),
   bodyParser.json()
 )
 app.use(
