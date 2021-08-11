@@ -15,10 +15,7 @@ const stripe = Stripe(keys.stripeSecret)
 const app = express()
 
 app.disable('x-powered-by')
-app.use(
-  cors(),
-  bodyParser.json()
-)
+app.use(cors({ origin: "*" }))
 app.use(
   "/graphql",
   graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
