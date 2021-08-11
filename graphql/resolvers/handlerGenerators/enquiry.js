@@ -174,6 +174,8 @@ async function checkout(args) {
       phone
     } = args.purchaseInput;
 
+    console.log(keys.successLink, keys.cancelLink)
+
     const session = await stripe.checkout.sessions.create({
       // shipping_rates: ['shr_1J2p3zIasUdIbFxXEHlSek2p'],
       billing_address_collection: 'auto',
