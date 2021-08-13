@@ -78,7 +78,7 @@ app.post('/api/payment-succeed', async (req, res) => {
     const { object } = req.body.data
     const { id, shipping, customer_email } = object
     const { address, name } = shipping
-    const { line1, line2, city, postal_code, state, country } = address
+    const { line1, line2, city, postal_code, state, country, payment_intent } = address
 
     stripe.checkout.sessions.listLineItems(
       id,
@@ -101,7 +101,8 @@ app.post('/api/payment-succeed', async (req, res) => {
             Description: description,
             Price: amount_total / 100,
             Quantity: quantity
-          }))
+          })),
+          '9': payment_intent,
         })
           .then(({ data }) => {
             GravFormRequest('POST', `/entries/${data.id}/notifications`)
