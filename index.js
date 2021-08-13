@@ -73,6 +73,49 @@ app.post('/api/checkout', async (req, res) => {
   }
 })
 
+app.post('/api/payment-succeed', async (req, res) => {
+  try {
+    const { object } = req.body.data
+    const { id, shipping, customer_email } = object
+    const { address, name } = shipping
+    const { line1, line2, city, postal_code, state, country } = address
+
+    stripe.checkout.sessions.listLineItems(
+      id,
+      { limit: 100 },
+      async (error, lineItems) => {
+        const { data } = lineItems
+        const fullAddress = `${line1}, ${line2 && `${line2}, `}${city}, ${postal_code} ${state}, ${country}`
+
+        GravFormRequest('POST', '/entries', {
+          form_id: '5',
+          is_starred: '0',
+          is_read: '0',
+          source_url: 'https://www.gallaria.com.au/',
+          status: 'active',
+          '1': name,
+          '2': customer_email,
+          '3': fullAddress,
+          '8': data.map(({ object, description, amount_total, quantity }) => ({
+            Name: object,
+            Description: description,
+            Price: amount_total / 100,
+            Quantity: quantity
+          }))
+        })
+          .then(({ data }) => {
+            GravFormRequest('POST', `/entries/${data.id}/notifications`)
+              .catch(err => { throw err })
+          })
+          .catch(err => { throw err })
+      }
+    );
+  }
+  catch(err) {
+    res.send(err)
+  }
+})
+
 require('./utils/fileUploadRoute')(app)
 
 if (process.env.NODE_ENV === 'production') {
