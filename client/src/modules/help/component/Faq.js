@@ -140,44 +140,6 @@ function HelpSection() {
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Accordion className={classes.sectionBreak} expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
-          >
-            <Typography className={classes.heading}>AWS S3 (Media Storage)</Typography>
-          </AccordionSummary>
-          <AccordionDetails className={classes.paraList}>
-            <Typography paragraph>
-              <b>Monthly Data Transfer Quota</b>
-            </Typography>
-            <Typography paragraph>
-              Quota: 15GB / month
-            </Typography>
-            <Typography paragraph>
-              Quota Refresh: 1st every month
-            </Typography>
-            <Typography paragraph>
-              Overquota cost: $0.114 / GB
-            </Typography>
-            <Typography paragraph>
-              <b>Storage Usage</b>
-            </Typography>
-            <Typography paragraph>
-              Storage Quota: 15GB
-            </Typography>
-            <Typography paragraph>
-              Storage Request: 20,000 Request / month
-            </Typography>
-            <Typography paragraph>
-              Quota Refresh: 1st every month
-            </Typography>
-            <Typography paragraph>
-              Overquota cost: $0.0044 per 10,000 requests
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
         <Accordion className={classes.sectionBreak} expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
