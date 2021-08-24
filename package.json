@@ -8,6 +8,7 @@
     "server": "nodemon --exec babel-node index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "gen-yaml": "node generate-yaml.js",
     "heroku-postbuild": "yarn --cwd client && yarn --cwd client build"
   },
   "author": "imitation-tech",
