@@ -106,11 +106,11 @@ function HelpSection() {
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography className={classes.heading}>Google Maps API</Typography>
+            <Typography className={classes.heading}>Google Services</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.paraList}>
             <Typography paragraph>
-              <b>Monthly Google Quotas</b>
+              <b>Monthly Google Map Quotas</b>
             </Typography>
             <Typography paragraph>
               $200 per month
@@ -137,6 +137,36 @@ function HelpSection() {
               <Typography variant="caption">
                 *Only will be billed if the request is over $200
               </Typography>
+            </Typography>
+            <Typography paragraph>
+              <b>Google Storage Quotas</b>
+            </Typography>
+            <Typography paragraph>
+              5GB Max Storage
+            </Typography>
+            <Typography paragraph>
+              5000 Upload Request / Month
+            </Typography>
+            <Typography paragraph>
+              50000 Download Request / Month
+            </Typography>
+            <Typography paragraph>
+              50000 Outwards Network
+            </Typography>
+            <Typography paragraph>
+              <b>After Quota</b>
+            </Typography>
+            <Typography paragraph>
+              $0.026 / GB
+            </Typography>
+            <Typography paragraph>
+              $0.05 / 10,000 operations
+            </Typography>
+            <Typography paragraph>
+              $0.004 / 10,000 operations
+            </Typography>
+            <Typography paragraph>
+              (0-1 TB tier): 1TB (1024GB) egress * $0.12 per GB
             </Typography>
           </AccordionDetails>
         </Accordion>
