@@ -12,7 +12,6 @@ env_variables:
   GRAVITY_USER: '${process.env.GRAVITY_USER}'
   GRAVITY_PASSWORD: '${process.env.GRAVITY_PASSWORD}'
   STRIPE_PUBLIC: '${process.env.STRIPE_PUBLIC}'
-  REACT_APP_GOOGLE_API: '${process.env.REACT_APP_GOOGLE_API}'
   STRIPE_SECRET: '${process.env.STRIPE_SECRET}'
   MEDIA_BASE_URL: '${process.env.MEDIA_BASE_URL}'
   SUCCESS_LINK: '${process.env.SUCCESS_LINK}'
@@ -27,7 +26,7 @@ env_variables:
 
   await fs.writeFile('app.yaml', text, function (err) {
     if (err) return console.log(err);
-    console.log('app.yaml created');
+    console.log('Hello World > helloworld.txt');
   })
 }
 
