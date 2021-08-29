@@ -17,6 +17,7 @@ const storage = new Storage({
 })
 
 const uploadFile = async (pathname, name, type) => {
+  return storage
   try {
     const url = await storage
       .bucket(keys.s3Bucket)
@@ -27,7 +28,6 @@ const uploadFile = async (pathname, name, type) => {
         }
       )
 
-    console.log(url)  
     return url
   } catch (err) {
     return err
