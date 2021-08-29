@@ -26,8 +26,9 @@ const uploadFile = async (pathname, name, type) => {
           destination: `${name}.${type.ext}`
         }
       )
-  
-     return url[0]
+
+    console.log(url)  
+    return url[0]
   } catch (err) {
     return err
   }
