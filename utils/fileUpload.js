@@ -28,7 +28,7 @@ const uploadFile = async (pathname, name, type) => {
       )
 
     console.log(url)  
-    return url[0]
+    return url
   } catch (err) {
     return err
   }
