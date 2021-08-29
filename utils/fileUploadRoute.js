@@ -15,6 +15,7 @@ module.exports = app => {
         const path = files.file[0].path
         const buffer = fs.readFileSync(path)
         const type = await fileType.fromBuffer(buffer)
+        console.log(path, fileName, type)
         const fileName = `${fields.bucketFolder}/${fields.fileName}`
         // const data = await uploadFile(buffer, fileName, type)
         const data = await uploadFile(path, fileName, type)
