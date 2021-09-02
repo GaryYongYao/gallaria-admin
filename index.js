@@ -107,6 +107,7 @@ app.post('/api/payment-succeed', async (req, res) => {
         })
           .then(({ data }) => {
             GravFormRequest('POST', `/entries/${data.id}/notifications`)
+              .then(() => res.send('OK'))
               .catch(err => { throw err })
           })
           .catch(err => { throw err })
