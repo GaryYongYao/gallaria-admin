@@ -107,7 +107,7 @@ export const UserContextProvider = ({ children }) => {
 
             if (verifyToken === undefined) {
               history.push({ pathname: '/' })
-            } else if (verifyToken === '/') {
+            } else if (verifyToken) {
               history.push({ pathname: '/dashboard' })
             } else if (verifyToken.role !== 'admin') {
               checkAdminRoute(history.location.pathname)

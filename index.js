@@ -8,6 +8,7 @@ const { graphqlUploadExpress } = require('graphql-upload')
 const graphQLSchema = require('./graphql/schema')
 const graphQLResolvers = require('./graphql/resolvers')
 const keys = require('./keys')
+const GravFormRequest = require('./utils/gravityFormRequest')
 
 const Stripe = require('stripe')
 const stripe = Stripe(keys.stripeSecret)
