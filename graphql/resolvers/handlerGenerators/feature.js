@@ -4,10 +4,9 @@ const Feature = require('../../../models/feature')
 
 async function getFeaturedAdmin() {
   try {
-    const feature = await Feature.find().populate(['product']).limit(11)
-    const filtered = feature.filter(({ product }) => (product.code))
+    const feature = await Feature.find().populate(['product'])
 
-    return filtered
+    return feature.map(({ product }) => product ? product : ({ code: 'Please Delete', name: 'Not Found' }))
   }
   catch(err) {
     throw err
