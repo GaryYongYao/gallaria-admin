@@ -6,7 +6,7 @@ async function getFeaturedAdmin() {
   try {
     const feature = await Feature.find().populate(['product'])
 
-    return feature.map(({ product }) => product ? product : ({ code: 'Please Delete', name: 'Not Found' }))
+    return feature.map(({ _id, product }) => product ? ({ _id, product }) : ({ _id, product: { code: 'Please Delete', name: 'Not Found' } }))
   }
   catch(err) {
     throw err
