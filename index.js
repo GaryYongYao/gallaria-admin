@@ -89,7 +89,7 @@ app.post('/api/payment-succeed', async (req, res) => {
       { limit: 100 },
       async (error, lineItems) => {
         const { data } = lineItems
-        const fullAddress = `${line1}, ${line2 && `${line2 || ''}, `}${city && `${city || ''}, `} ${postal_code} ${state}, ${country}`
+        const fullAddress = `${line1}, ${line2 ? `${line2}, ` : ''}${city ? `${city}, ` : ''} ${postal_code} ${state}, ${country}`
 
         GravFormRequest('POST', '/entries', {
           form_id: '5',
