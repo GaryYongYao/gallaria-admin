@@ -113,7 +113,7 @@ const DashLayout = ({ children }) => {
               </Hidden>
             </Grid>
             <Grid container item xs={8} justify="flex-end">
-              {(login.username === 'dev-admin' || login._id === '60ebc9340cc50b001579a320') && (
+              {(login.username === 'dev-admin' || login._id === '60ebc9340cc50b001579a320' || login._id === '621dab063278090016d40d73') && (
                 <Button
                   variant="contained"
                   color="secondary"
