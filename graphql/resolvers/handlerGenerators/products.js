@@ -12,8 +12,8 @@ async function getAllProducts() {
       category: (product.category || {}).name,
       baseShipping: (product.category || {}).baseShipping,
       shipping: (product.category || {}).shipping,
-      createdBy: product.createdBy.username,
-      updatedBy: product.updatedBy.username
+      createdBy: (product.createdBy || {}).username,
+      updatedBy: (product.updatedBy || {}).username
     }))
   }
   catch(err) {
@@ -30,8 +30,8 @@ async function getProducts() {
       category: (product.category || {}).name,
       baseShipping: (product.category || {}).baseShipping,
       shipping: (product.category || {}).shipping,
-      createdBy: product.createdBy.username,
-      updatedBy: product.updatedBy.username
+      createdBy: (product.createdBy || {}).username,
+      updatedBy: (product.updatedBy || {}).username
     }))
   }
   catch(err) {
@@ -97,8 +97,8 @@ async function getProductById(args) {
       category: (product.category || {}).id,
       baseShipping: (product.category || {}).baseShipping,
       shipping: (product.category || {}).shipping,
-      createdBy: product.createdBy.username,
-      updatedBy: product.updatedBy.username
+      createdBy: (product.createdBy || {}).username,
+      updatedBy: (product.updatedBy || {}).username
     }
   }
   catch(err) {
@@ -179,8 +179,8 @@ async function editProduct(args) {
     return {
       ...product._doc,
       category: (product.category || {}).id,
-      createdBy: product.createdBy.username,
-      updatedBy: product.updatedBy.username
+      createdBy: (product.createdBy || {}).username,
+      updatedBy: (product.updatedBy || {}).username
     }
   }
   catch(err) {

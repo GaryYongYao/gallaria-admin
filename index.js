@@ -77,16 +77,19 @@ app.post('/api/checkout', async (req, res) => {
 app.post('/api/payment-succeed', async (req, res) => {
   try {
     const { object } = req.body.data
-    const { id, shipping, customer_email } = object
+    const { id, shipping, customer_email, payment_intent } = object
     const { address, name } = shipping
-    const { line1, line2, city, postal_code, state, country, payment_intent } = address
+    const { line1, line2, city, postal_code, state, country } = address
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent)
+    const { description } = await paymentIntent
 
     stripe.checkout.sessions.listLineItems(
       id,
       { limit: 100 },
       async (error, lineItems) => {
         const { data } = lineItems
-        const fullAddress = `${line1}, ${line2 && `${line2}, `}${city}, ${postal_code} ${state}, ${country}`
+        const fullAddress = `${line1}, ${line2 ? `${line2}, ` : ''}${city ? `${city}, ` : ''} ${postal_code} ${state}, ${country}`
 
         GravFormRequest('POST', '/entries', {
           form_id: '5',
@@ -104,9 +107,11 @@ app.post('/api/payment-succeed', async (req, res) => {
             Quantity: quantity
           })),
           '9': payment_intent,
+          '10': description
         })
           .then(({ data }) => {
             GravFormRequest('POST', `/entries/${data.id}/notifications`)
+              .then(() => res.send('OK'))
               .catch(err => { throw err })
           })
           .catch(err => { throw err })

@@ -4,9 +4,9 @@ const Feature = require('../../../models/feature')
 
 async function getFeaturedAdmin() {
   try {
-    const feature = await Feature.find().populate(['product']).limit(11)
+    const feature = await Feature.find().populate(['product'])
 
-    return feature
+    return feature.map(({ _id, product }) => product ? ({ _id, product }) : ({ _id, product: { code: 'Please Delete', name: 'Not Found' } }))
   }
   catch(err) {
     throw err
@@ -16,8 +16,9 @@ async function getFeaturedAdmin() {
 async function getFeatured() {
   try {
     const features = await Feature.find().populate(['product']).limit(11)
+    const filtered = features.filter(({ product }) => (product.code))
 
-    return features.map(({ product }) => ({
+    return filtered.map(({ product }) => ({
       code: (product || {}).code,
       name: (product || {}).name,
       featureImage: (product || {}).featureImage
@@ -31,8 +32,9 @@ async function getFeatured() {
 async function getCarousel() {
   try {
     const features = await Feature.find().populate(['product']).limit(5)
+    const filtered = features.filter(({ product }) => (product.code))
 
-    return features.map(({ product }) => ({
+    return filtered.map(({ product }) => ({
       code: (product || {}).code,
       name: (product || {}).name,
       featureImage: (product || {}).featureImage
