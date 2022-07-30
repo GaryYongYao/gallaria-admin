@@ -52,7 +52,13 @@ const INITIAL_STATE = {
   featureImage: '',
   features: [],
   link3d: '',
-  priceDesc: ''
+  priceDesc: '',
+  isArchive: false,
+  size: {
+    w: 0,
+    h: 0,
+    d: 0
+  }
 }
 
 function ProductAddScreen() {
@@ -96,6 +102,7 @@ function ProductAddScreen() {
 
   const handleSubmit = (isDraft) => {
     setPosting(true)
+    console.log(values)
     
     const images = (values.images || []).filter(unique)
 
@@ -404,6 +411,50 @@ function ProductAddScreen() {
               <Divider />
             </Box>
             <Box my={2}>
+              <Typography variant="h6">Size (For Delivery Purposes)</Typography>
+            </Box>
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <TextValidator
+                  name="h"
+                  type="number"
+                  label="Height"
+                  value={values.size.h}
+                  variant="outlined"
+                  onChange={(e) => setAll({ ...values, size: { ...values.size, h: e.target.value } })}
+                  validators={['required']}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextValidator
+                  name="d"
+                  type="number"
+                  label="Depth"
+                  value={values.size.d}
+                  variant="outlined"
+                  onChange={(e) => setAll({ ...values, size: { ...values.size, d: e.target.value } })}
+                  validators={['required']}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextValidator
+                  name="w"
+                  type="number"
+                  label="Width"
+                  value={values.size.w}
+                  variant="outlined"
+                  onChange={(e) => setAll({ ...values, size: { ...values.size, w: e.target.value } })}
+                  validators={['required']}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Box my={4}>
+              <Divider />
+            </Box>
+            <Box my={2}>
               <Typography variant="h6">Management</Typography>
             </Box>
             <Grid container spacing={3}>
@@ -450,6 +501,11 @@ function ProductAddScreen() {
                   <FormControlLabel
                     control={<Switch checked={values.forSale} onChange={setSwitch} name="forSale" color="primary" />}
                     label="Allow Purchase"
+                    labelPlacement="start"
+                  />
+                  <FormControlLabel
+                    control={<Switch checked={values.isArchive} onChange={setSwitch} name="isArchive" color="primary" />}
+                    label="Archive"
                     labelPlacement="start"
                   />
                 </FormGroup>

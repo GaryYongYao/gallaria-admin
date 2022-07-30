@@ -249,8 +249,8 @@ async function updateWebsite() {
 
 async function updateProductField() {
   try {
-    Products.update({}, { link3d: '', priceDesc: '' }, { multi: true }, (err, raw) => {
-      if (err) return handleError(err);
+    Products.update({}, { isArchive: false, size: { w: 0, d: 0, h: 0 } }, { multi: true }, (err, raw) => {
+      if (err) return console.log(err);
     })
     
     return 'done'
