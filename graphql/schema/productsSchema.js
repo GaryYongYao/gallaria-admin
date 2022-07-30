@@ -43,6 +43,11 @@ input ProductDetailInput {
   title: String
   info: String
 }
+input ProductSizeInput {
+  w: Float
+  h: Float
+  d: Float
+}
 input ProductInput {
   code: String!
   name: String
@@ -68,7 +73,7 @@ input ProductInput {
   createdBy: ID!
   updatedBy: ID!
   isArchive: Boolean
-  size: ProductSize
+  size: ProductSizeInput
 }
 input ProductUpdate {
   _id: ID!
@@ -96,7 +101,7 @@ input ProductUpdate {
   deletedFiles:[String]
   updatedBy: ID!
   isArchive: Boolean
-  size: ProductSize
+  size: ProductSizeInput
 }
 `
 
