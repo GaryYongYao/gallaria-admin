@@ -27,6 +27,13 @@ type Product {
   createdBy: ID
   updatedBy: ID
   createdDate: String
+  isArchive: Boolean
+  size: ProductSize
+}
+type ProductSize {
+  w: Float
+  h: Float
+  d: Float
 }
 type ProductDetail {
   title: String
@@ -35,6 +42,11 @@ type ProductDetail {
 input ProductDetailInput {
   title: String
   info: String
+}
+input ProductSizeInput {
+  w: Float
+  h: Float
+  d: Float
 }
 input ProductInput {
   code: String!
@@ -60,6 +72,8 @@ input ProductInput {
   priceDesc: String
   createdBy: ID!
   updatedBy: ID!
+  isArchive: Boolean
+  size: ProductSizeInput
 }
 input ProductUpdate {
   _id: ID!
@@ -86,6 +100,8 @@ input ProductUpdate {
   priceDesc: String
   deletedFiles:[String]
   updatedBy: ID!
+  isArchive: Boolean
+  size: ProductSizeInput
 }
 `
 
