@@ -23,7 +23,7 @@ async function getAllProducts() {
 
 async function getProducts() {
   try {
-    const products = await Products.find({ isDraft: false }).populate(['category', 'createdBy', 'updatedBy'])
+    const products = await Products.find({ isDraft: false, isArchive: false }).populate(['category', 'createdBy', 'updatedBy'])
 
     return products.map(product => ({
       ...product._doc,

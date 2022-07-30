@@ -124,6 +124,12 @@ query getProductById($id: ID!) {
     priceDesc
     createdBy
     updatedBy
+    isArchive
+    size {
+      w
+      h
+      d
+    }
   }
 }
 `
@@ -187,6 +193,12 @@ export const mutationEditProduct = `
       priceDesc
       createdBy
       updatedBy
+      isArchive
+      size {
+        w
+        h
+        d
+      }
     }
   }
 `
