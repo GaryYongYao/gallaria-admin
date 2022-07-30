@@ -30,6 +30,12 @@ const productsSchema = new Schema({
   featureImage: String,
   features: [String],
   isDraft: Boolean,
+  isArchive: Boolean,
+  size: {
+    w: { type: Number, default: 0 },
+    h: { type: Number, default: 0 },
+    d: { type: Number, default: 0 }
+  },
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId , ref: 'User' },
   createdDate : { type: Date, default: Date.now }
