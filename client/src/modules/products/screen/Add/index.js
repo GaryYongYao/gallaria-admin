@@ -115,7 +115,12 @@ function ProductAddScreen() {
       isDraft,
       deletedFiles,
       createdBy: login._id,
-      updatedBy: login._id
+      updatedBy: login._id,
+      size: {
+        h: parseFloat(values.size?.h),
+        w: parseFloat(values.size?.w),
+        d: parseFloat(values.size?.d)
+      }
     }
 
     if (params.id) delete productInput.createdBy
