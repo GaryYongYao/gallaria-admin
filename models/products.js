@@ -34,7 +34,8 @@ const productsSchema = new Schema({
   size: {
     w: { type: Number, default: 0 },
     h: { type: Number, default: 0 },
-    d: { type: Number, default: 0 }
+    d: { type: Number, default: 0 },
+    kg: { type: Number, default: 0 }
   },
   createdBy: { type: Schema.Types.ObjectId , ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId , ref: 'User' },
