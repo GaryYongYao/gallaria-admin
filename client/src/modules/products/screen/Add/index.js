@@ -57,7 +57,8 @@ const INITIAL_STATE = {
   size: {
     w: 0,
     h: 0,
-    d: 0
+    d: 0,
+    kg: 0
   }
 }
 
@@ -119,7 +120,8 @@ function ProductAddScreen() {
       size: {
         h: parseFloat(values.size?.h),
         w: parseFloat(values.size?.w),
-        d: parseFloat(values.size?.d)
+        d: parseFloat(values.size?.d),
+        kg: parseFloat(values.size?.kg)
       }
     }
 
@@ -416,10 +418,10 @@ function ProductAddScreen() {
               <Divider />
             </Box>
             <Box my={2}>
-              <Typography variant="h6">Size (For Delivery Purposes)</Typography>
+              <Typography variant="h6">Size [In cm, weight in kg] (For Delivery Purposes)</Typography>
             </Box>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextValidator
                   name="h"
                   type="number"
@@ -431,7 +433,7 @@ function ProductAddScreen() {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextValidator
                   name="d"
                   type="number"
@@ -443,7 +445,7 @@ function ProductAddScreen() {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextValidator
                   name="w"
                   type="number"
@@ -451,6 +453,18 @@ function ProductAddScreen() {
                   value={values.size.w}
                   variant="outlined"
                   onChange={(e) => setAll({ ...values, size: { ...values.size, w: e.target.value } })}
+                  validators={['required']}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextValidator
+                  name="kg"
+                  type="number"
+                  label="Weight"
+                  value={values.size.kg}
+                  variant="outlined"
+                  onChange={(e) => setAll({ ...values, size: { ...values.size, kg: e.target.value } })}
                   validators={['required']}
                   fullWidth
                 />

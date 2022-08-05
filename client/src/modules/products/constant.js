@@ -129,6 +129,7 @@ query getProductById($id: ID!) {
       w
       h
       d
+      kg
     }
   }
 }
@@ -198,6 +199,7 @@ export const mutationEditProduct = `
         w
         h
         d
+        kg
       }
     }
   }

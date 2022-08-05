@@ -47,6 +47,7 @@ input ProductSizeInput {
   w: Float
   h: Float
   d: Float
+  kg: Float
 }
 input ProductInput {
   code: String!
