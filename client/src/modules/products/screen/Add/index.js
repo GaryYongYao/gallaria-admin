@@ -121,7 +121,7 @@ function ProductAddScreen() {
         h: parseFloat(values.size?.h),
         w: parseFloat(values.size?.w),
         d: parseFloat(values.size?.d),
-        kg: parseFloat(values.size?.kg),
+        kg: parseFloat(values.size?.kg)
       }
     }
 
@@ -421,7 +421,7 @@ function ProductAddScreen() {
               <Typography variant="h6">Size [In cm, weight in kg] (For Delivery Purposes)</Typography>
             </Box>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextValidator
                   name="h"
                   type="number"
@@ -433,7 +433,7 @@ function ProductAddScreen() {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextValidator
                   name="d"
                   type="number"

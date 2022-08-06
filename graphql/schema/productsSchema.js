@@ -34,6 +34,7 @@ type ProductSize {
   w: Float
   h: Float
   d: Float
+  kg: Float
 }
 type ProductDetail {
   title: String
